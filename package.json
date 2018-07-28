@@ -1,0 +1,10 @@
+{
+  "requires": true,
+  "lockfileVersion": 1,
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chrome": "0.0.66",
+    "webpack": "^4.11.1",
+    "webpack-cli": "^3.0.2"
+  }
+}
