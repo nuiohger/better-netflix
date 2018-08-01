@@ -66,13 +66,13 @@ class PlayPauseAction implements IAction {
     }
 }
 
-// class ToggleStatisticsAction implements IAction {
-//     key: string = defaultKeys.toggleStatistics;
+class ToggleStatisticsAction implements IAction {
+    key: string = defaultKeys.toggleStatistics;
 
-//     public execute(videoController: VideoController): void {
-//         StatisticsController.toggle(videoController.getHtmlVideo);
-//     }
-// }
+    public execute(videoController: VideoController): void {
+        StatisticsController.toggle(videoController);
+    }
+}
 
 class ActionFactory {
     private static _classDictionary = {
@@ -82,8 +82,8 @@ class ActionFactory {
         fullZoom: FullZoomAction,
         disableMouse: DisableMouseAction,
         enableMouse: EnableMouseAction,
-        playPause: PlayPauseAction//,
-        // toggleStatistics: ToggleStatisticsAction
+        playPause: PlayPauseAction,
+        toggleStatistics: ToggleStatisticsAction
     };
 
     public static getAction(actionName: string): IAction {

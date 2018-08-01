@@ -1,4 +1,5 @@
 import UserOptionsModel from "../Model/UserOptionsModel";
+import StatisticsController from "./StatisticController";
 const defaultKeys = UserOptionsModel.defaultKeys;
 class ZoomInAction {
     constructor() {
@@ -56,6 +57,14 @@ class PlayPauseAction {
         videoController.togglePlay();
     }
 }
+class ToggleStatisticsAction {
+    constructor() {
+        this.key = defaultKeys.toggleStatistics;
+    }
+    execute(videoController) {
+        StatisticsController.toggle(videoController);
+    }
+}
 class ActionFactory {
     static getAction(actionName) {
         const action = this._classDictionary[actionName];
@@ -74,6 +83,7 @@ ActionFactory._classDictionary = {
     fullZoom: FullZoomAction,
     disableMouse: DisableMouseAction,
     enableMouse: EnableMouseAction,
-    playPause: PlayPauseAction
+    playPause: PlayPauseAction,
+    toggleStatistics: ToggleStatisticsAction
 };
 export { ActionFactory };

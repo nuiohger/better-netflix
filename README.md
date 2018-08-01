@@ -32,7 +32,7 @@ To disable minification add the following parameter to the webpack command in bu
 
 - maybe: auto detect black bars and zoom accordingly (if user has specified in options)
 
-- Skip intro (automatically, shortcut already exists: s)
+- Skip intro (automatically, shortcut already exists: s, options)
 
 - Custom Subtitles
 
