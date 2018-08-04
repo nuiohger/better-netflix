@@ -9,8 +9,8 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     exit 1
 fi
 
-OPTIONS=z
-LONGOPTS=zip
+OPTIONS=zd
+LONGOPTS=zip,debug
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -25,12 +25,16 @@ fi
 # read getopt’s output this way to handle the quoting right:
 eval set -- "$PARSED"
 
-z=n
+z=n d=n
 # now enjoy the options in order and nicely split until we see --
 while true; do
     case "$1" in
         -z|--zip)
             z=y
+            shift
+            ;;
+        -d|--debug)
+            d=y
             shift
             ;;
         --)
@@ -45,7 +49,12 @@ while true; do
 done
 
 
-npx webpack --entry ./build/Main.js --output ./dist-firefox/Main.min.js
+if [ $d = y ]; then
+    npx webpack --entry ./build/Main.js --output ./dist-firefox/Main.min.js --mode none
+else
+    npx webpack --entry ./build/Main.js --output ./dist-firefox/Main.min.js --mode production
+fi
+
 rm ./dist-firefox/style.min.css
 uglifycss ./src/style.css > ./dist-firefox/style.min.css
 
