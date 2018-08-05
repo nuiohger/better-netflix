@@ -7,7 +7,6 @@ class VideoController {
 
     private _htmlVideo: HTMLVideoElement;
     private _updatingVideo: boolean = false;
-    private _paused: boolean = false;
     private _updateVideoInterval: number;
 
     constructor(uiController: UiController, timeUiController: TimeUiController){
@@ -54,8 +53,6 @@ class VideoController {
         this._htmlVideo.style.left = "50%";
         this._htmlVideo.style.top = "50%";
         this._htmlVideo.style.transform = "translate(-50%, -50%)";
-
-        this._paused = false;
     }
 
 
@@ -76,17 +73,6 @@ class VideoController {
 
         this._htmlVideo.style.height = this._htmlVideo.style.width = percentage + "%";
     }
-
-    public togglePlay(): void {
-        if(this._paused) {
-            this._htmlVideo.play();
-        } else {
-            this._htmlVideo.pause();
-        }
-        
-        this._paused = !this._paused;
-    }
-
 
     public get getHtmlVideo(): HTMLVideoElement {
 		return this._htmlVideo;

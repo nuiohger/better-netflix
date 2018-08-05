@@ -5,18 +5,16 @@ class UserOptionsModel {
     private _fullZoom: string;
     private _disableMouse: string;
     private _enableMouse: string;
-    private _playPause: string;
     private _timeElapsed: boolean;
     private _toggleStatistics: string;
 
-    private constructor(zoomIn: string, zoomOut: string, resetZoom: string, fullZoom: string, disableMouse: string, enableMouse: string, playPause: string, timeElapsed: boolean, toggleStatistics: string) {
+    private constructor(zoomIn: string, zoomOut: string, resetZoom: string, fullZoom: string, disableMouse: string, enableMouse: string, timeElapsed: boolean, toggleStatistics: string) {
         this._zoomIn = zoomIn;
         this._zoomOut = zoomOut;
         this._resetZoom = resetZoom;
         this._fullZoom = fullZoom;
         this._disableMouse = disableMouse;
         this._enableMouse = enableMouse;
-        this._playPause = playPause;
         this._timeElapsed = timeElapsed;
         this._toggleStatistics = toggleStatistics;
     }
@@ -39,9 +37,6 @@ class UserOptionsModel {
     public get enableMouse(): string {
         return this._enableMouse;
     }
-    public get playPause(): string {
-        return this._playPause;
-    }
     public get timeElapsed(): boolean {
         return this._timeElapsed;
     }
@@ -51,7 +46,7 @@ class UserOptionsModel {
     }
 
     public static get defaultKeys(): UserOptionsModel {
-        return new UserOptionsModel("+", "-", ",", ".", "d", "e", " ", true, "q");
+        return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
     }
 }
 

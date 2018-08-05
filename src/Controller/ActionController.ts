@@ -58,14 +58,6 @@ class EnableMouseAction implements IAction {
     }
 }
 
-class PlayPauseAction implements IAction {
-    key: string = defaultKeys.playPause;
-
-    public execute(videoController: VideoController): void {
-        videoController.togglePlay();
-    }
-}
-
 class ToggleStatisticsAction implements IAction {
     key: string = defaultKeys.toggleStatistics;
 
@@ -82,7 +74,6 @@ class ActionFactory {
         fullZoom: FullZoomAction,
         disableMouse: DisableMouseAction,
         enableMouse: EnableMouseAction,
-        playPause: PlayPauseAction,
         toggleStatistics: ToggleStatisticsAction
     };
 
