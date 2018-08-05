@@ -1,8 +1,15 @@
 import { ActionFactory, IAction } from "./ActionController";
 import VideoController from "./VideoController";
 import VideoBitrateController from "./VideoBitrateController";
+import UserOptionsModel from "../Model/UserOptionsModel";
 
 class UiController {
+    private _videoBitrateController: VideoBitrateController;
+
+    public constructor() {
+        this._videoBitrateController = new VideoBitrateController();
+    }
+
     public createUi(videoController: VideoController): void {
         const videoTitle: HTMLDivElement = <HTMLDivElement> document.querySelector(".video-title");
         if(videoTitle === undefined || videoTitle === null) return;
@@ -62,7 +69,7 @@ class UiController {
         const tooltip: HTMLDivElement = document.createElement("div");
         tooltip.classList.add("tooltip", "hidden");
 
-        const bitrates: string[] = new VideoBitrateController().getVideoBitrates();
+        const bitrates: string[] = this._videoBitrateController.getVideoBitrates();
         bitrates.forEach(bitrate => {
             const bitrateElement: HTMLDivElement = document.createElement("div");
             bitrateElement.classList.add("tooltipChild");
@@ -77,6 +84,8 @@ class UiController {
 
         this.initTooltip(videoBitrates, tooltip);
         this.initTooltipChildren(tooltip);
+
+        this.selectHighestBitrateIfOptionIsSet(tooltip);
         
         return videoBitrates;
     }
@@ -95,18 +104,36 @@ class UiController {
     }
 
     private initTooltipChildren(tooltip: HTMLDivElement): void {
+        const _this = this;
+
         tooltip.childNodes.forEach(element => {
             const child: HTMLElement = <HTMLElement>element;
 
             child.addEventListener("click", () => {
-                const successful: boolean = new VideoBitrateController().changeBitrate(child.getAttribute("bitrate"));
+                const successful: boolean = _this._videoBitrateController.changeBitrate(child.getAttribute("bitrate")) !== undefined;
                 if(!successful) return;
 
-                tooltip.childNodes.forEach(element => (element as HTMLElement).classList.remove("tooltipChildSelected"));
-                child.classList.add("tooltipChildSelected");
+                this.selectTooltipChild(tooltip, child);
 
                 setTimeout(() => tooltip.classList.add("hidden"), 500);
             }, false);
+        });
+    }
+
+    private selectTooltipChild(tooltip: HTMLDivElement, child: HTMLElement) {
+        tooltip.childNodes.forEach(element => (element as HTMLElement).classList.remove("tooltipChildSelected"));
+        child.classList.add("tooltipChildSelected");
+    }
+
+    private selectHighestBitrateIfOptionIsSet(tooltip: HTMLDivElement): void {
+        const promise: any = UserOptionsModel.getPromise();
+        const _this = this;
+        promise.then(optionKeys => {
+            if(!optionKeys.selectHighestBitrate) return;
+
+            const highestBitrate: string = _this._videoBitrateController.changeBitrate("", true);
+
+            _this.selectTooltipChild(tooltip, tooltip.querySelector("[bitrate='" + highestBitrate + "']"));
         });
     }
 }

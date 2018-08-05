@@ -2,7 +2,7 @@ import UserOptionsModel from "../Model/UserOptionsModel";
 import VideoController from "./VideoController";
 import StatisticsController from "./StatisticController";
 
-const defaultKeys: UserOptionsModel = UserOptionsModel.defaultKeys;
+const defaultKeys: UserOptionsModel = UserOptionsModel.optionKeys;
 
 interface IAction {
     key: string;

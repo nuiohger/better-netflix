@@ -1,37 +1,32 @@
 import TimeModel from "../Model/TimeModel";
 import UserOptionsModel from "../Model/UserOptionsModel";
-import ChromeController from "./ChromeController";
 
 class TimeUiController {
     private readonly _timeModel: TimeModel;
-    private readonly _defaultKeys: UserOptionsModel;
-    private readonly _chromeController: ChromeController;
+    private readonly _optionKeys: UserOptionsModel;
 
     private _htmlTime: HTMLElement;
     private _timeInterval: number;
     private _video: HTMLVideoElement;
 
-    constructor(chromeController: ChromeController) {
+    constructor() {
         this._timeModel = new TimeModel();
-        this._defaultKeys = UserOptionsModel.defaultKeys;
-        this._chromeController = chromeController;
+        this._optionKeys = UserOptionsModel.optionKeys;
     }
 
     public setTimeInterval(video: HTMLVideoElement): void {
         this._video = video;
 
-        const _this: TimeUiController = this;
-        this._chromeController.getSync(this._defaultKeys, function(items) {
-            if(items.timeElapsed) {
-                if(_this._timeInterval !== undefined) {
-                    clearInterval(_this._timeInterval);
-                }
-
-                _this._timeInterval = setInterval(function() {
-                    _this.initTime();
-                }, 500);
+        if(this._optionKeys.timeElapsed) {
+            if(this._timeInterval !== undefined) {
+                clearInterval(this._timeInterval);
             }
-        });
+
+            const _this = this;
+            this._timeInterval = setInterval(function() {
+                _this.initTime();
+            }, 500);
+        }
     }
 
     private initTime(): void {

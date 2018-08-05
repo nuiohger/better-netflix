@@ -22,25 +22,22 @@ class VideoBitrateController {
         return result;
     }
 
-    public changeBitrate(bitrate: string): boolean {
+    public changeBitrate(bitrate: string, selectHighestBitrate: boolean = false): string {
         this.toggleBitrateSelectionWindow();
-
-        let successful = false;
 
         const videoBitrates: HTMLCollection = HtmlModel.videoBitrates;
         const bitrateStrings: string[] = this.readBitrates();
-        const bitrateIndex = bitrateStrings.indexOf(bitrate);
+        const bitrateIndex: number = selectHighestBitrate ? bitrateStrings.length - 1 : bitrateStrings.indexOf(bitrate);
         if(bitrateIndex >= 0) {
             const bitrateElement: HTMLElement = videoBitrates.item(bitrateIndex) as HTMLElement;
 
             if(bitrateElement) {
                 this.overrideBitrate(bitrateElement);
-                successful = true;
+
+                return bitrateElement.textContent;
             } else
                 this.toggleBitrateSelectionWindow();
         }
-
-        return successful;
     }
 
     private overrideBitrate(bitrateElement: HTMLElement): void {

@@ -5,17 +5,16 @@ import { ActionFactory, IAction } from "./Controller/ActionController";
 import UserOptionsModel from "./Model/UserOptionsModel";
 import UiController from "./Controller/UiController";
 import TimeUiController from "./Controller/TimeUiController";
-import ChromeController from "./Controller/ChromeController";
 
 class Main {
     private readonly _videoController: VideoController;
     private readonly _defaultKeys: UserOptionsModel;
 
     constructor() {
-        this._defaultKeys = UserOptionsModel.defaultKeys;
+        this._defaultKeys = UserOptionsModel.optionKeys;
 
         const uiController: UiController = new UiController();
-        const timeUiController: TimeUiController = new TimeUiController(new ChromeController());
+        const timeUiController: TimeUiController = new TimeUiController();
 
         this._videoController = new VideoController(uiController, timeUiController);
 

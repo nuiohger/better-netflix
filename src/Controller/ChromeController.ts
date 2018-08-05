@@ -1,7 +1,10 @@
 class ChromeController {
-    public getSync(obj, func: Function): void {
-        // chrome.storage.sync.get(obj, func);
-        func(obj);
+    public getSync(obj, func): void {
+        chrome.storage.sync.get(obj, func);
+    }
+
+    public getSyncPromise(obj): any {
+        return chrome.storage.sync.get(obj);
     }
 
     // public static getUrlToFile(path: string): string {

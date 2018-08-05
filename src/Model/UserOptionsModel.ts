@@ -1,3 +1,6 @@
+import ChromeController from "../Controller/ChromeController";
+import defaultKeys from "../Constants/Options";
+
 class UserOptionsModel {
     private _zoomIn: string;
     private _zoomOut: string;
@@ -7,8 +10,18 @@ class UserOptionsModel {
     private _enableMouse: string;
     private _timeElapsed: boolean;
     private _toggleStatistics: string;
+    private _selectHighestBitrate: boolean;
 
-    private constructor(zoomIn: string, zoomOut: string, resetZoom: string, fullZoom: string, disableMouse: string, enableMouse: string, timeElapsed: boolean, toggleStatistics: string) {
+    private _chromeController: ChromeController;
+
+    private constructor(zoomIn: string = "", zoomOut: string = "", resetZoom: string = "", fullZoom: string = "", disableMouse: string = "", enableMouse: string = "", timeElapsed: boolean = true, toggleStatistics: string = "") {
+        if(!this._chromeController) this._chromeController = new ChromeController();
+
+        const _this: UserOptionsModel = this;
+        this._chromeController.getSync(defaultKeys, items => {
+            _this._selectHighestBitrate = items.selectHighestBitrate;
+        });
+
         this._zoomIn = zoomIn;
         this._zoomOut = zoomOut;
         this._resetZoom = resetZoom;
@@ -45,8 +58,16 @@ class UserOptionsModel {
         return this._toggleStatistics;
     }
 
-    public static get defaultKeys(): UserOptionsModel {
+    public get selectHighestBitrate(): boolean {
+        return this._selectHighestBitrate;
+    }
+
+    public static get optionKeys(): UserOptionsModel {
         return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
+    }
+
+    public static getPromise(): any {
+        return new ChromeController().getSyncPromise(defaultKeys);
     }
 }
 
