@@ -78,10 +78,16 @@ echo
 if [ $z = y ]; then
     echo "Zipping..."
     echo "Firefox:"
-    zip -r dist-firefox.zip dist-firefox
+    rm dist-firefox.zip
+    cd dist-firefox
+    zip -r ../dist-firefox.zip *
+    cd ..
     echo
     echo "Chrome:"
-    zip -r dist-chrome.zip dist-chrome
+    rm dist-chrome.zip
+    cd dist-chrome
+    zip -r ../dist-chrome.zip *
+    cd ..
     echo
 fi
 
