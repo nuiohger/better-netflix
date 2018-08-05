@@ -38,5 +38,5 @@ To build the extension without minification use the -d or --debug parameter.
 
 - Custom Subtitles
 
-- Video Bitrate Automatically highest? button for menu?
+- options: Video Bitrate Automatically highest?
 
