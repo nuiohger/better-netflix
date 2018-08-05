@@ -26,14 +26,14 @@
     user-select: none;
     outline: 0;
     border: 3px solid #fff;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     margin-top: 20px;
 }
 
 .largeUiButtons {
-    font-size: 1.8em;
-    width: 2.4em;
-    height: 2.4em;
+    font-size: 1.5em;
+    width: 2.88em;
+    height: 2.88em;
 }
 
 .uiButtons:hover {
@@ -45,9 +45,31 @@
 }
 
 .statistics {
-    background-color: rgba(0,0,0,.5);
+    background-color: rgba(0, 0, 0, .5);
     color: greenyellow;
     position: absolute;
     top: 0;
     font-size: large;
+}
+
+.tooltip {
+    left: auto;
+    top: 4em;
+    position: absolute;
+    padding: .5em;
+    margin: -.5em 0;
+    font-size: 2.8em;
+    line-height: 1.2;
+    background: rgba(38, 38, 38, .85);
+    border-radius: .3em;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.tooltipChild:hover {
+    background: rgba(68, 68, 68, .85);
+}
+
+.tooltipChildSelected {
+    border: 3px solid #ddd;
 }
