@@ -37,6 +37,3 @@ To build the extension without minification use the -d or --debug parameter.
 - Skip intro (automatically, shortcut already exists: s, options)
 
 - Custom Subtitles
-
-- options: Video Bitrate Automatically highest?
-
