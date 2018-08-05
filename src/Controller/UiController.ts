@@ -1,5 +1,6 @@
 import { ActionFactory, IAction } from "./ActionController";
 import VideoController from "./VideoController";
+import VideoBitrateController from "./VideoBitrateController";
 
 class UiController {
     public createUi(videoController: VideoController): void {
@@ -7,25 +8,28 @@ class UiController {
         if(videoTitle === undefined || videoTitle === null) return;
 
         const zoomIn: HTMLDivElement = this.createButton("+", "Zoom in (Key: +)");
-        this.uiButtonClickListener(videoController, zoomIn, "zoomIn");
+        this.addButtonClickListener(videoController, zoomIn, "zoomIn");
 
         const zoomOut: HTMLDivElement = this.createButton("-", "Zoom out (Key: -)");
-        this.uiButtonClickListener(videoController, zoomOut, "zoomOut");
+        this.addButtonClickListener(videoController, zoomOut, "zoomOut");
 
         const resetZoom: HTMLDivElement = this.createButton("16:9", "Reset zoom (Key: ,)", true);
-        this.uiButtonClickListener(videoController, resetZoom, "resetZoom");
+        this.addButtonClickListener(videoController, resetZoom, "resetZoom");
 
         const fullZoom: HTMLDivElement = this.createButton("21:9", "Zoom to 21:9 (Key: .)", true);
-        this.uiButtonClickListener(videoController, fullZoom, "fullZoom");
+        this.addButtonClickListener(videoController, fullZoom, "fullZoom");
 
-        const zoomContainer: HTMLDivElement = document.createElement("div");
-        zoomContainer.classList.add("uiContainer");
-        zoomContainer.appendChild(zoomIn);
-        zoomContainer.appendChild(zoomOut);
-        zoomContainer.appendChild(resetZoom);
-        zoomContainer.appendChild(fullZoom);
+        const videoBitrates: HTMLDivElement = this.createAndGetVideoBitrates();
 
-        videoTitle.parentNode.insertBefore(zoomContainer, videoTitle.nextSibling);
+        const uiContainer: HTMLDivElement = document.createElement("div");
+        uiContainer.classList.add("uiContainer");
+        uiContainer.appendChild(zoomIn);
+        uiContainer.appendChild(zoomOut);
+        uiContainer.appendChild(resetZoom);
+        uiContainer.appendChild(fullZoom);
+        uiContainer.appendChild(videoBitrates);
+
+        videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
     }
 
     private createButton(text: string, title: string, largeButton: boolean = false): HTMLDivElement {
@@ -44,13 +48,66 @@ class UiController {
         return buttonContainer;
     }
 
-    private uiButtonClickListener(videoController: VideoController, button: HTMLDivElement, actionName: string): void {
+    private addButtonClickListener(videoController: VideoController, button: HTMLDivElement, actionName: string): void {
         button.addEventListener("click", event => {
             event.stopPropagation();
 
             const action: IAction = ActionFactory.getAction(actionName);
             action.execute(videoController);
         }, false);
+    }
+
+
+    private createAndGetVideoBitrates(): HTMLDivElement {
+        const tooltip: HTMLDivElement = document.createElement("div");
+        tooltip.classList.add("tooltip", "hidden");
+
+        const bitrates: string[] = new VideoBitrateController().getVideoBitrates();
+        bitrates.forEach(bitrate => {
+            const bitrateElement: HTMLDivElement = document.createElement("div");
+            bitrateElement.classList.add("tooltipChild");
+            bitrateElement.textContent = bitrate;
+            bitrateElement.setAttribute("bitrate", bitrate);
+
+            tooltip.appendChild(bitrateElement);
+        });
+
+        const videoBitrates = this.createButton("⚙", "Video quality (Highest number = best quality)");
+        videoBitrates.appendChild(tooltip);
+
+        this.initTooltip(videoBitrates, tooltip);
+        this.initTooltipChildren(tooltip);
+        
+        return videoBitrates;
+    }
+
+    private initTooltip(button: HTMLDivElement, tooltip: HTMLDivElement): void {
+        button.addEventListener("mouseenter", () => {
+            tooltip.classList.remove("hidden");
+        }, false);
+
+        button.addEventListener("mouseleave", () => {
+            setTimeout(() => {
+                if(!tooltip.classList.contains("hidden") && button.parentElement.querySelector(":hover") !== button)
+                    tooltip.classList.add("hidden");
+            }, 1000);
+        }, false);
+    }
+
+    private initTooltipChildren(tooltip: HTMLDivElement): void {
+        tooltip.childNodes.forEach(element => {
+            const child: HTMLElement = <HTMLElement>element;
+
+            child.addEventListener("click", () => {
+                const successful: boolean = new VideoBitrateController().changeBitrate(child.getAttribute("bitrate"));
+                if(!successful) return;
+
+                tooltip.childNodes.forEach(element => (element as HTMLElement).classList.remove("tooltipChildSelected"));
+                child.classList.add("tooltipChildSelected");
+
+                setTimeout(() => tooltip.classList.add("hidden"), 500);
+            }, false);
+        });
     }
 }
 

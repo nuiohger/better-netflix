@@ -38,7 +38,7 @@ class VideoController {
 
     private findVideo(): boolean {
         this._htmlVideo = <HTMLVideoElement>document.getElementsByClassName("VideoContainer")[0];
-        if(this._htmlVideo !== undefined) {
+        if(this._htmlVideo !== undefined && location.toString().indexOf("/watch") > 0) {
             this._htmlVideo = this._htmlVideo.getElementsByTagName("video")[0];
             if(this._htmlVideo !== undefined) {
                 this.initVideo();

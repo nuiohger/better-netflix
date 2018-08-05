@@ -1,7 +1,6 @@
 class VideoController {
     constructor(uiController, timeUiController) {
         this._updatingVideo = false;
-        this._paused = false;
         this._uiController = uiController;
         this._timeUiController = timeUiController;
     }
@@ -24,7 +23,7 @@ class VideoController {
     }
     findVideo() {
         this._htmlVideo = document.getElementsByClassName("VideoContainer")[0];
-        if (this._htmlVideo !== undefined) {
+        if (this._htmlVideo !== undefined && location.toString().indexOf("/watch") > 0) {
             this._htmlVideo = this._htmlVideo.getElementsByTagName("video")[0];
             if (this._htmlVideo !== undefined) {
                 this.initVideo();
@@ -38,7 +37,6 @@ class VideoController {
         this._htmlVideo.style.left = "50%";
         this._htmlVideo.style.top = "50%";
         this._htmlVideo.style.transform = "translate(-50%, -50%)";
-        this._paused = false;
     }
     addZoom(percentage) {
         let height = parseInt(this._htmlVideo.style.height);
@@ -52,15 +50,6 @@ class VideoController {
             percentage = 100;
         }
         this._htmlVideo.style.height = this._htmlVideo.style.width = percentage + "%";
-    }
-    togglePlay() {
-        if (this._paused) {
-            this._htmlVideo.play();
-        }
-        else {
-            this._htmlVideo.pause();
-        }
-        this._paused = !this._paused;
     }
     get getHtmlVideo() {
         return this._htmlVideo;

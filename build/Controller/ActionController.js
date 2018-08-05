@@ -49,14 +49,6 @@ class EnableMouseAction {
         document.exitPointerLock();
     }
 }
-class PlayPauseAction {
-    constructor() {
-        this.key = defaultKeys.playPause;
-    }
-    execute(videoController) {
-        videoController.togglePlay();
-    }
-}
 class ToggleStatisticsAction {
     constructor() {
         this.key = defaultKeys.toggleStatistics;
@@ -83,7 +75,6 @@ ActionFactory._classDictionary = {
     fullZoom: FullZoomAction,
     disableMouse: DisableMouseAction,
     enableMouse: EnableMouseAction,
-    playPause: PlayPauseAction,
     toggleStatistics: ToggleStatisticsAction
 };
 export { ActionFactory };

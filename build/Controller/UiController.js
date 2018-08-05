@@ -1,24 +1,27 @@
 import { ActionFactory } from "./ActionController";
+import VideoBitrateController from "./VideoBitrateController";
 class UiController {
     createUi(videoController) {
         const videoTitle = document.querySelector(".video-title");
         if (videoTitle === undefined || videoTitle === null)
             return;
         const zoomIn = this.createButton("+", "Zoom in (Key: +)");
-        this.uiButtonClickListener(videoController, zoomIn, "zoomIn");
+        this.addButtonClickListener(videoController, zoomIn, "zoomIn");
         const zoomOut = this.createButton("-", "Zoom out (Key: -)");
-        this.uiButtonClickListener(videoController, zoomOut, "zoomOut");
+        this.addButtonClickListener(videoController, zoomOut, "zoomOut");
         const resetZoom = this.createButton("16:9", "Reset zoom (Key: ,)", true);
-        this.uiButtonClickListener(videoController, resetZoom, "resetZoom");
+        this.addButtonClickListener(videoController, resetZoom, "resetZoom");
         const fullZoom = this.createButton("21:9", "Zoom to 21:9 (Key: .)", true);
-        this.uiButtonClickListener(videoController, fullZoom, "fullZoom");
-        const zoomContainer = document.createElement("div");
-        zoomContainer.classList.add("uiContainer");
-        zoomContainer.appendChild(zoomIn);
-        zoomContainer.appendChild(zoomOut);
-        zoomContainer.appendChild(resetZoom);
-        zoomContainer.appendChild(fullZoom);
-        videoTitle.parentNode.insertBefore(zoomContainer, videoTitle.nextSibling);
+        this.addButtonClickListener(videoController, fullZoom, "fullZoom");
+        const videoBitrates = this.createAndGetVideoBitrates();
+        const uiContainer = document.createElement("div");
+        uiContainer.classList.add("uiContainer");
+        uiContainer.appendChild(zoomIn);
+        uiContainer.appendChild(zoomOut);
+        uiContainer.appendChild(resetZoom);
+        uiContainer.appendChild(fullZoom);
+        uiContainer.appendChild(videoBitrates);
+        videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
     }
     createButton(text, title, largeButton = false) {
         const buttonContainer = document.createElement("div");
@@ -32,12 +35,53 @@ class UiController {
         buttonContainer.appendChild(button);
         return buttonContainer;
     }
-    uiButtonClickListener(videoController, button, actionName) {
+    addButtonClickListener(videoController, button, actionName) {
         button.addEventListener("click", event => {
             event.stopPropagation();
             const action = ActionFactory.getAction(actionName);
             action.execute(videoController);
         }, false);
+    }
+    createAndGetVideoBitrates() {
+        const tooltip = document.createElement("div");
+        tooltip.classList.add("tooltip", "hidden");
+        const bitrates = new VideoBitrateController().getVideoBitrates();
+        bitrates.forEach(bitrate => {
+            const bitrateElement = document.createElement("div");
+            bitrateElement.classList.add("tooltipChild");
+            bitrateElement.textContent = bitrate;
+            bitrateElement.setAttribute("bitrate", bitrate);
+            tooltip.appendChild(bitrateElement);
+        });
+        const videoBitrates = this.createButton("⚙", "Video quality (Highest number = best quality)");
+        videoBitrates.appendChild(tooltip);
+        this.initTooltip(videoBitrates, tooltip);
+        this.initTooltipChildren(tooltip);
+        return videoBitrates;
+    }
+    initTooltip(button, tooltip) {
+        button.addEventListener("mouseenter", () => {
+            tooltip.classList.remove("hidden");
+        }, false);
+        button.addEventListener("mouseleave", () => {
+            setTimeout(() => {
+                if (!tooltip.classList.contains("hidden") && button.parentElement.querySelector(":hover") !== button)
+                    tooltip.classList.add("hidden");
+            }, 1000);
+        }, false);
+    }
+    initTooltipChildren(tooltip) {
+        tooltip.childNodes.forEach(element => {
+            const child = element;
+            child.addEventListener("click", () => {
+                const successful = new VideoBitrateController().changeBitrate(child.getAttribute("bitrate"));
+                if (!successful)
+                    return;
+                tooltip.childNodes.forEach(element => element.classList.remove("tooltipChildSelected"));
+                child.classList.add("tooltipChildSelected");
+                setTimeout(() => tooltip.classList.add("hidden"), 500);
+            }, false);
+        });
     }
 }
 export default UiController;
