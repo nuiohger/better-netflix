@@ -1,6 +1,9 @@
 class ChromeController {
     getSync(obj, func) {
-        func(obj);
+        chrome.storage.sync.get(obj, func);
+    }
+    getSyncPromise(obj) {
+        return chrome.storage.sync.get(obj);
     }
 }
 export default ChromeController;

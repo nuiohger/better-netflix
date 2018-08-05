@@ -1,5 +1,13 @@
+import ChromeController from "../Controller/ChromeController";
+import defaultKeys from "../Constants/Options";
 class UserOptionsModel {
-    constructor(zoomIn, zoomOut, resetZoom, fullZoom, disableMouse, enableMouse, timeElapsed, toggleStatistics) {
+    constructor(zoomIn = "", zoomOut = "", resetZoom = "", fullZoom = "", disableMouse = "", enableMouse = "", timeElapsed = true, toggleStatistics = "") {
+        if (!this._chromeController)
+            this._chromeController = new ChromeController();
+        const _this = this;
+        this._chromeController.getSync(defaultKeys, items => {
+            _this._selectHighestBitrate = items.selectHighestBitrate;
+        });
         this._zoomIn = zoomIn;
         this._zoomOut = zoomOut;
         this._resetZoom = resetZoom;
@@ -33,8 +41,14 @@ class UserOptionsModel {
     get toggleStatistics() {
         return this._toggleStatistics;
     }
-    static get defaultKeys() {
+    get selectHighestBitrate() {
+        return this._selectHighestBitrate;
+    }
+    static get optionKeys() {
         return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
+    }
+    static getPromise() {
+        return new ChromeController().getSyncPromise(defaultKeys);
     }
 }
 export default UserOptionsModel;

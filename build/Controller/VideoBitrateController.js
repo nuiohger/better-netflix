@@ -14,22 +14,20 @@ class VideoBitrateController {
         }
         return result;
     }
-    changeBitrate(bitrate) {
+    changeBitrate(bitrate, selectHighestBitrate = false) {
         this.toggleBitrateSelectionWindow();
-        let successful = false;
         const videoBitrates = HtmlModel.videoBitrates;
         const bitrateStrings = this.readBitrates();
-        const bitrateIndex = bitrateStrings.indexOf(bitrate);
+        const bitrateIndex = selectHighestBitrate ? bitrateStrings.length - 1 : bitrateStrings.indexOf(bitrate);
         if (bitrateIndex >= 0) {
             const bitrateElement = videoBitrates.item(bitrateIndex);
             if (bitrateElement) {
                 this.overrideBitrate(bitrateElement);
-                successful = true;
+                return bitrateElement.textContent;
             }
             else
                 this.toggleBitrateSelectionWindow();
         }
-        return successful;
     }
     overrideBitrate(bitrateElement) {
         bitrateElement.parentElement.value = bitrateElement.textContent;

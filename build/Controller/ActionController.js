@@ -1,6 +1,6 @@
 import UserOptionsModel from "../Model/UserOptionsModel";
 import StatisticsController from "./StatisticController";
-const defaultKeys = UserOptionsModel.defaultKeys;
+const defaultKeys = UserOptionsModel.optionKeys;
 class ZoomInAction {
     constructor() {
         this.key = defaultKeys.zoomIn;
