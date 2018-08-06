@@ -4,7 +4,8 @@ class ChromeController {
     }
 
     public getSyncPromise(obj): any {
-        return chrome.storage.sync.get(obj);
+        //Chrome workaround: Chrome's sync.get does not return a Promise.
+        return new Promise(resolve => chrome.storage.sync.get(obj, resolve));
     }
 
     // public static getUrlToFile(path: string): string {
