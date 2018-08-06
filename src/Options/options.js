@@ -75,8 +75,6 @@ function restoreSavedOptions() {
 }
 
 function resetOptions() {
-    if(!confirm("Are you sure you want to reset the settings? This can not be undone.")) return;
-
     // zoomIn.value = defaultKeys.zoomIn;
     // zoomOut.value = defaultKeys.zoomOut;
     // resetZoom.vlaue = defaultKeys.resetZoom;

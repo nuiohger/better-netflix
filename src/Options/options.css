@@ -6,17 +6,21 @@ form {
 }
 
 form div {
-    width: 400px;
-}
-
-form div label {
-    line-height: 40px;
+    width: 500px;
 }
 
 form div input, form div button {
     float: right;
 }
 
+form div input {
+    margin-top: 3px;
+}
+
 form div button {
     margin-left: 10px;
+}
+
+.buttons {
+    height: 10px;
 }
