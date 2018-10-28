@@ -9,8 +9,8 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     exit 1
 fi
 
-OPTIONS=zd
-LONGOPTS=zip,debug
+OPTIONS=z
+LONGOPTS=zip
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -25,16 +25,12 @@ fi
 # read getopt’s output this way to handle the quoting right:
 eval set -- "$PARSED"
 
-z=n d=n
+z=n
 # now enjoy the options in order and nicely split until we see --
 while true; do
     case "$1" in
         -z|--zip)
             z=y
-            shift
-            ;;
-        -d|--debug)
-            d=y
             shift
             ;;
         --)
@@ -52,24 +48,14 @@ done
 rm -r ./dist-firefox/options
 mkdir ./dist-firefox/options
 
-if [ $d = y ]; then
-    npx webpack --entry ./build/Main.js --output ./dist-firefox/Main.min.js --mode none
-else
-    npx webpack --entry ./build/Main.js --output ./dist-firefox/Main.min.js --mode production
+# Do not minify (mode none). To minify use mode production.
+npx webpack --entry ./build/Main.js --output ./dist-firefox/Main.js --mode none
+cp -r ./src/options ./dist-firefox/
+cp ./src/style.css ./dist-firefox/
+echo "JavaScript created and Options, Style and JavaScript copied"
 
-    uglifycss ./src/Options/options.css > ./dist-firefox/options/options.css
-    cat ./src/Options/options.js | uglifyjs -c -m > ./dist-firefox/options/options.js
-    html-minifier --remove-comments --collapse-whitespace ./src/Options/options.html > ./dist-firefox/options/options.html
-    printf "\n\nOptions minified"
-fi
-echo "JavaScript created"
-
-rm ./dist-firefox/style.min.css
-uglifycss ./src/style.css > ./dist-firefox/style.min.css
-printf "\n\nStyle minified"
-
-cp ./dist-firefox/Main.min.js ./dist-chrome/
-cp ./dist-firefox/style.min.css ./dist-chrome/
+cp ./dist-firefox/Main.js ./dist-chrome/
+cp ./dist-firefox/style.css ./dist-chrome/
 cp -r ./dist-firefox/options ./dist-chrome/
 printf "\n\nCopied to dist-chrome\n"
 

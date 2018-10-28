@@ -1,1 +1,26 @@
-form{border:3px solid black;background-color:#444;padding:15px;color:#fff}form div{width:500px}form div input,form div button{float:right}form div input{margin-top:3px}form div button{margin-left:10px}.buttons{height:10px}
+form {
+    border: 3px solid black;
+    background-color: #444;
+    padding: 15px;
+    color: #fff;
+}
+
+form div {
+    width: 500px;
+}
+
+form div input, form div button {
+    float: right;
+}
+
+form div input {
+    margin-top: 3px;
+}
+
+form div button {
+    margin-left: 10px;
+}
+
+.buttons {
+    height: 10px;
+}
