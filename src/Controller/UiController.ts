@@ -37,6 +37,8 @@ class UiController {
         uiContainer.appendChild(videoBitrates);
 
         videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
+
+        this.fixQualityMenuForOtherPlayers(videoTitle, videoBitrates);
     }
 
     private createButton(text: string, title: string, largeButton: boolean = false): HTMLDivElement {
@@ -135,6 +137,16 @@ class UiController {
 
             _this.selectTooltipChild(tooltip, tooltip.querySelector("[bitrate='" + highestBitrate + "']"));
         });
+    }
+
+    private fixQualityMenuForOtherPlayers(videoTitle: HTMLDivElement, videoBitrates: HTMLDivElement) {
+        const clientRect = videoTitle.getBoundingClientRect();
+
+        if(innerHeight - clientRect.bottom < 200) {
+            console.log("Recognized menu on bottom.");
+            const tooltip: HTMLDivElement = <HTMLDivElement>videoBitrates.childNodes[0];
+            tooltip.style.top = (clientRect.top - tooltip.getBoundingClientRect().height) + "px";
+        }
     }
 }
 

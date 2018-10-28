@@ -28,14 +28,14 @@
     border: 3px solid #fff;
     background-color: rgba(0, 0, 0, 0);
     margin-top: 20px;
-    line-height: 37px;
+    line-height: 150%;
 }
 
 .largeUiButtons {
     font-size: 1.5em;
     width: 2.88em;
     height: 2.88em;
-    line-height: 39px;
+    line-height: 250%;
 }
 
 .uiButtons:hover {
