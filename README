@@ -1,0 +1,1 @@
+Webpack is used to be able to run it in browsers. It is developed with TypeScript. The source code is located in the src directory. The build directory contains the built JavaScript files by tsc. The build.sh file is used to run Webpack and create the zip files. No minifiers are used.

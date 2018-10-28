@@ -74,6 +74,12 @@ if [ $z = y ]; then
     cd dist-chrome
     zip -r ../dist-chrome.zip *
     cd ..
+
+    echo
+    echo "Creating Source Code package for Firefox because of the source code submission policy:"
+    rm source-code.zip
+    zip source-code.zip build dist-chrome dist-firefox src build.sh README
+
     echo
 fi
 
