@@ -16,9 +16,6 @@ Run build.sh
 ### Distribution
 To create the zip files use the -z or --zip parameter.
 
-### Testing
-To build the extension without minification use the -d or --debug parameter.
-
 
 
 ## Todo
