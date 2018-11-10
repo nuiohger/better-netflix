@@ -11,6 +11,7 @@ class UserOptionsModel {
     private _timeElapsed: boolean;
     private _toggleStatistics: string;
     private _selectHighestBitrate: boolean;
+    private _menuOnTop: boolean;
 
     private _chromeController: ChromeController;
 
@@ -20,6 +21,7 @@ class UserOptionsModel {
         const _this: UserOptionsModel = this;
         this._chromeController.getSync(defaultKeys, items => {
             _this._selectHighestBitrate = items.selectHighestBitrate;
+            _this._menuOnTop = items.menuOnTop;
         });
 
         this._zoomIn = zoomIn;
@@ -62,12 +64,20 @@ class UserOptionsModel {
         return this._selectHighestBitrate;
     }
 
+    public get menuOnTop(): boolean {
+        return this._menuOnTop;
+    }
+
     public static get optionKeys(): UserOptionsModel {
         return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
     }
 
     public static getPromise(): any {
         return new ChromeController().getSyncPromise(defaultKeys);
+    }
+
+    public static callWithOptions(func: Function): any {
+        return this.getPromise().then(func);
     }
 }
 

@@ -1,6 +1,6 @@
 form {
     border: 3px solid black;
-    background-color: #444;
+    background-color: #222;
     padding: 15px;
     color: #fff;
 }
@@ -21,6 +21,15 @@ form div button {
     margin-left: 10px;
 }
 
-.buttons {
-    height: 10px;
+button {
+    background-color: #222;
+    border: 1px solid #aaa;
+    height: 25px;
+    color: #aaa;
+    transition-duration: .5s;
+}
+
+button:hover {
+    color: #fff;
+    border-color: #fff;
 }

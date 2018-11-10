@@ -1,9 +1,11 @@
 "use strict";
 
 const selectHighestBitrate = document.getElementById("bestQuality"),
+    menuOnTop = document.getElementById("menuTop"),
     status = document.getElementById("status"),
     defaultKeys = {
-        selectHighestBitrate: true
+        selectHighestBitrate: true,
+        menuOnTop: false
     };
 
 function init() {
@@ -26,7 +28,8 @@ function checkInputLength() {
 
 function saveOptions(event, actionMessage = "saved") {
     chrome.storage.sync.set({
-        selectHighestBitrate: selectHighestBitrate.checked
+        selectHighestBitrate: selectHighestBitrate.checked,
+        menuOnTop: menuOnTop.checked
     }, () => {
         setStatus("Options " + actionMessage + ".");
     });
@@ -39,11 +42,13 @@ function saveOptions(event, actionMessage = "saved") {
 function restoreSavedOptions() {
     chrome.storage.sync.get(defaultKeys, function(items) {
         selectHighestBitrate.checked = items.selectHighestBitrate;
+        menuOnTop.checked = items.menuOnTop;
     });
 }
 
 function resetOptions() {
     selectHighestBitrate.checked = defaultKeys.selectHighestBitrate;
+    menuOnTop.checked = defaultKeys.menuOnTop;
 
     saveOptions(undefined, "reset");
 }

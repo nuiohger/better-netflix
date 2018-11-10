@@ -38,7 +38,7 @@ class UiController {
 
         videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
 
-        this.fixQualityMenuForOtherPlayers(videoTitle, videoBitrates);
+        this.fixQualityMenuForOtherPlayers(videoBitrates);
     }
 
     private createButton(text: string, title: string, largeButton: boolean = false): HTMLDivElement {
@@ -128,9 +128,8 @@ class UiController {
     }
 
     private selectHighestBitrateIfOptionIsSet(tooltip: HTMLDivElement): void {
-        const promise: any = UserOptionsModel.getPromise();
         const _this = this;
-        promise.then(optionKeys => {
+        UserOptionsModel.callWithOptions(optionKeys => {
             if(!optionKeys.selectHighestBitrate) return;
 
             const highestBitrate: string = _this._videoBitrateController.changeBitrate("", true);
@@ -139,14 +138,13 @@ class UiController {
         });
     }
 
-    private fixQualityMenuForOtherPlayers(videoTitle: HTMLDivElement, videoBitrates: HTMLDivElement) {
-        const clientRect = videoTitle.getBoundingClientRect();
+    private fixQualityMenuForOtherPlayers(videoBitrates: HTMLDivElement) {
+        UserOptionsModel.callWithOptions(options => {
+            if(!options.menuOnTop) return;
 
-        if(innerHeight - clientRect.bottom < 200) {
-            console.log("Recognized menu on bottom.");
-            const tooltip: HTMLDivElement = <HTMLDivElement>videoBitrates.childNodes[0];
-            tooltip.style.top = (clientRect.top - tooltip.getBoundingClientRect().height) + "px";
-        }
+            const tooltip: HTMLDivElement = <HTMLDivElement>videoBitrates.childNodes[1];
+            tooltip.classList.add("tooltipOnTop");
+        });
     }
 }
 

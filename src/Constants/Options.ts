@@ -7,7 +7,8 @@ const defaultKeys = {
     enableMouse: "e",
     timeElapsed: true,
     toggleStatistics: "q",
-    selectHighestBitrate: true
+    selectHighestBitrate: true,
+    menuOnTop: false
 };
 
 export default defaultKeys;

@@ -7,6 +7,7 @@ class UserOptionsModel {
         const _this = this;
         this._chromeController.getSync(defaultKeys, items => {
             _this._selectHighestBitrate = items.selectHighestBitrate;
+            _this._menuOnTop = items.menuOnTop;
         });
         this._zoomIn = zoomIn;
         this._zoomOut = zoomOut;
@@ -44,11 +45,17 @@ class UserOptionsModel {
     get selectHighestBitrate() {
         return this._selectHighestBitrate;
     }
+    get menuOnTop() {
+        return this._menuOnTop;
+    }
     static get optionKeys() {
         return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
     }
     static getPromise() {
         return new ChromeController().getSyncPromise(defaultKeys);
+    }
+    static callWithOptions(func) {
+        return this.getPromise().then(func);
     }
 }
 export default UserOptionsModel;

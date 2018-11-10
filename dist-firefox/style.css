@@ -75,3 +75,8 @@
 .tooltipChildSelected {
     border: 3px solid #ddd;
 }
+
+.tooltipOnTop {
+    top: auto !important;
+    bottom: 3em;
+}

@@ -304,6 +304,7 @@ class UserOptionsModel {
         const _this = this;
         this._chromeController.getSync(_Constants_Options__WEBPACK_IMPORTED_MODULE_1__["default"], items => {
             _this._selectHighestBitrate = items.selectHighestBitrate;
+            _this._menuOnTop = items.menuOnTop;
         });
         this._zoomIn = zoomIn;
         this._zoomOut = zoomOut;
@@ -341,11 +342,17 @@ class UserOptionsModel {
     get selectHighestBitrate() {
         return this._selectHighestBitrate;
     }
+    get menuOnTop() {
+        return this._menuOnTop;
+    }
     static get optionKeys() {
         return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
     }
     static getPromise() {
         return new _Controller_ChromeController__WEBPACK_IMPORTED_MODULE_0__["default"]().getSyncPromise(_Constants_Options__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    }
+    static callWithOptions(func) {
+        return this.getPromise().then(func);
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (UserOptionsModel);
@@ -383,7 +390,8 @@ const defaultKeys = {
     enableMouse: "e",
     timeElapsed: true,
     toggleStatistics: "q",
-    selectHighestBitrate: true
+    selectHighestBitrate: true,
+    menuOnTop: false
 };
 /* harmony default export */ __webpack_exports__["default"] = (defaultKeys);
 
@@ -481,7 +489,7 @@ class UiController {
         uiContainer.appendChild(fullZoom);
         uiContainer.appendChild(videoBitrates);
         videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
-        this.fixQualityMenuForOtherPlayers(videoTitle, videoBitrates);
+        this.fixQualityMenuForOtherPlayers(videoBitrates);
     }
     createButton(text, title, largeButton = false) {
         const buttonContainer = document.createElement("div");
@@ -549,22 +557,21 @@ class UiController {
         child.classList.add("tooltipChildSelected");
     }
     selectHighestBitrateIfOptionIsSet(tooltip) {
-        const promise = _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__["default"].getPromise();
         const _this = this;
-        promise.then(optionKeys => {
+        _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__["default"].callWithOptions(optionKeys => {
             if (!optionKeys.selectHighestBitrate)
                 return;
             const highestBitrate = _this._videoBitrateController.changeBitrate("", true);
             _this.selectTooltipChild(tooltip, tooltip.querySelector("[bitrate='" + highestBitrate + "']"));
         });
     }
-    fixQualityMenuForOtherPlayers(videoTitle, videoBitrates) {
-        const clientRect = videoTitle.getBoundingClientRect();
-        if (innerHeight - clientRect.bottom < 200) {
-            console.log("Recognized menu on bottom.");
-            const tooltip = videoBitrates.childNodes[0];
-            tooltip.style.top = (clientRect.top - tooltip.getBoundingClientRect().height) + "px";
-        }
+    fixQualityMenuForOtherPlayers(videoBitrates) {
+        _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__["default"].callWithOptions(options => {
+            if (!options.menuOnTop)
+                return;
+            const tooltip = videoBitrates.childNodes[1];
+            tooltip.classList.add("tooltipOnTop");
+        });
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (UiController);
