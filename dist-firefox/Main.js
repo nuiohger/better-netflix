@@ -489,7 +489,7 @@ class UiController {
         uiContainer.appendChild(fullZoom);
         uiContainer.appendChild(videoBitrates);
         videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
-        this.fixQualityMenuForOtherPlayers(videoBitrates);
+        this.fixQualityMenuForOtherPlayers(videoBitrates, uiContainer);
     }
     createButton(text, title, largeButton = false) {
         const buttonContainer = document.createElement("div");
@@ -565,13 +565,25 @@ class UiController {
             _this.selectTooltipChild(tooltip, tooltip.querySelector("[bitrate='" + highestBitrate + "']"));
         });
     }
-    fixQualityMenuForOtherPlayers(videoBitrates) {
-        _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__["default"].callWithOptions(options => {
-            if (!options.menuOnTop)
-                return;
-            const tooltip = videoBitrates.childNodes[1];
-            tooltip.classList.add("tooltipOnTop");
-        });
+    fixQualityMenuForOtherPlayers(videoBitrates, uiContainer) {
+        setTimeout(() => {
+            _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__["default"].callWithOptions(options => {
+                if (!options.menuOnTop)
+                    return;
+                const tooltip = videoBitrates.childNodes[1];
+                tooltip.classList.add("tooltipOnTop");
+                videoBitrates.addEventListener("mouseover", () => {
+                    document.querySelector("div.PlayerControls--progress-control-row").style.display = "none";
+                });
+                videoBitrates.addEventListener("mouseout", () => {
+                    document.querySelector("div.PlayerControls--progress-control-row").style.display = "flex";
+                });
+                document.querySelector("time.elapsedTime").parentElement.classList.add("time-remaining--classic");
+                for (const container of uiContainer.childNodes) {
+                    container.childNodes[0].style.marginTop = "0";
+                }
+            });
+        }, 1000);
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (UiController);

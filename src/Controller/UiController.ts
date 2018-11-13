@@ -38,7 +38,7 @@ class UiController {
 
         videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
 
-        this.fixQualityMenuForOtherPlayers(videoBitrates);
+        this.fixQualityMenuForOtherPlayers(videoBitrates, uiContainer);
     }
 
     private createButton(text: string, title: string, largeButton: boolean = false): HTMLDivElement {
@@ -138,13 +138,28 @@ class UiController {
         });
     }
 
-    private fixQualityMenuForOtherPlayers(videoBitrates: HTMLDivElement) {
-        UserOptionsModel.callWithOptions(options => {
-            if(!options.menuOnTop) return;
+    private fixQualityMenuForOtherPlayers(videoBitrates: HTMLDivElement, uiContainer: HTMLDivElement) {
+        setTimeout(() => {
+            UserOptionsModel.callWithOptions(options => {
+                if(!options.menuOnTop) return;
 
-            const tooltip: HTMLDivElement = <HTMLDivElement>videoBitrates.childNodes[1];
-            tooltip.classList.add("tooltipOnTop");
-        });
+                const tooltip: HTMLDivElement = <HTMLDivElement>videoBitrates.childNodes[1];
+                tooltip.classList.add("tooltipOnTop");
+
+                videoBitrates.addEventListener("mouseover", () => {
+                    (<HTMLDivElement>document.querySelector("div.PlayerControls--progress-control-row")).style.display = "none";
+                });
+                videoBitrates.addEventListener("mouseout", () => {
+                    (<HTMLDivElement>document.querySelector("div.PlayerControls--progress-control-row")).style.display = "flex";
+                });
+
+                document.querySelector("time.elapsedTime").parentElement.classList.add("time-remaining--classic");
+
+                for(const container of uiContainer.childNodes) {
+                    (<HTMLDivElement>container.childNodes[0]).style.marginTop = "0";
+                }
+            });
+        }, 1000);
     }
 }
 
