@@ -24,9 +24,11 @@ class UiController {
         uiContainer.appendChild(zoomOut);
         uiContainer.appendChild(resetZoom);
         uiContainer.appendChild(fullZoom);
-        uiContainer.appendChild(videoBitrates);
+        if (videoBitrates)
+            uiContainer.appendChild(videoBitrates);
         videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
-        this.fixQualityMenuForOtherPlayers(videoBitrates, uiContainer);
+        if (videoBitrates)
+            this.fixQualityMenuForOtherPlayers(videoBitrates, uiContainer);
     }
     createButton(text, title, largeButton = false) {
         const buttonContainer = document.createElement("div");
@@ -51,6 +53,8 @@ class UiController {
         const tooltip = document.createElement("div");
         tooltip.classList.add("tooltip", "hidden");
         const bitrates = this._videoBitrateController.getVideoBitrates();
+        if (bitrates.length === 0)
+            return null;
         bitrates.forEach(bitrate => {
             const bitrateElement = document.createElement("div");
             bitrateElement.classList.add("tooltipChild");
@@ -78,6 +82,7 @@ class UiController {
     }
     initTooltipChildren(tooltip) {
         const _this = this;
+        console.log("tooltip children... ", tooltip.childNodes);
         tooltip.childNodes.forEach(element => {
             const child = element;
             child.addEventListener("click", () => {

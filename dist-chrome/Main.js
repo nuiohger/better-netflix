@@ -430,7 +430,6 @@ class StatisticController {
         this._statisticParent.classList.toggle("hidden");
     }
     static enable() {
-        this._resolution.textContent = "Resolution: " + this._video.videoWidth + "x" + this._video.videoHeight;
         const updateVideoStats = (function (_this) {
             let currentFrames;
             let prevFrames = _this._video.getVideoPlaybackQuality().totalVideoFrames;
@@ -439,6 +438,7 @@ class StatisticController {
                 currentFrames = props.totalVideoFrames;
                 _this._fps.textContent = "FPS: " + (currentFrames - prevFrames) + " (Dropped: " + props.droppedVideoFrames + ")";
                 prevFrames = currentFrames;
+                _this._resolution.textContent = "Resolution: " + _this._video.videoWidth + "x" + _this._video.videoHeight;
             };
         })(this);
         this._interval = setInterval(function () {
@@ -487,9 +487,11 @@ class UiController {
         uiContainer.appendChild(zoomOut);
         uiContainer.appendChild(resetZoom);
         uiContainer.appendChild(fullZoom);
-        uiContainer.appendChild(videoBitrates);
+        if (videoBitrates)
+            uiContainer.appendChild(videoBitrates);
         videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
-        this.fixQualityMenuForOtherPlayers(videoBitrates, uiContainer);
+        if (videoBitrates)
+            this.fixQualityMenuForOtherPlayers(videoBitrates, uiContainer);
     }
     createButton(text, title, largeButton = false) {
         const buttonContainer = document.createElement("div");
@@ -514,6 +516,8 @@ class UiController {
         const tooltip = document.createElement("div");
         tooltip.classList.add("tooltip", "hidden");
         const bitrates = this._videoBitrateController.getVideoBitrates();
+        if (bitrates.length === 0)
+            return null;
         bitrates.forEach(bitrate => {
             const bitrateElement = document.createElement("div");
             bitrateElement.classList.add("tooltipChild");
@@ -541,6 +545,7 @@ class UiController {
     }
     initTooltipChildren(tooltip) {
         const _this = this;
+        console.log("tooltip children... ", tooltip.childNodes);
         tooltip.childNodes.forEach(element => {
             const child = element;
             child.addEventListener("click", () => {
@@ -664,9 +669,9 @@ class HtmlModel {
         return value === undefined || value === null ? defaultValue : value;
     }
     static get videoBitrates() {
-        let temp = document.getElementsByClassName(_Constants_NetflixSelectors__WEBPACK_IMPORTED_MODULE_0__["default"].videoBitrateClass);
+        let temp = document.querySelector("." + _Constants_NetflixSelectors__WEBPACK_IMPORTED_MODULE_0__["default"].videoBitrateClass);
         if (temp) {
-            temp = temp[0].children;
+            temp = temp.children;
             if (temp) {
                 temp = temp[0].children;
                 if (temp) {

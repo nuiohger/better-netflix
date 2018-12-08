@@ -4,9 +4,9 @@ class HtmlModel {
         return value === undefined || value === null ? defaultValue : value;
     }
     static get videoBitrates() {
-        let temp = document.getElementsByClassName(NetflixSelectors.videoBitrateClass);
+        let temp = document.querySelector("." + NetflixSelectors.videoBitrateClass);
         if (temp) {
-            temp = temp[0].children;
+            temp = temp.children;
             if (temp) {
                 temp = temp[0].children;
                 if (temp) {

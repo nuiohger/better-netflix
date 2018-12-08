@@ -8,9 +8,9 @@ class HtmlModel {
     }
 
     public static get videoBitrates(): HTMLCollection {
-        let temp: any = document.getElementsByClassName(NetflixSelectors.videoBitrateClass);
+        let temp: any = document.querySelector("." + NetflixSelectors.videoBitrateClass);
         if(temp) {
-            temp = temp[0].children;
+            temp = temp.children;
             if(temp) {
                 temp = temp[0].children;
                 if(temp) {
