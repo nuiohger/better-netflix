@@ -26,7 +26,6 @@ class StatisticController {
         this._statisticParent.classList.toggle("hidden");
     }
     static enable() {
-        this._resolution.textContent = "Resolution: " + this._video.videoWidth + "x" + this._video.videoHeight;
         const updateVideoStats = (function (_this) {
             let currentFrames;
             let prevFrames = _this._video.getVideoPlaybackQuality().totalVideoFrames;
@@ -35,6 +34,7 @@ class StatisticController {
                 currentFrames = props.totalVideoFrames;
                 _this._fps.textContent = "FPS: " + (currentFrames - prevFrames) + " (Dropped: " + props.droppedVideoFrames + ")";
                 prevFrames = currentFrames;
+                _this._resolution.textContent = "Resolution: " + _this._video.videoWidth + "x" + _this._video.videoHeight;
             };
         })(this);
         this._interval = setInterval(function () {

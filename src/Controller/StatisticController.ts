@@ -43,12 +43,9 @@ class StatisticController {
     }
 
     private static enable(): void {
-        this._resolution.textContent = "Resolution: " + this._video.videoWidth + "x" + this._video.videoHeight;
 
         const updateVideoStats = (function(_this) {
             let currentFrames: number;
-    
-            //FPS
             let prevFrames: number = _this._video.getVideoPlaybackQuality().totalVideoFrames;
     
             return function() {
@@ -56,9 +53,10 @@ class StatisticController {
     
                 currentFrames = props.totalVideoFrames;
     
-                //FPS
                 _this._fps.textContent = "FPS: " + (currentFrames - prevFrames) + " (Dropped: " + props.droppedVideoFrames + ")";
                 prevFrames = currentFrames;
+
+                _this._resolution.textContent = "Resolution: " + _this._video.videoWidth + "x" + _this._video.videoHeight;
             };
         })(this);
 
