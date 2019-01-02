@@ -113,7 +113,6 @@ class UiController {
     private initTooltipChildren(tooltip: HTMLDivElement): void {
         const _this = this;
 
-        console.log("tooltip children... ", tooltip.childNodes);
         tooltip.childNodes.forEach(element => {
             const child: HTMLElement = <HTMLElement>element;
 

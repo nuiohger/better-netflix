@@ -4,6 +4,7 @@ class StatisticController {
     private static _statisticParent: HTMLDivElement;
     private static _video: HTMLVideoElement;
     private static _interval: number;
+    private static _checkDomInterval: number;
 
     private static _fps: HTMLDivElement;
     private static _resolution: HTMLDivElement;
@@ -43,16 +44,15 @@ class StatisticController {
     }
 
     private static enable(): void {
-
         const updateVideoStats = (function(_this) {
             let currentFrames: number;
             let prevFrames: number = _this._video.getVideoPlaybackQuality().totalVideoFrames;
-    
+
             return function() {
                 const props = _this._video.getVideoPlaybackQuality();
-    
+
                 currentFrames = props.totalVideoFrames;
-    
+
                 _this._fps.textContent = "FPS: " + (currentFrames - prevFrames) + " (Dropped: " + props.droppedVideoFrames + ")";
                 prevFrames = currentFrames;
 
@@ -63,10 +63,23 @@ class StatisticController {
         this._interval = setInterval(function() {
             updateVideoStats();
         }, 1000);
+
+        const _this = this;
+        this._checkDomInterval = setInterval(function() {
+            _this.stopIfElementIsNotInDom();
+        }, 5000);
+    }
+
+    private static stopIfElementIsNotInDom(): void {
+        if(!document.querySelector(".statistics")) {
+            this.disable();
+            this._statisticParent = undefined;
+        }
     }
 
     private static disable(): void {
         clearInterval(this._interval);
+        clearInterval(this._checkDomInterval);
     }
 }
 

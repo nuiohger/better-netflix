@@ -444,9 +444,22 @@ class StatisticController {
         this._interval = setInterval(function () {
             updateVideoStats();
         }, 1000);
+        const _this = this;
+        this._checkDomInterval = setInterval(function () {
+            _this.stopIfElementIsNotInDom();
+        }, 5000);
+    }
+    static stopIfElementIsNotInDom() {
+        console.log("checking... ", document.querySelector(".statistics"), this);
+        if (!document.querySelector(".statistics")) {
+            console.log("element not found. disabling...");
+            this.disable();
+            this._statisticParent = undefined;
+        }
     }
     static disable() {
         clearInterval(this._interval);
+        clearInterval(this._checkDomInterval);
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (StatisticController);
@@ -545,7 +558,6 @@ class UiController {
     }
     initTooltipChildren(tooltip) {
         const _this = this;
-        console.log("tooltip children... ", tooltip.childNodes);
         tooltip.childNodes.forEach(element => {
             const child = element;
             child.addEventListener("click", () => {
