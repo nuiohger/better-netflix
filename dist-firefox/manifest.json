@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Better Netflix",
-    "version": "1.3.7",
+    "version": "1.4",
     "author": "Konstantin Müller",
 
     "description": "Adds various features to Netflix like support for ultrawide displays (21:9 aspect ratio).",
@@ -18,6 +18,12 @@
         "js": ["Main.js"]
     }],
 
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+
     "web_accessible_resources": [
         "resources/*"
     ],
@@ -26,8 +32,14 @@
         "page": "options/options.html"
     },
 
-    "permissions": ["storage"],
-
+    "permissions": [
+        "storage",
+        "webRequest",
+        "webRequestBlocking",
+        "*://assets.nflxext.com/*/ffe/player/html/*",
+        "*://www.assets.nflxext.com/*/ffe/player/html/*",
+        "*://www.netflix.com/*"
+    ],
 
     "applications": {
         "gecko": {

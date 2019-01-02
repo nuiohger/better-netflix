@@ -26,7 +26,6 @@ fi
 eval set -- "$PARSED"
 
 z=n
-# now enjoy the options in order and nicely split until we see --
 while true; do
     case "$1" in
         -z|--zip)
@@ -52,11 +51,15 @@ mkdir ./dist-firefox/options
 npx webpack --entry ./build/Main.js --output ./dist-firefox/Main.js --mode none
 cp -r ./src/options ./dist-firefox/
 cp ./src/style.css ./dist-firefox/
+cp cadmium-playercore-6.0011.853.011.js dist-firefox/resources
+cp src/background.js dist-firefox
 echo "JavaScript created and Options, Style and JavaScript copied"
 
 cp ./dist-firefox/Main.js ./dist-chrome/
 cp ./dist-firefox/style.css ./dist-chrome/
 cp -r ./dist-firefox/options ./dist-chrome/
+cp cadmium-playercore-6.0011.853.011.js dist-chrome/resources
+cp src/background.js dist-chrome
 printf "\n\nCopied to dist-chrome\n"
 
 echo
