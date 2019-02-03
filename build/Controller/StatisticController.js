@@ -46,9 +46,7 @@ class StatisticController {
         }, 5000);
     }
     static stopIfElementIsNotInDom() {
-        console.log("checking... ", document.querySelector(".statistics"), this);
         if (!document.querySelector(".statistics")) {
-            console.log("element not found. disabling...");
             this.disable();
             this._statisticParent = undefined;
         }

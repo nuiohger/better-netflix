@@ -38,7 +38,8 @@ class DisableMouseAction {
         this.key = defaultKeys.disableMouse;
     }
     execute(videoController) {
-        videoController.getHtmlVideo.requestPointerLock();
+        const video = videoController.getHtmlVideo;
+        video.requestPointerLock();
     }
 }
 class EnableMouseAction {
@@ -46,7 +47,8 @@ class EnableMouseAction {
         this.key = defaultKeys.enableMouse;
     }
     execute() {
-        document.exitPointerLock();
+        const doc = document;
+        doc.exitPointerLock();
     }
 }
 class ToggleStatisticsAction {

@@ -4,12 +4,14 @@ import { ActionFactory } from "./Controller/ActionController";
 import UserOptionsModel from "./Model/UserOptionsModel";
 import UiController from "./Controller/UiController";
 import TimeUiController from "./Controller/TimeUiController";
+import addVolumeScrollListener from "./Controller/ScrollController";
 class Main {
     constructor() {
         this._defaultKeys = UserOptionsModel.optionKeys;
         const uiController = new UiController();
         const timeUiController = new TimeUiController();
         this._videoController = new VideoController(uiController, timeUiController);
+        addVolumeScrollListener();
         this.initialize();
     }
     initialize() {

@@ -46,7 +46,8 @@ class DisableMouseAction implements IAction {
     key: string = defaultKeys.disableMouse;
 
     public execute(videoController: VideoController): void {
-        videoController.getHtmlVideo.requestPointerLock();
+        const video: any = videoController.getHtmlVideo;
+        video.requestPointerLock();
     }
 }
 
@@ -54,7 +55,8 @@ class EnableMouseAction implements IAction {
     key: string = defaultKeys.enableMouse;
 
     public execute(): void {
-        document.exitPointerLock();
+        const doc: any = document;
+        doc.exitPointerLock();
     }
 }
 
@@ -90,4 +92,4 @@ class ActionFactory {
     }
 }
 
-export { ActionFactory, IAction };
+export {ActionFactory, IAction};

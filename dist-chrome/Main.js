@@ -95,6 +95,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 /* harmony import */ var _Controller_UiController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
 /* harmony import */ var _Controller_TimeUiController__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
+/* harmony import */ var _Controller_ScrollController__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13);
+
 
 
 
@@ -107,6 +109,7 @@ class Main {
         const uiController = new _Controller_UiController__WEBPACK_IMPORTED_MODULE_3__["default"]();
         const timeUiController = new _Controller_TimeUiController__WEBPACK_IMPORTED_MODULE_4__["default"]();
         this._videoController = new _Controller_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"](uiController, timeUiController);
+        Object(_Controller_ScrollController__WEBPACK_IMPORTED_MODULE_5__["default"])();
         this.initialize();
     }
     initialize() {
@@ -245,7 +248,8 @@ class DisableMouseAction {
         this.key = defaultKeys.disableMouse;
     }
     execute(videoController) {
-        videoController.getHtmlVideo.requestPointerLock();
+        const video = videoController.getHtmlVideo;
+        video.requestPointerLock();
     }
 }
 class EnableMouseAction {
@@ -253,7 +257,8 @@ class EnableMouseAction {
         this.key = defaultKeys.enableMouse;
     }
     execute() {
-        document.exitPointerLock();
+        const doc = document;
+        doc.exitPointerLock();
     }
 }
 class ToggleStatisticsAction {
@@ -450,9 +455,7 @@ class StatisticController {
         }, 5000);
     }
     static stopIfElementIsNotInDom() {
-        console.log("checking... ", document.querySelector(".statistics"), this);
         if (!document.querySelector(".statistics")) {
-            console.log("element not found. disabling...");
             this.disable();
             this._statisticParent = undefined;
         }
@@ -802,6 +805,35 @@ class TimeModel {
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (TimeModel);
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function createScrollEvent(func) {
+    addEventListener("wheel", func, false);
+}
+function scrollUpDownEvent(upFunc, downFunc) {
+    createScrollEvent((event) => {
+        if (event.deltaY > 0)
+            downFunc();
+        else
+            upFunc();
+    });
+}
+function addVolumeScrollListener() {
+    function fireKeyboardEvent(keyCode) {
+        const event = new KeyboardEvent("keydown", { bubbles: true, cancelable: true, keyCode: keyCode });
+        document.querySelector(".center-controls").dispatchEvent(event);
+    }
+    const upFunc = () => fireKeyboardEvent(38);
+    const downFunc = () => fireKeyboardEvent(40);
+    scrollUpDownEvent(upFunc, downFunc);
+}
+/* harmony default export */ __webpack_exports__["default"] = (addVolumeScrollListener);
 
 
 /***/ })
