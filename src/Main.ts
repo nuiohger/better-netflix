@@ -5,7 +5,6 @@ import {ActionFactory, IAction} from "./Controller/ActionController";
 import UserOptionsModel from "./Model/UserOptionsModel";
 import UiController from "./Controller/UiController";
 import TimeUiController from "./Controller/TimeUiController";
-import addVolumeScrollListener from "./Controller/ScrollController";
 
 class Main {
     private readonly _videoController: VideoController;
@@ -18,8 +17,6 @@ class Main {
         const timeUiController: TimeUiController = new TimeUiController();
 
         this._videoController = new VideoController(uiController, timeUiController);
-
-        addVolumeScrollListener();
 
         this.initialize();
     }

@@ -1,5 +1,6 @@
 import UiController from "./UiController";
 import TimeUiController from "./TimeUiController";
+import addVolumeScrollListener from "./ScrollController";
 
 class VideoController {
     private readonly _uiController: UiController;
@@ -9,7 +10,7 @@ class VideoController {
     private _updatingVideo: boolean = false;
     private _updateVideoInterval: number;
 
-    constructor(uiController: UiController, timeUiController: TimeUiController){
+    constructor(uiController: UiController, timeUiController: TimeUiController) {
         this._uiController = uiController;
         this._timeUiController = timeUiController;
     }
@@ -29,10 +30,12 @@ class VideoController {
         if(this.findVideo()) {
             clearInterval(this._updateVideoInterval);
             this._updatingVideo = false;
-            
+
             this._timeUiController.setTimeInterval(this._htmlVideo);
 
             this._uiController.createUi(this);
+
+            addVolumeScrollListener();
         }
     }
 
@@ -75,8 +78,8 @@ class VideoController {
     }
 
     public get getHtmlVideo(): HTMLVideoElement {
-		return this._htmlVideo;
-	}
+        return this._htmlVideo;
+    }
 }
 
 export default VideoController;

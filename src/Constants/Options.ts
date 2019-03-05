@@ -8,7 +8,8 @@ const defaultKeys = {
     timeElapsed: true,
     toggleStatistics: "q",
     selectHighestBitrate: true,
-    menuOnTop: false
+    menuOnTop: true,
+    volumeMouseWheel: true
 };
 
 export default defaultKeys;

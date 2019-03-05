@@ -91,12 +91,10 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Controller_VideoController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _Controller_ActionController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _Controller_ActionController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 /* harmony import */ var _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _Controller_UiController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7);
-/* harmony import */ var _Controller_TimeUiController__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(11);
-/* harmony import */ var _Controller_ScrollController__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13);
-
+/* harmony import */ var _Controller_UiController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8);
+/* harmony import */ var _Controller_TimeUiController__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
 
 
 
@@ -109,7 +107,6 @@ class Main {
         const uiController = new _Controller_UiController__WEBPACK_IMPORTED_MODULE_3__["default"]();
         const timeUiController = new _Controller_TimeUiController__WEBPACK_IMPORTED_MODULE_4__["default"]();
         this._videoController = new _Controller_VideoController__WEBPACK_IMPORTED_MODULE_0__["default"](uiController, timeUiController);
-        Object(_Controller_ScrollController__WEBPACK_IMPORTED_MODULE_5__["default"])();
         this.initialize();
     }
     initialize() {
@@ -139,6 +136,8 @@ new Main();
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ScrollController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+
 class VideoController {
     constructor(uiController, timeUiController) {
         this._updatingVideo = false;
@@ -160,6 +159,7 @@ class VideoController {
             this._updatingVideo = false;
             this._timeUiController.setTimeInterval(this._htmlVideo);
             this._uiController.createUi(this);
+            Object(_ScrollController__WEBPACK_IMPORTED_MODULE_0__["default"])();
         }
     }
     findVideo() {
@@ -205,9 +205,161 @@ class VideoController {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+
+function createScrollEvent(func) {
+    document.querySelector(".center-controls").addEventListener("wheel", func, false);
+}
+function scrollUpDownEvent(upFunc, downFunc) {
+    createScrollEvent((event) => {
+        if (event.deltaY > 0)
+            downFunc();
+        else
+            upFunc();
+    });
+}
+function initListener() {
+    function fireKeyboardEvent(keyCode) {
+        const event = new KeyboardEvent("keydown", { bubbles: true, cancelable: true, keyCode: keyCode });
+        document.querySelector(".center-controls").dispatchEvent(event);
+    }
+    const upFunc = () => fireKeyboardEvent(38);
+    const downFunc = () => fireKeyboardEvent(40);
+    scrollUpDownEvent(upFunc, downFunc);
+}
+function addVolumeScrollListener() {
+    _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_0__["default"].callWithOptions(options => {
+        if (!options.volumeMouseWheel)
+            return;
+        initListener();
+    });
+}
+/* harmony default export */ __webpack_exports__["default"] = (addVolumeScrollListener);
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Controller_ChromeController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
+/* harmony import */ var _Constants_Options__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
+
+
+class UserOptionsModel {
+    constructor(zoomIn = "", zoomOut = "", resetZoom = "", fullZoom = "", disableMouse = "", enableMouse = "", timeElapsed = true, toggleStatistics = "") {
+        if (!this._chromeController)
+            this._chromeController = new _Controller_ChromeController__WEBPACK_IMPORTED_MODULE_0__["default"]();
+        const _this = this;
+        this._chromeController.getSync(_Constants_Options__WEBPACK_IMPORTED_MODULE_1__["default"], items => {
+            _this._selectHighestBitrate = items.selectHighestBitrate;
+            _this._menuOnTop = items.menuOnTop;
+            _this._volumeMouseWheel = items.volumeMouseWheel;
+        });
+        this._zoomIn = zoomIn;
+        this._zoomOut = zoomOut;
+        this._resetZoom = resetZoom;
+        this._fullZoom = fullZoom;
+        this._disableMouse = disableMouse;
+        this._enableMouse = enableMouse;
+        this._timeElapsed = timeElapsed;
+        this._toggleStatistics = toggleStatistics;
+    }
+    get zoomIn() {
+        return this._zoomIn;
+    }
+    get zoomOut() {
+        return this._zoomOut;
+    }
+    get resetZoom() {
+        return this._resetZoom;
+    }
+    get fullZoom() {
+        return this._fullZoom;
+    }
+    get disableMouse() {
+        return this._disableMouse;
+    }
+    get enableMouse() {
+        return this._enableMouse;
+    }
+    get timeElapsed() {
+        return this._timeElapsed;
+    }
+    get toggleStatistics() {
+        return this._toggleStatistics;
+    }
+    get selectHighestBitrate() {
+        return this._selectHighestBitrate;
+    }
+    get menuOnTop() {
+        return this._menuOnTop;
+    }
+    get volumeMouseWheel() {
+        return this._volumeMouseWheel;
+    }
+    static get optionKeys() {
+        return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
+    }
+    static getPromise() {
+        return new _Controller_ChromeController__WEBPACK_IMPORTED_MODULE_0__["default"]().getSyncPromise(_Constants_Options__WEBPACK_IMPORTED_MODULE_1__["default"]);
+    }
+    static callWithOptions(func) {
+        return this.getPromise().then(func);
+    }
+}
+/* harmony default export */ __webpack_exports__["default"] = (UserOptionsModel);
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class ChromeController {
+    getSync(obj, func) {
+        chrome.storage.sync.get(obj, func);
+    }
+    getSyncPromise(obj) {
+        return new Promise(resolve => chrome.storage.sync.get(obj, resolve));
+    }
+}
+/* harmony default export */ __webpack_exports__["default"] = (ChromeController);
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const defaultKeys = {
+    zoomIn: "+",
+    zoomOut: "-",
+    resetZoom: ",",
+    fullZoom: ".",
+    disableMouse: "d",
+    enableMouse: "e",
+    timeElapsed: true,
+    toggleStatistics: "q",
+    selectHighestBitrate: true,
+    menuOnTop: true,
+    volumeMouseWheel: true
+};
+/* harmony default export */ __webpack_exports__["default"] = (defaultKeys);
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActionFactory", function() { return ActionFactory; });
 /* harmony import */ var _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _StatisticController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
+/* harmony import */ var _StatisticController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
 
 
 const defaultKeys = _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_0__["default"].optionKeys;
@@ -293,116 +445,7 @@ ActionFactory._classDictionary = {
 
 
 /***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Controller_ChromeController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
-/* harmony import */ var _Constants_Options__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
-
-
-class UserOptionsModel {
-    constructor(zoomIn = "", zoomOut = "", resetZoom = "", fullZoom = "", disableMouse = "", enableMouse = "", timeElapsed = true, toggleStatistics = "") {
-        if (!this._chromeController)
-            this._chromeController = new _Controller_ChromeController__WEBPACK_IMPORTED_MODULE_0__["default"]();
-        const _this = this;
-        this._chromeController.getSync(_Constants_Options__WEBPACK_IMPORTED_MODULE_1__["default"], items => {
-            _this._selectHighestBitrate = items.selectHighestBitrate;
-            _this._menuOnTop = items.menuOnTop;
-        });
-        this._zoomIn = zoomIn;
-        this._zoomOut = zoomOut;
-        this._resetZoom = resetZoom;
-        this._fullZoom = fullZoom;
-        this._disableMouse = disableMouse;
-        this._enableMouse = enableMouse;
-        this._timeElapsed = timeElapsed;
-        this._toggleStatistics = toggleStatistics;
-    }
-    get zoomIn() {
-        return this._zoomIn;
-    }
-    get zoomOut() {
-        return this._zoomOut;
-    }
-    get resetZoom() {
-        return this._resetZoom;
-    }
-    get fullZoom() {
-        return this._fullZoom;
-    }
-    get disableMouse() {
-        return this._disableMouse;
-    }
-    get enableMouse() {
-        return this._enableMouse;
-    }
-    get timeElapsed() {
-        return this._timeElapsed;
-    }
-    get toggleStatistics() {
-        return this._toggleStatistics;
-    }
-    get selectHighestBitrate() {
-        return this._selectHighestBitrate;
-    }
-    get menuOnTop() {
-        return this._menuOnTop;
-    }
-    static get optionKeys() {
-        return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
-    }
-    static getPromise() {
-        return new _Controller_ChromeController__WEBPACK_IMPORTED_MODULE_0__["default"]().getSyncPromise(_Constants_Options__WEBPACK_IMPORTED_MODULE_1__["default"]);
-    }
-    static callWithOptions(func) {
-        return this.getPromise().then(func);
-    }
-}
-/* harmony default export */ __webpack_exports__["default"] = (UserOptionsModel);
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-class ChromeController {
-    getSync(obj, func) {
-        chrome.storage.sync.get(obj, func);
-    }
-    getSyncPromise(obj) {
-        return new Promise(resolve => chrome.storage.sync.get(obj, resolve));
-    }
-}
-/* harmony default export */ __webpack_exports__["default"] = (ChromeController);
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-const defaultKeys = {
-    zoomIn: "+",
-    zoomOut: "-",
-    resetZoom: ",",
-    fullZoom: ".",
-    disableMouse: "d",
-    enableMouse: "e",
-    timeElapsed: true,
-    toggleStatistics: "q",
-    selectHighestBitrate: true,
-    menuOnTop: false
-};
-/* harmony default export */ __webpack_exports__["default"] = (defaultKeys);
-
-
-/***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -469,13 +512,13 @@ class StatisticController {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ActionController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _VideoBitrateController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
+/* harmony import */ var _ActionController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
+/* harmony import */ var _VideoBitrateController__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9);
 /* harmony import */ var _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 
 
@@ -610,12 +653,12 @@ class UiController {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Model_HtmlModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+/* harmony import */ var _Model_HtmlModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
 
 class VideoBitrateController {
     getVideoBitrates() {
@@ -672,12 +715,12 @@ class VideoBitrateController {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Constants_NetflixSelectors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10);
+/* harmony import */ var _Constants_NetflixSelectors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
 
 class HtmlModel {
     static getResult(value, defaultValue) {
@@ -703,7 +746,7 @@ class HtmlModel {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -717,12 +760,12 @@ class NetflixSelectors {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Model_TimeModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
+/* harmony import */ var _Model_TimeModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
 /* harmony import */ var _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 
 
@@ -776,7 +819,7 @@ class TimeUiController {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -805,35 +848,6 @@ class TimeModel {
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (TimeModel);
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-function createScrollEvent(func) {
-    addEventListener("wheel", func, false);
-}
-function scrollUpDownEvent(upFunc, downFunc) {
-    createScrollEvent((event) => {
-        if (event.deltaY > 0)
-            downFunc();
-        else
-            upFunc();
-    });
-}
-function addVolumeScrollListener() {
-    function fireKeyboardEvent(keyCode) {
-        const event = new KeyboardEvent("keydown", { bubbles: true, cancelable: true, keyCode: keyCode });
-        document.querySelector(".center-controls").dispatchEvent(event);
-    }
-    const upFunc = () => fireKeyboardEvent(38);
-    const downFunc = () => fireKeyboardEvent(40);
-    scrollUpDownEvent(upFunc, downFunc);
-}
-/* harmony default export */ __webpack_exports__["default"] = (addVolumeScrollListener);
 
 
 /***/ })

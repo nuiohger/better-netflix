@@ -1,5 +1,7 @@
+import UserOptionsModel from "../Model/UserOptionsModel";
+
 function createScrollEvent(func: EventListener) {
-    addEventListener("wheel", func, false);
+    document.querySelector(".center-controls").addEventListener("wheel", func, false);
 }
 
 function scrollUpDownEvent(upFunc: Function, downFunc: Function) {
@@ -11,7 +13,7 @@ function scrollUpDownEvent(upFunc: Function, downFunc: Function) {
     });
 }
 
-function addVolumeScrollListener() {
+function initListener() {
     function fireKeyboardEvent(keyCode: number) {
         const event = new KeyboardEvent("keydown", {bubbles: true, cancelable: true, keyCode: keyCode} as KeyboardEventInit);
         document.querySelector(".center-controls").dispatchEvent(event);
@@ -21,6 +23,13 @@ function addVolumeScrollListener() {
     const downFunc = () => fireKeyboardEvent(40);
 
     scrollUpDownEvent(upFunc, downFunc);
+}
+
+function addVolumeScrollListener() {
+    UserOptionsModel.callWithOptions(options => {
+        if(!options.volumeMouseWheel) return;
+        initListener();
+    });
 }
 
 export default addVolumeScrollListener;

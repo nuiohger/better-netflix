@@ -12,6 +12,7 @@ class UserOptionsModel {
     private _toggleStatistics: string;
     private _selectHighestBitrate: boolean;
     private _menuOnTop: boolean;
+    private _volumeMouseWheel: boolean;
 
     private _chromeController: ChromeController;
 
@@ -22,6 +23,7 @@ class UserOptionsModel {
         this._chromeController.getSync(defaultKeys, items => {
             _this._selectHighestBitrate = items.selectHighestBitrate;
             _this._menuOnTop = items.menuOnTop;
+            _this._volumeMouseWheel = items.volumeMouseWheel;
         });
 
         this._zoomIn = zoomIn;
@@ -66,6 +68,10 @@ class UserOptionsModel {
 
     public get menuOnTop(): boolean {
         return this._menuOnTop;
+    }
+
+    public get volumeMouseWheel(): boolean {
+        return this._volumeMouseWheel;
     }
 
     public static get optionKeys(): UserOptionsModel {

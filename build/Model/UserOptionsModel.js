@@ -8,6 +8,7 @@ class UserOptionsModel {
         this._chromeController.getSync(defaultKeys, items => {
             _this._selectHighestBitrate = items.selectHighestBitrate;
             _this._menuOnTop = items.menuOnTop;
+            _this._volumeMouseWheel = items.volumeMouseWheel;
         });
         this._zoomIn = zoomIn;
         this._zoomOut = zoomOut;
@@ -47,6 +48,9 @@ class UserOptionsModel {
     }
     get menuOnTop() {
         return this._menuOnTop;
+    }
+    get volumeMouseWheel() {
+        return this._volumeMouseWheel;
     }
     static get optionKeys() {
         return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");

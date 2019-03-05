@@ -1,3 +1,4 @@
+import addVolumeScrollListener from "./ScrollController";
 class VideoController {
     constructor(uiController, timeUiController) {
         this._updatingVideo = false;
@@ -19,6 +20,7 @@ class VideoController {
             this._updatingVideo = false;
             this._timeUiController.setTimeInterval(this._htmlVideo);
             this._uiController.createUi(this);
+            addVolumeScrollListener();
         }
     }
     findVideo() {

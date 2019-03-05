@@ -2,15 +2,17 @@
 
 const selectHighestBitrate = document.getElementById("bestQuality"),
     menuOnTop = document.getElementById("menuTop"),
+    volumeMouseWheel = document.getElementById("volumeMouseWheel"),
     status = document.getElementById("status"),
     defaultKeys = {
         selectHighestBitrate: true,
-        menuOnTop: false
+        menuOnTop: true,
+        volumeMouseWheel: true
     };
 
 function init() {
     document.addEventListener("DOMContentLoaded", restoreSavedOptions, false);
-    
+
     const input = document.querySelectorAll("form input[type='text']");
     for(let i = 0; i < input.length; i++) {
         input[i].addEventListener("keyup", checkInputLength, false);
@@ -29,7 +31,8 @@ function checkInputLength() {
 function saveOptions(event, actionMessage = "saved") {
     chrome.storage.sync.set({
         selectHighestBitrate: selectHighestBitrate.checked,
-        menuOnTop: menuOnTop.checked
+        menuOnTop: menuOnTop.checked,
+        volumeMouseWheel: volumeMouseWheel.checked
     }, () => {
         setStatus("Options " + actionMessage + ".");
     });
@@ -43,12 +46,14 @@ function restoreSavedOptions() {
     chrome.storage.sync.get(defaultKeys, function(items) {
         selectHighestBitrate.checked = items.selectHighestBitrate;
         menuOnTop.checked = items.menuOnTop;
+        volumeMouseWheel.checked = items.volumeMouseWheel;
     });
 }
 
 function resetOptions() {
     selectHighestBitrate.checked = defaultKeys.selectHighestBitrate;
     menuOnTop.checked = defaultKeys.menuOnTop;
+    volumeMouseWheel.checked = defaultKeys.volumeMouseWheel;
 
     saveOptions(undefined, "reset");
 }
