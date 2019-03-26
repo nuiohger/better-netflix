@@ -1,4 +1,4 @@
-import { ActionFactory, IAction } from "./ActionController";
+import {ActionFactory, IAction} from "./ActionController";
 import VideoController from "./VideoController";
 import VideoBitrateController from "./VideoBitrateController";
 import UserOptionsModel from "../Model/UserOptionsModel";
@@ -11,8 +11,10 @@ class UiController {
     }
 
     public createUi(videoController: VideoController): void {
-        const videoTitle: HTMLDivElement = <HTMLDivElement> document.querySelector(".video-title");
+        const videoTitle: HTMLDivElement = <HTMLDivElement>document.querySelector(".video-title");
         if(videoTitle === undefined || videoTitle === null) return;
+
+        this.removeUiOfPreviousVideo();
 
         const zoomIn: HTMLDivElement = this.createButton("+", "Zoom in (Key: +)");
         this.addButtonClickListener(videoController, zoomIn, "zoomIn");
@@ -55,7 +57,7 @@ class UiController {
             button.classList.add("largeUiButtons");
 
         button.title = title;
-        
+
         buttonContainer.appendChild(button);
         return buttonContainer;
     }
@@ -67,6 +69,13 @@ class UiController {
             const action: IAction = ActionFactory.getAction(actionName);
             action.execute(videoController);
         }, false);
+    }
+
+    private removeUiOfPreviousVideo(): void {
+        const uiContainer = document.querySelector(".uiContainer");
+        if(uiContainer) {
+            uiContainer.parentElement.removeChild(uiContainer);
+        }
     }
 
 
@@ -93,7 +102,7 @@ class UiController {
         this.initTooltipChildren(tooltip);
 
         this.selectHighestBitrateIfOptionIsSet(tooltip);
-        
+
         return videoBitrates;
     }
 

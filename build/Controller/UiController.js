@@ -9,6 +9,7 @@ class UiController {
         const videoTitle = document.querySelector(".video-title");
         if (videoTitle === undefined || videoTitle === null)
             return;
+        this.removeUiOfPreviousVideo();
         const zoomIn = this.createButton("+", "Zoom in (Key: +)");
         this.addButtonClickListener(videoController, zoomIn, "zoomIn");
         const zoomOut = this.createButton("-", "Zoom out (Key: -)");
@@ -48,6 +49,12 @@ class UiController {
             const action = ActionFactory.getAction(actionName);
             action.execute(videoController);
         }, false);
+    }
+    removeUiOfPreviousVideo() {
+        const uiContainer = document.querySelector(".uiContainer");
+        if (uiContainer) {
+            uiContainer.parentElement.removeChild(uiContainer);
+        }
     }
     createAndGetVideoBitrates() {
         const tooltip = document.createElement("div");

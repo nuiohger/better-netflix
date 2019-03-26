@@ -31,6 +31,7 @@ class TimeUiController {
 
     private initTime(): void {
         if(this._video.src !== "") {
+            this.removeTimeFromPreviousVideo();
             this.initElapsedTime();
             clearInterval(this._timeInterval);
             this._timeInterval = undefined;
@@ -59,6 +60,13 @@ class TimeUiController {
         if(this._video !== undefined) {
             this._timeModel.setCurrentTime(this._video.currentTime);
             this._htmlTime.textContent = this._timeModel.toString();
+        }
+    }
+
+    private removeTimeFromPreviousVideo(): void {
+        const time = document.querySelector("time.elapsedTime");
+        if(time) {
+            time.parentElement.removeChild(time);
         }
     }
 }

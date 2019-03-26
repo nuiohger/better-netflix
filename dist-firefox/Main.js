@@ -531,6 +531,7 @@ class UiController {
         const videoTitle = document.querySelector(".video-title");
         if (videoTitle === undefined || videoTitle === null)
             return;
+        this.removeUiOfPreviousVideo();
         const zoomIn = this.createButton("+", "Zoom in (Key: +)");
         this.addButtonClickListener(videoController, zoomIn, "zoomIn");
         const zoomOut = this.createButton("-", "Zoom out (Key: -)");
@@ -570,6 +571,12 @@ class UiController {
             const action = _ActionController__WEBPACK_IMPORTED_MODULE_0__["ActionFactory"].getAction(actionName);
             action.execute(videoController);
         }, false);
+    }
+    removeUiOfPreviousVideo() {
+        const uiContainer = document.querySelector(".uiContainer");
+        if (uiContainer) {
+            uiContainer.parentElement.removeChild(uiContainer);
+        }
     }
     createAndGetVideoBitrates() {
         const tooltip = document.createElement("div");
@@ -788,6 +795,7 @@ class TimeUiController {
     }
     initTime() {
         if (this._video.src !== "") {
+            this.removeTimeFromPreviousVideo();
             this.initElapsedTime();
             clearInterval(this._timeInterval);
             this._timeInterval = undefined;
@@ -812,6 +820,12 @@ class TimeUiController {
         if (this._video !== undefined) {
             this._timeModel.setCurrentTime(this._video.currentTime);
             this._htmlTime.textContent = this._timeModel.toString();
+        }
+    }
+    removeTimeFromPreviousVideo() {
+        const time = document.querySelector("time.elapsedTime");
+        if (time) {
+            time.parentElement.removeChild(time);
         }
     }
 }
