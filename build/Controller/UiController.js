@@ -121,10 +121,10 @@ class UiController {
                 const tooltip = videoBitrates.childNodes[1];
                 tooltip.classList.add("tooltipOnTop");
                 videoBitrates.addEventListener("mouseover", () => {
-                    document.querySelector("div.PlayerControls--progress-control-row").style.display = "none";
+                    document.querySelector("div.PlayerControlsNeo__progress-container").style.display = "none";
                 });
                 videoBitrates.addEventListener("mouseout", () => {
-                    document.querySelector("div.PlayerControls--progress-control-row").style.display = "flex";
+                    document.querySelector("div.PlayerControlsNeo__progress-container").style.display = "flex";
                 });
                 document.querySelector("time.elapsedTime").parentElement.classList.add("time-remaining--classic");
                 for (const container of uiContainer.childNodes) {
