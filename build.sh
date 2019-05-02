@@ -81,7 +81,7 @@ if [ $z = y ]; then
     echo
     echo "Creating Source Code package for Firefox because of the source code submission policy:"
     rm source-code.zip
-    zip source-code.zip build dist-chrome dist-firefox src build.sh README
+    zip -r source-code.zip build dist-firefox src build.sh README
 
     echo
 fi
