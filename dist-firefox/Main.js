@@ -95,6 +95,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Model_UserOptionsModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
 /* harmony import */ var _Controller_UiController__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8);
 /* harmony import */ var _Controller_TimeUiController__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(12);
+/* harmony import */ var _Controller_MyListController__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(14);
+
 
 
 
@@ -111,13 +113,9 @@ class Main {
     }
     initialize() {
         this._videoController.start();
-        document.addEventListener("click", () => {
-            setTimeout(() => {
-                this._videoController.start();
-            }, 2000);
-        }, false);
+        _Controller_MyListController__WEBPACK_IMPORTED_MODULE_5__["default"].randomVideo();
+        this.observe();
         document.addEventListener("keydown", event => {
-            this._videoController.start();
             const actionName = _Controller_ActionController__WEBPACK_IMPORTED_MODULE_1__["ActionFactory"].actionNames.filter(actionName => this._defaultKeys[actionName] === event.key)[0];
             try {
                 const action = _Controller_ActionController__WEBPACK_IMPORTED_MODULE_1__["ActionFactory"].getAction(actionName);
@@ -125,6 +123,18 @@ class Main {
             }
             catch (e) { }
         }, false);
+    }
+    observe() {
+        let oldHref = location.href;
+        const body = document.querySelector("body");
+        const observer = new MutationObserver(() => {
+            if (oldHref !== location.href) {
+                oldHref = location.href;
+                this._videoController.start();
+                _Controller_MyListController__WEBPACK_IMPORTED_MODULE_5__["default"].randomVideo();
+            }
+        });
+        observer.observe(body, { childList: true, subtree: true });
     }
 }
 new Main();
@@ -862,6 +872,38 @@ class TimeModel {
     }
 }
 /* harmony default export */ __webpack_exports__["default"] = (TimeModel);
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var MyListController;
+(function (MyListController) {
+    function randomVideo() {
+        if (location.href !== "https://www.netflix.com/browse/my-list")
+            return;
+        const button = document.createElement("button");
+        button.textContent = "Pick random video";
+        button.classList.add("bn_btn");
+        button.addEventListener("click", () => {
+            const allVideos = document.querySelectorAll(".rowContainer .slider-item");
+            if (allVideos.length <= 0)
+                return;
+            const randomContainer = allVideos[Math.floor(Math.random() * allVideos.length + 1) - 1];
+            const randomVideo = randomContainer.querySelector("a");
+            randomVideo.scrollIntoView({ behavior: "smooth", block: "center" });
+            randomContainer.classList.add("bn_border");
+        });
+        const container = document.createElement("div");
+        container.appendChild(button);
+        document.querySelector(".sub-header-wrapper").appendChild(container);
+    }
+    MyListController.randomVideo = randomVideo;
+})(MyListController || (MyListController = {}));
+/* harmony default export */ __webpack_exports__["default"] = (MyListController);
 
 
 /***/ })

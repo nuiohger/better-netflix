@@ -4,6 +4,7 @@ import { ActionFactory } from "./Controller/ActionController";
 import UserOptionsModel from "./Model/UserOptionsModel";
 import UiController from "./Controller/UiController";
 import TimeUiController from "./Controller/TimeUiController";
+import MyListController from "./Controller/MyListController";
 class Main {
     constructor() {
         this._defaultKeys = UserOptionsModel.optionKeys;
@@ -14,13 +15,9 @@ class Main {
     }
     initialize() {
         this._videoController.start();
-        document.addEventListener("click", () => {
-            setTimeout(() => {
-                this._videoController.start();
-            }, 2000);
-        }, false);
+        MyListController.randomVideo();
+        this.observe();
         document.addEventListener("keydown", event => {
-            this._videoController.start();
             const actionName = ActionFactory.actionNames.filter(actionName => this._defaultKeys[actionName] === event.key)[0];
             try {
                 const action = ActionFactory.getAction(actionName);
@@ -28,6 +25,18 @@ class Main {
             }
             catch (e) { }
         }, false);
+    }
+    observe() {
+        let oldHref = location.href;
+        const body = document.querySelector("body");
+        const observer = new MutationObserver(() => {
+            if (oldHref !== location.href) {
+                oldHref = location.href;
+                this._videoController.start();
+                MyListController.randomVideo();
+            }
+        });
+        observer.observe(body, { childList: true, subtree: true });
     }
 }
 new Main();

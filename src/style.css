@@ -80,3 +80,17 @@
     top: auto !important;
     bottom: 3.9em;
 }
+
+.bn_btn {
+    margin: 0 5px;
+    background-color: #E50914;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.bn_border {
+    border: 5px solid #E50914;
+}
