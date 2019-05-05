@@ -2,6 +2,7 @@ image: node:latest
 
 build:
     script:
-        - npm install typescript webpack webpack-cli
+        - npm install -g typescript webpack webpack-cli
+        - npm root -g
         - tsc --build tsconfig.json
         - npx webpack --entry ./build/Main.js --mode none
