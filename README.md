@@ -22,9 +22,9 @@ Select `tsc: build`
 
 
 ##### Build JavaScript for Browsers
-Run `build.py`
+Run `python build.py`
 
 ### Distribution
 To create the zip files use the -z or --zip parameter:
 
-`build.py -z`
+`python build.py -z`
