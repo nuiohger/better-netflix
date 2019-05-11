@@ -1,6 +1,6 @@
 # Better Netflix
 
-Better Netflix is an Add-on for Firefox that adds various features to Netflix:
+Better Netflix is an Add-on for Firefox and Chrome that adds various features to Netflix:
 *   Ultrawide display support (21:9 aspect ratio)
 *   Zoom in and out of the video
 *   Show the elapsed time of the video
