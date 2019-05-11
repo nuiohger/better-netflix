@@ -13,15 +13,29 @@ Better Netflix is an Add-on for Firefox that adds various features to Netflix:
 
 ## Build
 
+### Prerequisites
+The following npm packages are required:
+*   typescript
+*   @types/chrome
+*   webpack
+*   webpack-cli
+
+### TypeScript
+
 ##### Visual Studio Code
-To build JavaScript from TypeScript:
+To build TypeScript with Visual Studio Code:
 
 Press `CTRL + SHIFT + B`
 
 Select `tsc: build`
 
+#### Terminal
+To build TypeScript from a terminal:
 
-##### Build JavaScript for Browsers
+$`tsc --build tsconfig.json`
+
+
+#### Build JavaScript for Browsers
 Run `python build.py`
 
 ### Distribution
