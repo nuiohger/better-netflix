@@ -1,0 +1,1 @@
+if(navigator.userAgent.indexOf("Linux") > -1) Object.defineProperty(navigator, "userAgent", {value: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"});
