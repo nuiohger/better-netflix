@@ -2,7 +2,6 @@ image: node:latest
 
 build:
     script:
-        - npm install -g typescript webpack webpack-cli
-        - npm root -g
+        - npm install -g typescript @types/chrome webpack webpack-cli
         - tsc --build tsconfig.json
         - npx webpack --entry ./build/Main.js --mode none
