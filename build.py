@@ -12,6 +12,8 @@ chrome_dir = f"{dir_path}/dist-chrome"
 
 def main():
     args = parse_args()
+    if args.typescript:
+        build_typescript()
     run_webpack()
     build_firefox()
     build_chrome()
@@ -27,24 +29,40 @@ def parse_args():
         action="store_true",
         help="create zip files for Add-on publishing",
     )
+    parser.add_argument(
+        "-t", "--typescript", action="store_true", help="build typescript"
+    )
     return parser.parse_args()
 
 
-def run_webpack():
-    process = subprocess.run(
-        [
-            "npx",
-            "webpack",
-            "--entry",
-            f"{dir_path}/build/Main.js",
-            "--output",
-            f"{firefox_dir}/Main.js",
-            "--mode",
-            "none",
-        ]
+def build_typescript():
+    run_subprocess(
+        "tsc",
+        "--build",
+        f"{dir_path}/tsconfig.json",
+        success_msg="Successfully built typescript\n",
     )
+
+
+def run_webpack():
+    run_subprocess(
+        "npx",
+        "webpack",
+        "--entry",
+        f"{dir_path}/build/Main.js",
+        "--output",
+        f"{firefox_dir}/Main.js",
+        "--mode",
+        "none",
+        success_msg="Successfully created JavaScript code",
+    )
+
+
+def run_subprocess(*args, success_msg=""):
+    process = subprocess.run(list(args))
     process.check_returncode()
-    print("Successfully created JavaScript code")
+    if success_msg != "":
+        print(success_msg)
 
 
 def build_firefox():
@@ -71,8 +89,8 @@ def build_chrome():
 
 
 def zip_addon():
-    shutil.make_archive("better-netflix-firefox", "zip", firefox_dir)
-    shutil.make_archive("better-netflix-chrome", "zip", chrome_dir)
+    shutil.make_archive("build/better-netflix-firefox", "zip", firefox_dir)
+    shutil.make_archive("build/better-netflix-chrome", "zip", chrome_dir)
     create_source_code_zip()
     print(
         "\nSuccessfully created zip files for Firefox and Chrome and created the source code package for Firefox needed for the source code submission policy"
@@ -82,7 +100,9 @@ def zip_addon():
 def create_source_code_zip():
     dirs = ["./build", "./dist-firefox", "./src"]
     file_names = ["build.py", "README"]
-    with zipfile.ZipFile("source-code.zip", "w", zipfile.ZIP_DEFLATED) as zip_file:
+    with zipfile.ZipFile(
+        "build/source-code.zip", "w", zipfile.ZIP_DEFLATED
+    ) as zip_file:
         for filename in file_names:
             zip_file.write(os.path.join(dir_path, filename), arcname=filename)
         for folder in dirs:
