@@ -22,20 +22,20 @@ The following npm packages are required:
 
 ### TypeScript
 
-##### Visual Studio Code
+#### Visual Studio Code
 To build TypeScript with Visual Studio Code:
 
 Press `CTRL + SHIFT + B`
 
 Select `tsc: build`
 
-#### Terminal
-To build TypeScript from a terminal:
+#### Build script
+The -t or --typescript parameter can be used to build TypeScript. JavaScript is being built for Browsers as well.
 
-$`tsc --build tsconfig.json`
+Run `python build.py -t`
 
 
-#### Build JavaScript for Browsers
+### Build JavaScript for Browsers
 Run `python build.py`
 
 ### Distribution
