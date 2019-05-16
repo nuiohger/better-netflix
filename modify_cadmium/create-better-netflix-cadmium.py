@@ -1,12 +1,12 @@
 import re
 import os
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-cadmium_path = f"{dir_path}/cadmium.js"
-result_path = f"{dir_path}/../bn-cadmium-playercore-%s.js"
+base_dir = os.path.dirname(os.path.realpath(__file__))
+cadmium_path = f"{base_dir}/cadmium.js"
+result_path = f"{base_dir}/../bn-cadmium-playercore-%s.js"
 result_firefox = result_path % "firefox"
 result_chrome = result_path % "chrome"
-user_agent_fix_path = f"{dir_path}/firefox-linux-user-agent-fix.js"
+user_agent_fix_path = f"{base_dir}/firefox-linux-user-agent-fix.js"
 
 
 def main():
