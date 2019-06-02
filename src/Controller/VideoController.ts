@@ -16,13 +16,9 @@ class VideoController {
     }
 
     public start(): void {
-        if(!this._updatingVideo && (this._htmlVideo === undefined || this._htmlVideo.src === "") && location.href !== "https://www.netflix.com/browse") {
+        if(!this._updatingVideo) {
             this._updatingVideo = true;
-
-            const _this: VideoController = this;
-            this._updateVideoInterval = setInterval(() => {
-                _this.updateVideo();
-            }, 500);
+            this._updateVideoInterval = setInterval(this.updateVideo.bind(this), 500);
         }
     }
 
@@ -40,10 +36,10 @@ class VideoController {
     }
 
     private findVideo(): boolean {
-        this._htmlVideo = <HTMLVideoElement>document.getElementsByClassName("VideoContainer")[0];
-        if(this._htmlVideo !== undefined && location.toString().indexOf("/watch") > 0) {
-            this._htmlVideo = this._htmlVideo.getElementsByTagName("video")[0];
-            if(this._htmlVideo !== undefined) {
+        if(location.toString().indexOf("/watch") > 0) {
+            const currentVideo = document.querySelector("video");
+            if(currentVideo !== null && (!this._htmlVideo || this._htmlVideo.src !== currentVideo.src)) {
+                this._htmlVideo = currentVideo;
                 this.initVideo();
                 return true;
             }

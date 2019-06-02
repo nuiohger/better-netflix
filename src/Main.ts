@@ -40,7 +40,6 @@ class Main {
 
     private observe(): any {
         let oldHref = location.href;
-        const body = document.querySelector("body");
 
         const observer = new MutationObserver(() => {
             if(oldHref !== location.href) {
@@ -51,7 +50,7 @@ class Main {
             }
         });
 
-        observer.observe(body, {childList: true, subtree: true});
+        observer.observe(document.body, {childList: true, subtree: true});
     }
 }
 
