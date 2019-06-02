@@ -1,2 +1,5 @@
+1.4.6.2 (02.06.2019):
+- fix: better netflix does not load if playing next episode
+
 1.4.6 (02.05.2019):
 - add button to netflix list to pick a random video
