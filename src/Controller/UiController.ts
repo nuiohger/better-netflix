@@ -1,7 +1,9 @@
-import {ActionFactory, IAction} from "./ActionController";
 import VideoController from "./VideoController";
 import VideoBitrateController from "./VideoBitrateController";
 import UserOptionsModel from "../Model/UserOptionsModel";
+import ButtonElement from "../Ui/ButtonElement";
+import ContainerElement from "../Ui/ContainerElement";
+import TooltipElement from "../Ui/TooltipElement";
 
 class UiController {
     private _videoBitrateController: VideoBitrateController;
@@ -16,59 +18,28 @@ class UiController {
 
         this.removeUiOfPreviousVideo();
 
-        const zoomIn: HTMLDivElement = this.createButton("+", "Zoom in (Key: +)");
-        this.addButtonClickListener(videoController, zoomIn, "zoomIn");
+        const zoomIn: ButtonElement = new ButtonElement("+", "Zoom in (Key: +)");
+        zoomIn.addButtonClickListener(videoController, "zoomIn");
 
-        const zoomOut: HTMLDivElement = this.createButton("-", "Zoom out (Key: -)");
-        this.addButtonClickListener(videoController, zoomOut, "zoomOut");
+        const zoomOut: ButtonElement = new ButtonElement("-", "Zoom out (Key: -)");
+        zoomOut.addButtonClickListener(videoController, "zoomOut");
 
-        const resetZoom: HTMLDivElement = this.createButton("16:9", "Reset zoom (Key: ,)", true);
-        this.addButtonClickListener(videoController, resetZoom, "resetZoom");
+        const resetZoom: ButtonElement = new ButtonElement("16:9", "Reset zoom (Key: ,)", true);
+        resetZoom.addButtonClickListener(videoController, "resetZoom");
 
-        const fullZoom: HTMLDivElement = this.createButton("21:9", "Zoom to 21:9 (Key: .)", true);
-        this.addButtonClickListener(videoController, fullZoom, "fullZoom");
+        const fullZoom: ButtonElement = new ButtonElement("21:9", "Zoom to 21:9 (Key: .)", true);
+        fullZoom.addButtonClickListener(videoController, "fullZoom");
 
-        const videoBitrates: HTMLDivElement = this.createAndGetVideoBitrates();
+        const uiContainer: ContainerElement = new ContainerElement(zoomIn, zoomOut, resetZoom, fullZoom);
 
-        const uiContainer: HTMLDivElement = document.createElement("div");
-        uiContainer.classList.add("uiContainer");
-        uiContainer.appendChild(zoomIn);
-        uiContainer.appendChild(zoomOut);
-        uiContainer.appendChild(resetZoom);
-        uiContainer.appendChild(fullZoom);
+        const videoBitrates: ButtonElement = this.createAndGetVideoBitrates();
+        if(videoBitrates)
+            uiContainer.addChildren(videoBitrates);
+
+        videoTitle.parentNode.insertBefore(uiContainer.element, videoTitle.nextSibling);
 
         if(videoBitrates)
-            uiContainer.appendChild(videoBitrates);
-
-        videoTitle.parentNode.insertBefore(uiContainer, videoTitle.nextSibling);
-
-        if(videoBitrates)
-            this.fixQualityMenuForOtherPlayers(videoBitrates, uiContainer);
-    }
-
-    private createButton(text: string, title: string, largeButton: boolean = false): HTMLDivElement {
-        const buttonContainer: HTMLDivElement = document.createElement("div");
-        buttonContainer.classList.add("uiContainer");
-
-        const button: HTMLButtonElement = document.createElement("button");
-        button.textContent = text;
-        button.classList.add("uiButtons");
-        if(largeButton)
-            button.classList.add("largeUiButtons");
-
-        button.title = title;
-
-        buttonContainer.appendChild(button);
-        return buttonContainer;
-    }
-
-    private addButtonClickListener(videoController: VideoController, button: HTMLDivElement, actionName: string): void {
-        button.addEventListener("click", event => {
-            event.stopPropagation();
-
-            const action: IAction = ActionFactory.getAction(actionName);
-            action.execute(videoController);
-        }, false);
+            this.fixQualityMenuForOtherPlayers(videoBitrates.element as HTMLDivElement, uiContainer.element as HTMLDivElement);
     }
 
     private removeUiOfPreviousVideo(): void {
@@ -79,76 +50,45 @@ class UiController {
     }
 
 
-    private createAndGetVideoBitrates(): HTMLDivElement {
-        const tooltip: HTMLDivElement = document.createElement("div");
-        tooltip.classList.add("tooltip", "hidden");
-
+    private createAndGetVideoBitrates(): ButtonElement {
         const bitrates: string[] = this._videoBitrateController.getVideoBitrates();
         if(bitrates.length === 0) return null;
 
-        bitrates.forEach(bitrate => {
+        const tooltipChildren: HTMLDivElement[] = bitrates.map(bitrate => {
             const bitrateElement: HTMLDivElement = document.createElement("div");
             bitrateElement.classList.add("tooltipChild");
             bitrateElement.textContent = bitrate;
             bitrateElement.setAttribute("bitrate", bitrate);
-
-            tooltip.appendChild(bitrateElement);
+            return bitrateElement;
         });
 
-        const videoBitrates = this.createButton("⚙", "Video quality (Highest number = best quality)");
-        videoBitrates.appendChild(tooltip);
+        const videoBitrates: ButtonElement = new ButtonElement("⚙", "Video quality (Highest number = best quality)");
+        const tooltip: TooltipElement = new TooltipElement(videoBitrates, ...tooltipChildren);
 
-        this.initTooltip(videoBitrates, tooltip);
-        this.initTooltipChildren(tooltip);
+        tooltip.addChildEventListener("click", event => {
+            const child = (event.target as HTMLElement);
+            const bitrate = child.getAttribute("bitrate");
+            const successful: boolean = this._videoBitrateController.changeBitrate(bitrate) !== undefined;
+            if(!successful) return;
+
+            tooltip.selectTooltipChild(child);
+
+            setTimeout(tooltip.hide, 500);
+        });
 
         this.selectHighestBitrateIfOptionIsSet(tooltip);
 
         return videoBitrates;
     }
 
-    private initTooltip(button: HTMLDivElement, tooltip: HTMLDivElement): void {
-        button.addEventListener("mouseenter", () => {
-            tooltip.classList.remove("hidden");
-        }, false);
-
-        button.addEventListener("mouseleave", () => {
-            setTimeout(() => {
-                if(!tooltip.classList.contains("hidden") && button.parentElement.querySelector(":hover") !== button)
-                    tooltip.classList.add("hidden");
-            }, 1000);
-        }, false);
-    }
-
-    private initTooltipChildren(tooltip: HTMLDivElement): void {
+    private selectHighestBitrateIfOptionIsSet(tooltip: TooltipElement): void {
         const _this = this;
-
-        tooltip.childNodes.forEach(element => {
-            const child: HTMLElement = <HTMLElement>element;
-
-            child.addEventListener("click", () => {
-                const successful: boolean = _this._videoBitrateController.changeBitrate(child.getAttribute("bitrate")) !== undefined;
-                if(!successful) return;
-
-                this.selectTooltipChild(tooltip, child);
-
-                setTimeout(() => tooltip.classList.add("hidden"), 500);
-            }, false);
-        });
-    }
-
-    private selectTooltipChild(tooltip: HTMLDivElement, child: HTMLElement) {
-        tooltip.childNodes.forEach(element => (element as HTMLElement).classList.remove("tooltipChildSelected"));
-        child.classList.add("tooltipChildSelected");
-    }
-
-    private selectHighestBitrateIfOptionIsSet(tooltip: HTMLDivElement): void {
-        const _this = this;
-        UserOptionsModel.callWithOptions(optionKeys => {
+        UserOptionsModel.callWithOptions((optionKeys: {selectHighestBitrate: any;}) => {
             if(!optionKeys.selectHighestBitrate) return;
 
             const highestBitrate: string = _this._videoBitrateController.changeBitrate("", true);
 
-            _this.selectTooltipChild(tooltip, tooltip.querySelector("[bitrate='" + highestBitrate + "']"));
+            tooltip.selectTooltipChild(tooltip.element.querySelector("[bitrate='" + highestBitrate + "']"));
         });
     }
 
