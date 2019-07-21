@@ -3,33 +3,74 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="options.css">
+        <link rel="stylesheet" type="text/css" href="options.css"/>
+        <link rel="stylesheet" type="text/css" href="buttons.css"/>
     </head>
 
     <body>
-        <form>
-            <div>
-                <label for="bestQuality">Always select highest available quality automatically</label>
-                <input type="checkbox" id="bestQuality" checked>
+        <div id="options">
+            <br/>
+            <div class="msg">All preferences are automatically saved.</div>
+            <hr/>
+
+            <label for="bestQuality">Always select highest available quality automatically</label>
+            <input type="checkbox" id="bestQuality" checked>
+            <hr/>
+
+            <label for="menuTop">Open the bitrate menu to the top. Enable this if your buttons are at the bottom.</label>
+            <input type="checkbox" id="menuTop" checked>
+            <hr/>
+
+            <label for="volumeMouseWheel">Change volume when scrolling with the mouse wheel</label>
+            <input type="checkbox" id="volumeMouseWheel" checked>
+            <hr/>
+
+            <div class="buttons">
+                <button id="modify-ui" onclick="return false;">Modify the visibility of the buttons</button>
+            </div>
+            <hr/>
+
+            <br/>
+            <div class="buttons">
+                <button id="reset">Reset</button>
+            </div>
+        </div>
+
+        <div class="popup-container hidden">
+            <div id="ui-modification" class="popup container">
+                <h4>Select all buttons that should be hidden on Netflix. Uncheck a button to show it.</h4>
                 <hr/>
 
-                <label for="menuTop">Open the bitrate menu to the top. Enable this if your buttons are at the bottom.</label>
-                <input type="checkbox" id="menuTop" checked>
-                <hr/>
+                <button class="close">X</button>
 
-                <label for="volumeMouseWheel">Change volume when scrolling with the mouse wheel</label>
-                <input type="checkbox" id="volumeMouseWheel" checked>
-                <hr/>
-
-                <br/>
-                <div class="buttons">
-                    <button type="submit">Save</button>
-                    <button id="reset">Reset</button>
+                <div class="uiContainer left">
+                    <button class="uiButtons" disabled>+</button>
+                    <input type="checkbox" id="hide-zoom-in" />
                 </div>
 
-                <div id="status"></div>
+                <div class="uiContainer right">
+                    <button class="uiButtons" disabled>-</button>
+                    <input type="checkbox" id="hide-zoom-out"/>
+                </div>
+                <hr/>
+
+                <div class="uiContainer left">
+                    <button class="uiButtons largeUiButtons" disabled>16:9</button>
+                    <input type="checkbox" id="hide-reset-zoom"/>
+                </div>
+
+                <div class="uiContainer right">
+                    <button class="uiButtons largeUiButtons" disabled>21:9</button>
+                    <input type="checkbox" id="hide-full-zoom"/>
+                </div>
+                <hr/>
+
+                <div class="uiContainer left">
+                    <button class="uiButtons" disabled>⚙</button>
+                    <input type="checkbox" id="hide-video-bitrates"/>
+                </div>
             </div>
-        </form>
+        </div>
 
         <script src="options.js"></script>
     </body>

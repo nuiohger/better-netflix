@@ -1,3 +1,5 @@
+import UserOptionsModel from "../Model/UserOptionsModel";
+
 const defaultKeys = {
     zoomIn: "+",
     zoomOut: "-",
@@ -9,7 +11,14 @@ const defaultKeys = {
     toggleStatistics: "q",
     selectHighestBitrate: true,
     menuOnTop: true,
-    volumeMouseWheel: true
+    volumeMouseWheel: true,
+    hideZoomInButton: false,
+    hideZoomOutButton: false,
+    hideResetZoomButton: false,
+    hideFullZoomButton: false,
+    hideVideoBitratesButton: false
 };
 
-export default defaultKeys;
+const options: UserOptionsModel = UserOptionsModel.optionKeys;
+
+export {defaultKeys, options};

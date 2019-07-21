@@ -1,35 +1,114 @@
-form {
+#options {
+    height: 500px;
+}
+
+.msg {
+    font-weight: bold;
+}
+
+.container {
     border: 3px solid black;
     background-color: #222;
     padding: 15px;
     color: #fff;
 }
 
-form div {
+.container div {
     width: 600px;
 }
 
-form div input, form div button {
+.container input, .container button {
     float: right;
 }
 
-form div input {
+.container input {
     margin-top: 3px;
 }
 
-form div button {
+.container button {
     margin-left: 10px;
 }
 
 button {
-    background-color: #222;
-    border: 1px solid #aaa;
+    border: 1px solid #888;
     height: 25px;
-    color: #aaa;
+    color: #333;
     transition-duration: .5s;
+    font-weight: bold;
 }
 
 button:hover {
-    color: #fff;
-    border-color: #fff;
+    color: #000;
+    border-color: #000;
+}
+
+.hidden {
+    display: none;
+}
+
+.buttons {
+    height: 25px;
+}
+
+hr {
+    margin: 15px 0;
+    clear: both;
+}
+
+.popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.popup {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px 5px black;
+    border-width: 2px;
+    width: 250px;
+}
+
+.popup h3 {
+    margin-top: -3px;
+}
+
+div.popup div {
+    width: initial;
+}
+
+div.popup button {
+    margin-left: auto;
+}
+
+.close {
+    top: 3px;
+    right: 3px;
+    position: fixed;
+}
+
+.close:hover {
+    color: #eee;
+    border-color: #eee;
+    background-color: #222;
+}
+
+.blurred {
+    filter: blur(2px);
+}
+
+div.uiContainer.left {
+    float: left;
+    width: 100px;
+}
+
+div.uiContainer.right {
+    float: right;
+    width: 100px;
+    border-left: 1px solid #aaa;
+    margin-bottom: 10px;
 }

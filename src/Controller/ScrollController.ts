@@ -1,4 +1,4 @@
-import UserOptionsModel from "../Model/UserOptionsModel";
+import {options} from "../Constants/Options";
 
 function createScrollEvent(func: EventListener) {
     document.querySelector(".center-controls").addEventListener("wheel", func, false);
@@ -26,10 +26,8 @@ function initListener() {
 }
 
 function addVolumeScrollListener() {
-    UserOptionsModel.callWithOptions(options => {
-        if(!options.volumeMouseWheel) return;
-        initListener();
-    });
+    if(!options.volumeMouseWheel) return;
+    initListener();
 }
 
 export default addVolumeScrollListener;

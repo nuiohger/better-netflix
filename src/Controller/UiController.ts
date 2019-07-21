@@ -1,9 +1,10 @@
 import VideoController from "./VideoController";
 import VideoBitrateController from "./VideoBitrateController";
-import UserOptionsModel from "../Model/UserOptionsModel";
 import ButtonElement from "../Ui/ButtonElement";
 import ContainerElement from "../Ui/ContainerElement";
 import TooltipElement from "../Ui/TooltipElement";
+import UiButtonController from "./UiButtonController";
+import {options} from "../Constants/Options";
 
 class UiController {
     private _videoBitrateController: VideoBitrateController;
@@ -18,19 +19,7 @@ class UiController {
 
         this.removeUiOfPreviousVideo();
 
-        const zoomIn: ButtonElement = new ButtonElement("+", "Zoom in (Key: +)");
-        zoomIn.addButtonClickListener(videoController, "zoomIn");
-
-        const zoomOut: ButtonElement = new ButtonElement("-", "Zoom out (Key: -)");
-        zoomOut.addButtonClickListener(videoController, "zoomOut");
-
-        const resetZoom: ButtonElement = new ButtonElement("16:9", "Reset zoom (Key: ,)", true);
-        resetZoom.addButtonClickListener(videoController, "resetZoom");
-
-        const fullZoom: ButtonElement = new ButtonElement("21:9", "Zoom to 21:9 (Key: .)", true);
-        fullZoom.addButtonClickListener(videoController, "fullZoom");
-
-        const uiContainer: ContainerElement = new ContainerElement(zoomIn, zoomOut, resetZoom, fullZoom);
+        const uiContainer: ContainerElement = new UiButtonController().initButtons(videoController);
 
         const videoBitrates: ButtonElement = this.createAndGetVideoBitrates();
         if(videoBitrates)
@@ -52,7 +41,7 @@ class UiController {
 
     private createAndGetVideoBitrates(): ButtonElement {
         const bitrates: string[] = this._videoBitrateController.getVideoBitrates();
-        if(bitrates.length === 0) return null;
+        if(bitrates.length === 0 || options.hideVideoBitratesButton) return null;
 
         const tooltipChildren: HTMLDivElement[] = bitrates.map(bitrate => {
             const bitrateElement: HTMLDivElement = document.createElement("div");
@@ -82,37 +71,32 @@ class UiController {
     }
 
     private selectHighestBitrateIfOptionIsSet(tooltip: TooltipElement): void {
-        const _this = this;
-        UserOptionsModel.callWithOptions((optionKeys: {selectHighestBitrate: any;}) => {
-            if(!optionKeys.selectHighestBitrate) return;
+        if(!options.selectHighestBitrate) return;
 
-            const highestBitrate: string = _this._videoBitrateController.changeBitrate("", true);
+        const highestBitrate: string = this._videoBitrateController.changeBitrate("", true);
 
-            tooltip.selectTooltipChild(tooltip.element.querySelector("[bitrate='" + highestBitrate + "']"));
-        });
+        tooltip.selectTooltipChild(tooltip.element.querySelector("[bitrate='" + highestBitrate + "']"));
     }
 
     private fixQualityMenuForOtherPlayers(videoBitrates: HTMLDivElement, uiContainer: HTMLDivElement) {
         setTimeout(() => {
-            UserOptionsModel.callWithOptions(options => {
-                if(!options.menuOnTop) return;
+            if(!options.menuOnTop) return;
 
-                const tooltip: HTMLDivElement = <HTMLDivElement>videoBitrates.childNodes[1];
-                tooltip.classList.add("tooltipOnTop");
+            const tooltip: HTMLDivElement = <HTMLDivElement>videoBitrates.childNodes[1];
+            tooltip.classList.add("tooltipOnTop");
 
-                videoBitrates.addEventListener("mouseover", () => {
-                    (<HTMLDivElement>document.querySelector("div.PlayerControlsNeo__progress-container")).style.display = "none";
-                });
-                videoBitrates.addEventListener("mouseout", () => {
-                    (<HTMLDivElement>document.querySelector("div.PlayerControlsNeo__progress-container")).style.display = "flex";
-                });
-
-                document.querySelector("time.elapsedTime").parentElement.classList.add("time-remaining--classic");
-
-                for(const container of uiContainer.childNodes) {
-                    (<HTMLDivElement>container.childNodes[0]).style.marginTop = "0";
-                }
+            videoBitrates.addEventListener("mouseover", () => {
+                (<HTMLDivElement>document.querySelector("div.PlayerControlsNeo__progress-container")).style.display = "none";
             });
+            videoBitrates.addEventListener("mouseout", () => {
+                (<HTMLDivElement>document.querySelector("div.PlayerControlsNeo__progress-container")).style.display = "flex";
+            });
+
+            document.querySelector("time.elapsedTime").parentElement.classList.add("time-remaining--classic");
+
+            for(const container of uiContainer.childNodes) {
+                (<HTMLDivElement>container.childNodes[0]).style.marginTop = "0";
+            }
         }, 1000);
     }
 }

@@ -1,8 +1,6 @@
-import UserOptionsModel from "../Model/UserOptionsModel";
 import VideoController from "./VideoController";
 import StatisticsController from "./StatisticController";
-
-const defaultKeys: UserOptionsModel = UserOptionsModel.optionKeys;
+import {options} from "../Constants/Options";
 
 interface IAction {
     key: string;
@@ -11,7 +9,7 @@ interface IAction {
 }
 
 class ZoomInAction implements IAction {
-    key: string = defaultKeys.zoomIn;
+    key: string = options.zoomIn;
 
     public execute(videoController: VideoController): void {
         videoController.addZoom(5);
@@ -19,7 +17,7 @@ class ZoomInAction implements IAction {
 }
 
 class ZoomOutAction implements IAction {
-    key: string = defaultKeys.zoomOut;
+    key: string = options.zoomOut;
 
     public execute(videoController: VideoController): void {
         videoController.addZoom(-5);
@@ -27,7 +25,7 @@ class ZoomOutAction implements IAction {
 }
 
 class ResetZoomAction implements IAction {
-    key: string = defaultKeys.resetZoom;
+    key: string = options.resetZoom;
 
     public execute(videoController: VideoController): void {
         videoController.setZoom(100);
@@ -35,7 +33,7 @@ class ResetZoomAction implements IAction {
 }
 
 class FullZoomAction implements IAction {
-    key: string = defaultKeys.fullZoom;
+    key: string = options.fullZoom;
 
     public execute(videoController: VideoController): void {
         videoController.setZoom(135);
@@ -43,7 +41,7 @@ class FullZoomAction implements IAction {
 }
 
 class DisableMouseAction implements IAction {
-    key: string = defaultKeys.disableMouse;
+    key: string = options.disableMouse;
 
     public execute(videoController: VideoController): void {
         const video: any = videoController.getHtmlVideo;
@@ -52,7 +50,7 @@ class DisableMouseAction implements IAction {
 }
 
 class EnableMouseAction implements IAction {
-    key: string = defaultKeys.enableMouse;
+    key: string = options.enableMouse;
 
     public execute(): void {
         const doc: any = document;
@@ -61,7 +59,7 @@ class EnableMouseAction implements IAction {
 }
 
 class ToggleStatisticsAction implements IAction {
-    key: string = defaultKeys.toggleStatistics;
+    key: string = options.toggleStatistics;
 
     public execute(videoController: VideoController): void {
         StatisticsController.toggle(videoController);

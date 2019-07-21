@@ -1,66 +1,102 @@
-"use strict";
+(function() {
+    "use strict";
 
-const selectHighestBitrate = document.getElementById("bestQuality"),
-    menuOnTop = document.getElementById("menuTop"),
-    volumeMouseWheel = document.getElementById("volumeMouseWheel"),
-    status = document.getElementById("status"),
-    defaultKeys = {
-        selectHighestBitrate: true,
-        menuOnTop: true,
-        volumeMouseWheel: true
-    };
+    const selectHighestBitrate = document.getElementById("bestQuality"),
+        menuOnTop = document.getElementById("menuTop"),
+        volumeMouseWheel = document.getElementById("volumeMouseWheel"),
+        hideButtons = {
+            zoomIn: document.querySelector("#hide-zoom-in"),
+            zoomOut: document.querySelector("#hide-zoom-out"),
+            resetZoom: document.querySelector("#hide-reset-zoom"),
+            fullZoom: document.querySelector("#hide-full-zoom"),
+            videoBitrates: document.querySelector("#hide-video-bitrates")
+        },
+        defaults = {
+            selectHighestBitrate: true,
+            menuOnTop: true,
+            volumeMouseWheel: true,
+            hideZoomInButton: false,
+            hideZoomOutButton: false,
+            hideResetZoomButton: false,
+            hideFullZoomButton: false,
+            hideVideoBitratesButton: false
+        };
 
-function init() {
-    document.addEventListener("DOMContentLoaded", restoreSavedOptions, false);
-
-    const input = document.querySelectorAll("form input[type='text']");
-    for(let i = 0; i < input.length; i++) {
-        input[i].addEventListener("keyup", checkInputLength, false);
+    function restoreSavedOptions() {
+        chrome.storage.sync.get(defaults, setValuesOfAllPreferences);
     }
 
-    document.querySelector("form").addEventListener("submit", saveOptions, false);
-    document.getElementById("reset").addEventListener("click", resetOptions, false);
-}
-
-function checkInputLength() {
-    if(this.value.length > 1) {
-        this.value = this.value[0];
-    }
-}
-
-function saveOptions(event, actionMessage = "saved") {
-    chrome.storage.sync.set({
-        selectHighestBitrate: selectHighestBitrate.checked,
-        menuOnTop: menuOnTop.checked,
-        volumeMouseWheel: volumeMouseWheel.checked
-    }, () => {
-        setStatus("Options " + actionMessage + ".");
-    });
-
-    if(event !== undefined) {
-        event.preventDefault();
-    }
-}
-
-function restoreSavedOptions() {
-    chrome.storage.sync.get(defaultKeys, function(items) {
+    function setValuesOfAllPreferences(items) {
         selectHighestBitrate.checked = items.selectHighestBitrate;
         menuOnTop.checked = items.menuOnTop;
         volumeMouseWheel.checked = items.volumeMouseWheel;
-    });
-}
 
-function resetOptions() {
-    selectHighestBitrate.checked = defaultKeys.selectHighestBitrate;
-    menuOnTop.checked = defaultKeys.menuOnTop;
-    volumeMouseWheel.checked = defaultKeys.volumeMouseWheel;
+        hideButtons.zoomIn.checked = items.hideZoomInButton;
+        hideButtons.zoomOut.checked = items.hideZoomOutButton;
+        hideButtons.resetZoom.checked = items.hideResetZoomButton;
+        hideButtons.fullZoom.checked = items.hideFullZoomButton;
+        hideButtons.videoBitrates.checked = items.hideVideoBitratesButton;
+    }
 
-    saveOptions(undefined, "reset");
-}
+    function init() {
+        initAutoSave();
 
-function setStatus(message) {
-    status.textContent = message;
-    setTimeout(() => status.textContent = "", 2000);
-}
+        document.getElementById("reset").addEventListener("click", resetOptions, false);
+        document.getElementById("modify-ui").addEventListener("click", showUiModificationPopup, false);
+    }
 
-init();
+    function initAutoSave() {
+        selectHighestBitrate.addEventListener("change", event => save({selectHighestBitrate: event.target.checked}), false);
+        menuOnTop.addEventListener("change", event => save({menuOnTop: event.target.checked}), false);
+        volumeMouseWheel.addEventListener("change", event => save({volumeMouseWheel: event.target.checked}), false);
+
+        hideButtons.zoomIn.addEventListener("change", event => save({hideZoomInButton: event.target.checked}), false);
+        hideButtons.zoomOut.addEventListener("change", event => save({hideZoomOutButton: event.target.checked}), false);
+        hideButtons.resetZoom.addEventListener("change", event => save({hideResetZoomButton: event.target.checked}), false);
+        hideButtons.fullZoom.addEventListener("change", event => save({hideFullZoomButton: event.target.checked}), false);
+        hideButtons.videoBitrates.addEventListener("change", event => save({hideVideoBitratesButton: event.target.checked}), false);
+    }
+
+    function resetOptions() {
+        setValuesOfAllPreferences(defaults);
+        save(defaults);
+    }
+
+    function save(obj) {
+        chrome.storage.sync.set(obj);
+    }
+
+    let uiModificationPopupAdded = false;
+    function showUiModificationPopup() {
+        const popup = document.querySelector("#ui-modification");
+        showPopup(popup, uiModificationPopupAdded);
+        uiModificationPopupAdded = true;
+    }
+
+    function showPopup(popup, eventListenerAdded = false) {
+        document.querySelector("#options").classList.add("blurred");
+        popup.parentElement.classList.remove("hidden");
+
+        if(!eventListenerAdded) {
+            popup.querySelector(".close").addEventListener("click", () => {
+                closePopup(popup.parentElement);
+            }, false);
+
+            addEventListener("click", event => {
+                if(event.target.classList.contains("popup-container")) {
+                    closePopup(event.target);
+                }
+            }, false);
+        }
+    }
+
+    function closePopup(popup) {
+        document.querySelector("#options").classList.remove("blurred");
+        popup.classList.add("hidden");
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+        restoreSavedOptions();
+        init();
+    }, false);
+})();

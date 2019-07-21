@@ -1,9 +1,8 @@
 import TimeModel from "../Model/TimeModel";
-import UserOptionsModel from "../Model/UserOptionsModel";
+import {options} from "../Constants/Options";
 
 class TimeUiController {
     private readonly _timeModel: TimeModel;
-    private readonly _optionKeys: UserOptionsModel;
 
     private _htmlTime: HTMLElement;
     private _timeInterval: number;
@@ -11,13 +10,12 @@ class TimeUiController {
 
     constructor() {
         this._timeModel = new TimeModel();
-        this._optionKeys = UserOptionsModel.optionKeys;
     }
 
     public setTimeInterval(video: HTMLVideoElement): void {
         this._video = video;
 
-        if(this._optionKeys.timeElapsed) {
+        if(options.timeElapsed) {
             if(this._timeInterval !== undefined) {
                 clearInterval(this._timeInterval);
             }

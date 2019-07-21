@@ -1,5 +1,5 @@
 import ChromeController from "../Controller/ChromeController";
-import defaultKeys from "../Constants/Options";
+import {defaultKeys} from "../Constants/Options";
 
 class UserOptionsModel {
     private _zoomIn: string;
@@ -13,6 +13,11 @@ class UserOptionsModel {
     private _selectHighestBitrate: boolean;
     private _menuOnTop: boolean;
     private _volumeMouseWheel: boolean;
+    private _hideZoomInButton: boolean;
+    private _hideZoomOutButton: boolean;
+    private _hideResetZoomButton: boolean;
+    private _hideFullZoomButton: boolean;
+    private _hideVideoBitratesButton: boolean;
 
     private _chromeController: ChromeController;
 
@@ -24,6 +29,12 @@ class UserOptionsModel {
             _this._selectHighestBitrate = items.selectHighestBitrate;
             _this._menuOnTop = items.menuOnTop;
             _this._volumeMouseWheel = items.volumeMouseWheel;
+
+            _this._hideZoomInButton = items.hideZoomInButton;
+            _this._hideZoomOutButton = items.hideZoomOutButton;
+            _this._hideResetZoomButton = items.hideResetZoomButton;
+            _this._hideFullZoomButton = items.hideFullZoomButton;
+            _this._hideVideoBitratesButton = items.hideVideoBitratesButton;
         });
 
         this._zoomIn = zoomIn;
@@ -73,6 +84,27 @@ class UserOptionsModel {
     public get volumeMouseWheel(): boolean {
         return this._volumeMouseWheel;
     }
+
+    public get hideZoomInButton(): boolean {
+        return this._hideZoomInButton;
+    }
+
+    public get hideZoomOutButton(): boolean {
+        return this._hideZoomOutButton;
+    }
+
+    public get hideResetZoomButton(): boolean {
+        return this._hideResetZoomButton;
+    }
+
+    public get hideFullZoomButton(): boolean {
+        return this._hideFullZoomButton;
+    }
+
+    public get hideVideoBitratesButton(): boolean {
+        return this._hideVideoBitratesButton;
+    }
+
 
     public static get optionKeys(): UserOptionsModel {
         return new UserOptionsModel("+", "-", ",", ".", "d", "e", true, "q");
