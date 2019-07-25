@@ -23,6 +23,11 @@
     background-color: rgba(0, 0, 0, 0);
 }
 
+button.uiButtons:hover {
+    color: #fff;
+    border-color: #fff;
+}
+
 .largeUiButtons {
     font-size: 1em;
     width: 2.8em;
