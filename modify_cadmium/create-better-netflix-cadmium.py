@@ -23,7 +23,7 @@ def main():
 
 def fix_bitrate_menu(content: str) -> str:
     """ Returns the passed str with the reenabled bitrate menu. """
-    regex = r"(\.shiftKey&&83==[a-zA-Z0-9]+\.keyCode)&&[^&]+"
+    regex = r"([a-zA-Z0-9]+\.ctrlKey&&[a-zA-Z0-9]+\.altKey&&[a-zA-Z0-9]+\.shiftKey&&[a-zA-Z0-9]+\.keyCode==[a-zA-Z0-9.]+&&)[a-zA-Z0-9.]+&&"
     result = re.search(regex, content)
     if result is None:
         raise Exception(
