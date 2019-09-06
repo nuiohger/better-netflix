@@ -6,8 +6,6 @@ Better Netflix is an Add-on for Firefox and Chrome that adds various features to
 *   Show the elapsed time of the video
 *   Disable mouse movement on button press
 *   Statistics: current FPS and resolution of the video
-*   Menu to select video bitrate (video quality)
-*   Option to automatically select the highest video bitrate available. This option is enabled by default. It can be disabled on the options page (Add-ons → Better Netflix → Preferences).
 *   Use the mouse wheel to change the volume
 *   Button to pick a random video of the Netflix list
 

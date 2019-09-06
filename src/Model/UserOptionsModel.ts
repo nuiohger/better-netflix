@@ -10,14 +10,11 @@ class UserOptionsModel {
     private _enableMouse: string;
     private _timeElapsed: boolean;
     private _toggleStatistics: string;
-    private _selectHighestBitrate: boolean;
-    private _menuOnTop: boolean;
     private _volumeMouseWheel: boolean;
     private _hideZoomInButton: boolean;
     private _hideZoomOutButton: boolean;
     private _hideResetZoomButton: boolean;
     private _hideFullZoomButton: boolean;
-    private _hideVideoBitratesButton: boolean;
 
     private _chromeController: ChromeController;
 
@@ -26,15 +23,12 @@ class UserOptionsModel {
 
         const _this: UserOptionsModel = this;
         this._chromeController.getSync(defaultKeys, items => {
-            _this._selectHighestBitrate = items.selectHighestBitrate;
-            _this._menuOnTop = items.menuOnTop;
             _this._volumeMouseWheel = items.volumeMouseWheel;
 
             _this._hideZoomInButton = items.hideZoomInButton;
             _this._hideZoomOutButton = items.hideZoomOutButton;
             _this._hideResetZoomButton = items.hideResetZoomButton;
             _this._hideFullZoomButton = items.hideFullZoomButton;
-            _this._hideVideoBitratesButton = items.hideVideoBitratesButton;
         });
 
         this._zoomIn = zoomIn;
@@ -73,14 +67,6 @@ class UserOptionsModel {
         return this._toggleStatistics;
     }
 
-    public get selectHighestBitrate(): boolean {
-        return this._selectHighestBitrate;
-    }
-
-    public get menuOnTop(): boolean {
-        return this._menuOnTop;
-    }
-
     public get volumeMouseWheel(): boolean {
         return this._volumeMouseWheel;
     }
@@ -99,10 +85,6 @@ class UserOptionsModel {
 
     public get hideFullZoomButton(): boolean {
         return this._hideFullZoomButton;
-    }
-
-    public get hideVideoBitratesButton(): boolean {
-        return this._hideVideoBitratesButton;
     }
 
 

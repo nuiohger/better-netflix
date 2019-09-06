@@ -1,25 +1,19 @@
 (function() {
     "use strict";
 
-    const selectHighestBitrate = document.getElementById("bestQuality"),
-        menuOnTop = document.getElementById("menuTop"),
-        volumeMouseWheel = document.getElementById("volumeMouseWheel"),
+    const volumeMouseWheel = document.getElementById("volumeMouseWheel"),
         hideButtons = {
             zoomIn: document.querySelector("#hide-zoom-in"),
             zoomOut: document.querySelector("#hide-zoom-out"),
             resetZoom: document.querySelector("#hide-reset-zoom"),
-            fullZoom: document.querySelector("#hide-full-zoom"),
-            videoBitrates: document.querySelector("#hide-video-bitrates")
+            fullZoom: document.querySelector("#hide-full-zoom")
         },
         defaults = {
-            selectHighestBitrate: true,
-            menuOnTop: true,
             volumeMouseWheel: true,
             hideZoomInButton: false,
             hideZoomOutButton: false,
             hideResetZoomButton: false,
-            hideFullZoomButton: false,
-            hideVideoBitratesButton: false
+            hideFullZoomButton: false
         };
 
     function restoreSavedOptions() {
@@ -27,15 +21,12 @@
     }
 
     function setValuesOfAllPreferences(items) {
-        selectHighestBitrate.checked = items.selectHighestBitrate;
-        menuOnTop.checked = items.menuOnTop;
         volumeMouseWheel.checked = items.volumeMouseWheel;
 
         hideButtons.zoomIn.checked = items.hideZoomInButton;
         hideButtons.zoomOut.checked = items.hideZoomOutButton;
         hideButtons.resetZoom.checked = items.hideResetZoomButton;
         hideButtons.fullZoom.checked = items.hideFullZoomButton;
-        hideButtons.videoBitrates.checked = items.hideVideoBitratesButton;
     }
 
     function init() {
@@ -46,15 +37,12 @@
     }
 
     function initAutoSave() {
-        selectHighestBitrate.addEventListener("change", event => save({selectHighestBitrate: event.target.checked}), false);
-        menuOnTop.addEventListener("change", event => save({menuOnTop: event.target.checked}), false);
         volumeMouseWheel.addEventListener("change", event => save({volumeMouseWheel: event.target.checked}), false);
 
         hideButtons.zoomIn.addEventListener("change", event => save({hideZoomInButton: event.target.checked}), false);
         hideButtons.zoomOut.addEventListener("change", event => save({hideZoomOutButton: event.target.checked}), false);
         hideButtons.resetZoom.addEventListener("change", event => save({hideResetZoomButton: event.target.checked}), false);
         hideButtons.fullZoom.addEventListener("change", event => save({hideFullZoomButton: event.target.checked}), false);
-        hideButtons.videoBitrates.addEventListener("change", event => save({hideVideoBitratesButton: event.target.checked}), false);
     }
 
     function resetOptions() {

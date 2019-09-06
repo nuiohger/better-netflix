@@ -9,14 +9,11 @@ const defaultKeys = {
     enableMouse: "e",
     timeElapsed: true,
     toggleStatistics: "q",
-    selectHighestBitrate: true,
-    menuOnTop: true,
     volumeMouseWheel: true,
     hideZoomInButton: false,
     hideZoomOutButton: false,
     hideResetZoomButton: false,
-    hideFullZoomButton: false,
-    hideVideoBitratesButton: false
+    hideFullZoomButton: false
 };
 
 const options: UserOptionsModel = UserOptionsModel.optionKeys;

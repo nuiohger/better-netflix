@@ -52,3 +52,4 @@ class Main {
 }
 
 new Main();
+// addEventListener("DOMContentLoaded", () => new Main(), false);

@@ -73,11 +73,6 @@ def build_firefox():
     replace_dir(f"{base_dir}/src/options", f"{firefox_dir}/options")
     shutil.copy(f"{base_dir}/src/style.css", firefox_dir)
     os.makedirs(f"{firefox_dir}/resources", exist_ok=True)
-    shutil.copyfile(
-        f"{base_dir}/bn-cadmium-playercore-firefox.js",
-        f"{firefox_dir}/resources/bn-cadmium-playercore.js",
-    )
-    shutil.copy(f"{base_dir}/src/background.js", firefox_dir)
     dir_util.copy_tree(f"{base_dir}/dist/firefox", firefox_dir)
     print(f"\nSuccessfully built {addon_name} for Firefox")
 
@@ -88,11 +83,6 @@ def build_chrome():
     replace_dir(f"{base_dir}/src/options", f"{chrome_dir}/options")
     shutil.copy(f"{base_dir}/src/style.css", chrome_dir)
     os.makedirs(f"{chrome_dir}/resources", exist_ok=True)
-    shutil.copyfile(
-        f"{base_dir}/bn-cadmium-playercore-chrome.js",
-        f"{chrome_dir}/resources/bn-cadmium-playercore.js",
-    )
-    shutil.copy(f"{base_dir}/src/background.js", chrome_dir)
     dir_util.copy_tree(f"{base_dir}/dist/chrome", chrome_dir)
     print(f"\nSuccessfully built {addon_name} for Chrome")
 
