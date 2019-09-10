@@ -38,7 +38,7 @@ class VideoController {
     private findVideo(): boolean {
         if(location.toString().indexOf("/watch") > 0) {
             const currentVideo = document.querySelector("video");
-            if(currentVideo !== null && (!this._htmlVideo || this._htmlVideo.src !== currentVideo.src)) {
+            if(currentVideo !== null && this._uiController.possibleToAddButtons() && (!this._htmlVideo || this._htmlVideo.src !== currentVideo.src)) {
                 this._htmlVideo = currentVideo;
                 this.initVideo();
                 return true;

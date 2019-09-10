@@ -3,6 +3,11 @@ import ContainerElement from "../Ui/ContainerElement";
 import UiButtonController from "./UiButtonController";
 
 class UiController {
+    public possibleToAddButtons(): boolean {
+        const videoTitle = document.querySelector(".video-title");
+        return videoTitle !== undefined && videoTitle !== null;
+    }
+
     public createUi(videoController: VideoController): void {
         const videoTitle: HTMLDivElement = <HTMLDivElement>document.querySelector(".video-title");
         if(videoTitle === undefined || videoTitle === null) return;
