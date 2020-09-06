@@ -28,7 +28,7 @@ Press `CTRL + SHIFT + B`
 Select `tsc: build`
 
 #### Build script
-The -t or --typescript parameter can be used to build TypeScript. JavaScript is being built for Browsers as well.
+The -t or --typescript parameter can be used to build TypeScript. The tsc command has to be available (TypeScript has to be installed on the system). JavaScript is being built for Browsers as well.
 
 Run `python build.py -t`
 
