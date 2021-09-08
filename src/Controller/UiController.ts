@@ -3,28 +3,35 @@ import ContainerElement from "../Ui/ContainerElement";
 import UiButtonController from "./UiButtonController";
 
 class UiController {
-    public possibleToAddButtons(): boolean {
-        const videoTitle = document.querySelector(".video-title");
-        return videoTitle !== undefined && videoTitle !== null;
-    }
+  public shouldAddButtons(): boolean {
+    return (
+      !document.querySelector(".uiContainer") &&
+      this.getNetflixButtonParent() !== undefined
+    );
+  }
 
-    public createUi(videoController: VideoController): void {
-        const videoTitle: HTMLDivElement = <HTMLDivElement>document.querySelector(".video-title");
-        if(videoTitle === undefined || videoTitle === null) return;
+  public createUi(videoController: VideoController): void {
+    const netflixButtons = this.getNetflixButtonParent();
+    if (netflixButtons === undefined) return;
 
-        this.removeUiOfPreviousVideo();
+    const uiContainer: ContainerElement = new UiButtonController().initButtons(
+      videoController
+    );
 
-        const uiContainer: ContainerElement = new UiButtonController().initButtons(videoController);
+    netflixButtons.insertBefore(
+      uiContainer.element,
+      netflixButtons.children[0]
+    );
+  }
 
-        videoTitle.parentNode.insertBefore(uiContainer.element, videoTitle.nextSibling);
-    }
-
-    private removeUiOfPreviousVideo(): void {
-        const uiContainer = document.querySelector(".uiContainer");
-        if(uiContainer) {
-            uiContainer.parentElement.removeChild(uiContainer);
-        }
-    }
+  private getNetflixButtonParent(): HTMLDivElement {
+    const element = <NodeListOf<HTMLDivElement>>(
+      document.querySelectorAll(
+        ".ltr-1bt0omd > .ltr-1bt0omd > .ltr-1i33xgl > .ltr-hpbgml"
+      )
+    );
+    return element.length > 1 ? element[1] : undefined;
+  }
 }
 
 export default UiController;

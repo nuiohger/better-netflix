@@ -3,8 +3,8 @@ import VideoController from "./VideoController";
 class StatisticController {
     private static _statisticParent: HTMLDivElement;
     private static _video: HTMLVideoElement;
-    private static _interval: number;
-    private static _checkDomInterval: number;
+    private static _interval: NodeJS.Timer;
+    private static _checkDomInterval: NodeJS.Timer;
 
     private static _fps: HTMLDivElement;
     private static _resolution: HTMLDivElement;

@@ -64,8 +64,8 @@ def run_webpack(destination_dir: str):
         "webpack",
         "--entry",
         f"{base_dir}/build/Main.js",
-        "--output",
-        f"{destination_dir}/Main.js",
+        "--output-path",
+        f"{destination_dir}",
         "--mode",
         "none",
         success_msg="Successfully created JavaScript code",
@@ -89,7 +89,7 @@ def build_firefox():
 
 def build_chrome():
     os.makedirs(f"{chrome_dir}/options", exist_ok=True)
-    shutil.copy(f"{firefox_dir}/Main.js", chrome_dir)
+    shutil.copy(f"{firefox_dir}/main.js", chrome_dir)
     replace_dir(f"{base_dir}/src/options", f"{chrome_dir}/options")
     shutil.copy(f"{base_dir}/src/style.css", chrome_dir)
     os.makedirs(f"{chrome_dir}/resources", exist_ok=True)
@@ -148,7 +148,7 @@ def review_build():
         "Generated JavaScript files in build directory.\nThe JavaScript files are merged into one JavaScript file by webpack.\n"
     )
     run_webpack(".")
-    print("\nThe merged JavaScript file is 'Main.js' in the current directory.")
+    print("\nThe merged JavaScript file is 'main.js' in the current directory.")
 
 
 if __name__ == "__main__":
