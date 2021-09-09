@@ -11,14 +11,14 @@ function scrollUpDownEvent(upFunc: Function, downFunc: Function) {
   });
 }
 
-function initListener() {
+function initListener(videoElement: HTMLVideoElement) {
   function fireKeyboardEvent(keyCode: number) {
     const event = new KeyboardEvent("keydown", {
       bubbles: true,
       cancelable: true,
       keyCode: keyCode,
     } as KeyboardEventInit);
-    document.querySelector("video").dispatchEvent(event);
+    videoElement.dispatchEvent(event);
   }
 
   const upFunc = () => fireKeyboardEvent(38); // up arrow
@@ -27,9 +27,9 @@ function initListener() {
   scrollUpDownEvent(upFunc, downFunc);
 }
 
-function addVolumeScrollListener() {
+function addVolumeScrollListener(videoElement: HTMLVideoElement) {
   if (!options.volumeMouseWheel) return;
-  initListener();
+  initListener(videoElement);
 }
 
 export default addVolumeScrollListener;

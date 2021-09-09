@@ -28,7 +28,7 @@ class VideoController {
 
     //   this._timeUiController.setTimeInterval(this._htmlVideo);
 
-      addVolumeScrollListener();
+      addVolumeScrollListener(this._htmlVideo);
 
       // Restore zoom of previous video
       if (this._currentZoom != 100) {
