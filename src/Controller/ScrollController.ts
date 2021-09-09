@@ -1,9 +1,7 @@
 import { options } from "../Constants/Options";
 
 function createScrollEvent(func: EventListener) {
-  document
-    .querySelector(".watch-video")
-    .addEventListener("wheel", func, false);
+  document.body.addEventListener("wheel", func, false);
 }
 
 function scrollUpDownEvent(upFunc: Function, downFunc: Function) {
@@ -20,7 +18,7 @@ function initListener() {
       cancelable: true,
       keyCode: keyCode,
     } as KeyboardEventInit);
-    document.querySelector(".watch-video").dispatchEvent(event);
+    document.querySelector("video").dispatchEvent(event);
   }
 
   const upFunc = () => fireKeyboardEvent(38); // up arrow

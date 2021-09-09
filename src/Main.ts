@@ -13,7 +13,6 @@ class Main {
 
   constructor() {
     this._uiController = new UiController();
-    // TODO: fix scroll event in ScrollController (wrong element querySelector)
     // TODO: fix TimeUiController
     // const timeUiController: TimeUiController = new TimeUiController();
 
