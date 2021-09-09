@@ -3,18 +3,18 @@
 import VideoController from "./Controller/VideoController";
 import { ActionFactory, IAction } from "./Controller/ActionController";
 import UiController from "./Controller/UiController";
-// import TimeUiController from "./Controller/TimeUiController";
+import TimeUiController from "./Controller/TimeUiController";
 import MyListController from "./Controller/MyListController";
 import { options } from "./Constants/Options";
 
 class Main {
   private readonly _videoController: VideoController;
   private readonly _uiController: UiController;
+  private readonly _timeUiController: TimeUiController;
 
   constructor() {
     this._uiController = new UiController();
-    // TODO: fix TimeUiController
-    // const timeUiController: TimeUiController = new TimeUiController();
+    this._timeUiController = new TimeUiController();
 
     this._videoController = new VideoController();
 
@@ -47,9 +47,9 @@ class Main {
     let oldHref = location.href;
 
     const observer = new MutationObserver(() => {
-      if (this._uiController.shouldAddButtons()) {
-        this._uiController.createUi(this._videoController);
-      }
+      this._uiController.createUi(this._videoController);
+
+      this._timeUiController.initTime(this._videoController.getHtmlVideo);
 
       if (oldHref !== location.href) {
         oldHref = location.href;

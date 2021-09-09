@@ -5,55 +5,45 @@ class TimeUiController {
   private readonly _timeModel: TimeModel;
 
   private _htmlTime: HTMLElement;
-  private _timeInterval: NodeJS.Timer;
   private _video: HTMLVideoElement;
 
   constructor() {
     this._timeModel = new TimeModel();
   }
+  public initTime(video: HTMLVideoElement): void {
+    if (
+      !options.timeElapsed ||
+      document.querySelector("time.elapsedTime") ||
+      !video
+    )
+      return;
 
-  public setTimeInterval(video: HTMLVideoElement): void {
-    this._video = video;
+    const parent = document.querySelector(
+      ".ltr-19p9i5y > .ltr-1bt0omd > .ltr-1i33xgl"
+    );
 
-    if (options.timeElapsed) {
-      if (this._timeInterval !== undefined) {
-        clearInterval(this._timeInterval);
-      }
-
-      const _this = this;
-      this._timeInterval = setInterval(function () {
-        _this.initTime();
-      }, 500);
+    if (parent) {
+      this._video = video;
+      this.initElapsedTime(parent);
     }
   }
 
-  private initTime(): void {
-    if (this._video.src !== "") {
-      this.removeTimeFromPreviousVideo();
-      this.initElapsedTime();
-      clearInterval(this._timeInterval);
-      this._timeInterval = undefined;
-    }
-  }
-
-  private initElapsedTime(): void {
+  private initElapsedTime(parent: Element): void {
     this._htmlTime = document.createElement("time");
-    this._htmlTime.classList.add("elapsedTime", "time-remaining__time");
+    this._htmlTime.classList.add("elapsedTime", "ltr-pw0kjc");
     this._htmlTime.textContent = "0:00";
+
     const timeParent: HTMLDivElement = document.createElement("div");
-    timeParent.classList.add("PlayerControls--control-element", "text-control");
+    timeParent.classList.add("ltr-6alejv");
     timeParent.style.textAlign = "left";
     timeParent.appendChild(this._htmlTime);
 
-    const parent: Node = document.getElementsByClassName(
-      "PlayerControls--control-element progress-control"
-    )[0];
     parent.insertBefore(timeParent, parent.firstChild);
 
     const _this: TimeUiController = this;
     this._video.addEventListener(
       "timeupdate",
-      function () {
+      () => {
         _this.updateTime();
       },
       false
@@ -64,13 +54,6 @@ class TimeUiController {
     if (this._video !== undefined) {
       this._timeModel.setCurrentTime(this._video.currentTime);
       this._htmlTime.textContent = this._timeModel.toString();
-    }
-  }
-
-  private removeTimeFromPreviousVideo(): void {
-    const time = document.querySelector("time.elapsedTime");
-    if (time) {
-      time.parentElement.removeChild(time);
     }
   }
 }

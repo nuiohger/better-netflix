@@ -1,5 +1,7 @@
 .elapsedTime {
-    margin-right: 30px;
+    margin-right: 20px;
+    top: 25%;
+    position: relative;
 }
 
 .uiContainer {

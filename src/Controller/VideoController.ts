@@ -1,18 +1,11 @@
-// import TimeUiController from "./TimeUiController";
 import addVolumeScrollListener from "./ScrollController";
 
 class VideoController {
-//   private readonly _timeUiController: TimeUiController;
-
   private _htmlVideo: HTMLVideoElement;
   private _updatingVideo: boolean = false;
   private _updateVideoInterval: NodeJS.Timer;
 
   private _currentZoom: number = 100;
-
-  constructor() {
-    // this._timeUiController = timeUiController;
-  }
 
   public start(): void {
     if (!this._updatingVideo) {
@@ -25,8 +18,6 @@ class VideoController {
     if (this.findVideo()) {
       clearInterval(this._updateVideoInterval);
       this._updatingVideo = false;
-
-    //   this._timeUiController.setTimeInterval(this._htmlVideo);
 
       addVolumeScrollListener(this._htmlVideo);
 

@@ -3,16 +3,9 @@ import ContainerElement from "../Ui/ContainerElement";
 import UiButtonController from "./UiButtonController";
 
 class UiController {
-  public shouldAddButtons(): boolean {
-    return (
-      !document.querySelector(".uiContainer") &&
-      this.getNetflixButtonParent() !== undefined
-    );
-  }
-
   public createUi(videoController: VideoController): void {
     const netflixButtons = this.getNetflixButtonParent();
-    if (netflixButtons === undefined) return;
+    if (!netflixButtons || document.querySelector(".uiContainer")) return;
 
     const uiContainer: ContainerElement = new UiButtonController().initButtons(
       videoController
