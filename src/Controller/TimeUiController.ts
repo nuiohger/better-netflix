@@ -19,7 +19,7 @@ class TimeUiController {
       return;
 
     const parent = document.querySelector(
-      ".ltr-19p9i5y > .ltr-1bt0omd > .ltr-1i33xgl"
+      "div > div.watch-video--bottom-controls-container.ltr-hpbgml > div > div > div:nth-child(1)"
     );
 
     if (parent) {
