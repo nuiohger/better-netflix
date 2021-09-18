@@ -6,7 +6,7 @@ import UiController from './Controller/UiController'
 import TimeUiController from './Controller/TimeUiController'
 import * as MyListController from './Controller/MyListController'
 import { options } from './Constants/Options'
-import * as ImdbController from './Controller/ImdbController'
+import ImdbController from './Controller/ImdbController'
 
 function main (): void {
   const videoController = new VideoController()
@@ -36,6 +36,7 @@ function main (): void {
 function observe (videoController: VideoController): void {
   const uiController = new UiController()
   const timeUiController = new TimeUiController()
+  const imdbController = new ImdbController();
 
   let oldHref = location.href
 
@@ -50,7 +51,7 @@ function observe (videoController: VideoController): void {
       videoController.start()
       MyListController.randomVideo()
 
-      setTimeout(ImdbController.addImdbButton, 2000)
+      imdbController.init()
     }
   })
 
