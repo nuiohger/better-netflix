@@ -1,75 +1,75 @@
-import addVolumeScrollListener from "./ScrollController";
+import addVolumeScrollListener from './ScrollController'
 
 class VideoController {
-  private _htmlVideo: HTMLVideoElement;
-  private _updatingVideo: boolean = false;
-  private _updateVideoInterval: NodeJS.Timer;
+  private _htmlVideo: HTMLVideoElement
+  private _updatingVideo = false
+  private _updateVideoInterval: NodeJS.Timer
 
-  private _currentZoom: number = 100;
+  private _currentZoom = 100
 
-  public start(): void {
+  public start (): void {
     if (!this._updatingVideo) {
-      this._updatingVideo = true;
-      this._updateVideoInterval = setInterval(this.updateVideo.bind(this), 500);
+      this._updatingVideo = true
+      this._updateVideoInterval = setInterval(this.updateVideo.bind(this), 500)
     }
   }
 
-  private updateVideo(): void {
+  private updateVideo (): void {
     if (this.findVideo()) {
-      clearInterval(this._updateVideoInterval);
-      this._updatingVideo = false;
+      clearInterval(this._updateVideoInterval)
+      this._updatingVideo = false
 
-      addVolumeScrollListener(this._htmlVideo);
+      addVolumeScrollListener(this._htmlVideo)
 
       // Restore zoom of previous video
-      if (this._currentZoom != 100) {
-        this.setZoom(this._currentZoom);
+      if (this._currentZoom !== 100) {
+        this.setZoom(this._currentZoom)
       }
     }
   }
 
-  private findVideo(): boolean {
-    if (location.toString().indexOf("/watch") > 0) {
-      const currentVideo = document.querySelector("video");
+  private findVideo (): boolean {
+    if (location.toString().indexOf('/watch') > 0) {
+      const currentVideo = document.querySelector('video')
       if (
         currentVideo !== null &&
         (!this._htmlVideo || this._htmlVideo.src !== currentVideo.src)
       ) {
-        this._htmlVideo = currentVideo;
-        return true;
+        this._htmlVideo = currentVideo
+        return true
       }
     }
-    return false;
+    return false
   }
 
-  public addZoom(percentage: number): void {
-    let height = parseInt(this._htmlVideo.style.minHeight);
+  public addZoom (percentage: number): void {
+    let height = parseInt(this._htmlVideo.style.minHeight)
 
     if (isNaN(height)) {
-      height = 100;
+      height = 100
     }
 
-    this.setZoom(percentage + height);
+    this.setZoom(percentage + height)
   }
 
-  public setZoom(percentage: number): void {
+  public setZoom (percentage: number): void {
     if (percentage < 100) {
-      percentage = 100;
+      percentage = 100
     }
 
     this._htmlVideo.style.minHeight = this._htmlVideo.style.minWidth =
-      percentage + "%";
+      percentage + '%'
 
-    this._currentZoom = percentage;
+    this._currentZoom = percentage
   }
 
-  public get getHtmlVideo(): HTMLVideoElement {
-    return this._htmlVideo;
+  public get getHtmlVideo (): HTMLVideoElement {
+    return this._htmlVideo
   }
 
-  public get currentZoom(): number {
-    return this._currentZoom;
+  public get currentZoom (): number {
+    return this._currentZoom
   }
 }
 
-export default VideoController;
+export default VideoController

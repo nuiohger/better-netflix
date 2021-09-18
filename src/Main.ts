@@ -1,66 +1,60 @@
-"use strict";
+'use strict'
 
-import VideoController from "./Controller/VideoController";
-import { ActionFactory, IAction } from "./Controller/ActionController";
-import UiController from "./Controller/UiController";
-import TimeUiController from "./Controller/TimeUiController";
-import MyListController from "./Controller/MyListController";
-import { options } from "./Constants/Options";
+import VideoController from './Controller/VideoController'
+import { ActionFactory, IAction } from './Controller/ActionController'
+import UiController from './Controller/UiController'
+import TimeUiController from './Controller/TimeUiController'
+import * as MyListController from './Controller/MyListController'
+import { options } from './Constants/Options'
+import * as ImdbController from './Controller/ImdbController'
 
-class Main {
-  private readonly _videoController: VideoController;
-  private readonly _uiController: UiController;
-  private readonly _timeUiController: TimeUiController;
+function main (): void {
+  const videoController = new VideoController()
+  videoController.start()
+  MyListController.randomVideo()
 
-  constructor() {
-    this._uiController = new UiController();
-    this._timeUiController = new TimeUiController();
+  observe(videoController)
 
-    this._videoController = new VideoController();
+  document.addEventListener(
+    'keydown',
+    (event) => {
+      const actionName = ActionFactory.actionNames.filter(
+        (actionName) => options[actionName] === event.key
+      )[0]
 
-    this.initialize();
-  }
+      try {
+        const action: IAction = ActionFactory.getAction(actionName)
+        action.execute(videoController)
+      } catch (e) {}
+    },
+    false
+  )
 
-  private initialize(): void {
-    this._videoController.start();
-    MyListController.randomVideo();
-
-    this.observe();
-
-    document.addEventListener(
-      "keydown",
-      (event) => {
-        const actionName = ActionFactory.actionNames.filter(
-          (actionName) => options[actionName] === event.key
-        )[0];
-
-        try {
-          const action: IAction = ActionFactory.getAction(actionName);
-          action.execute(this._videoController);
-        } catch (e) {}
-      },
-      false
-    );
-  }
-
-  private observe(): any {
-    let oldHref = location.href;
-
-    const observer = new MutationObserver(() => {
-      this._uiController.createUi(this._videoController);
-
-      this._timeUiController.initTime(this._videoController.getHtmlVideo);
-
-      if (oldHref !== location.href) {
-        oldHref = location.href;
-
-        this._videoController.start();
-        MyListController.randomVideo();
-      }
-    });
-
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
+  ImdbController.addImdbButton()
 }
 
-new Main();
+function observe (videoController: VideoController): void {
+  const uiController = new UiController()
+  const timeUiController = new TimeUiController()
+
+  let oldHref = location.href
+
+  const observer = new MutationObserver(() => {
+    uiController.createUi(videoController)
+
+    timeUiController.initTime(videoController.getHtmlVideo)
+
+    if (oldHref !== location.href) {
+      oldHref = location.href
+
+      videoController.start()
+      MyListController.randomVideo()
+
+      setTimeout(ImdbController.addImdbButton, 2000)
+    }
+  })
+
+  observer.observe(document.body, { childList: true, subtree: true })
+}
+
+main()

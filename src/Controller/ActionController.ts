@@ -1,68 +1,68 @@
-import VideoController from "./VideoController";
-import StatisticsController from "./StatisticController";
-import { options } from "../Constants/Options";
+import VideoController from './VideoController'
+import StatisticsController from './StatisticController'
+import { options } from '../Constants/Options'
 
 interface IAction {
-  key: string;
+  key: string
 
-  execute(videoController: VideoController): void;
+  execute(videoController: VideoController): void
 }
 
 class ZoomInAction implements IAction {
-  key: string = options.zoomIn;
+  key: string = options.zoomIn
 
-  public execute(videoController: VideoController): void {
-    videoController.addZoom(5);
+  public execute (videoController: VideoController): void {
+    videoController.addZoom(5)
   }
 }
 
 class ZoomOutAction implements IAction {
-  key: string = options.zoomOut;
+  key: string = options.zoomOut
 
-  public execute(videoController: VideoController): void {
-    videoController.addZoom(-5);
+  public execute (videoController: VideoController): void {
+    videoController.addZoom(-5)
   }
 }
 
 class ResetZoomAction implements IAction {
-  key: string = options.resetZoom;
+  key: string = options.resetZoom
 
-  public execute(videoController: VideoController): void {
-    videoController.setZoom(100);
+  public execute (videoController: VideoController): void {
+    videoController.setZoom(100)
   }
 }
 
 class FullZoomAction implements IAction {
-  key: string = options.fullZoom;
+  key: string = options.fullZoom
 
-  public execute(videoController: VideoController): void {
-    videoController.setZoom(135);
+  public execute (videoController: VideoController): void {
+    videoController.setZoom(135)
   }
 }
 
 class DisableMouseAction implements IAction {
-  key: string = options.disableMouse;
+  key: string = options.disableMouse
 
-  public execute(videoController: VideoController): void {
-    const video: any = videoController.getHtmlVideo;
-    video.requestPointerLock();
+  public execute (videoController: VideoController): void {
+    const video = videoController.getHtmlVideo
+    video.requestPointerLock()
   }
 }
 
 class EnableMouseAction implements IAction {
-  key: string = options.enableMouse;
+  key: string = options.enableMouse
 
-  public execute(): void {
-    const doc: any = document;
-    doc.exitPointerLock();
+  public execute (): void {
+    const doc = document
+    doc.exitPointerLock()
   }
 }
 
 class ToggleStatisticsAction implements IAction {
-  key: string = options.toggleStatistics;
+  key: string = options.toggleStatistics
 
-  public execute(videoController: VideoController): void {
-    StatisticsController.toggle(videoController);
+  public execute (videoController: VideoController): void {
+    StatisticsController.toggle(videoController)
   }
 }
 
@@ -74,20 +74,22 @@ class ActionFactory {
     fullZoom: FullZoomAction,
     disableMouse: DisableMouseAction,
     enableMouse: EnableMouseAction,
-    toggleStatistics: ToggleStatisticsAction,
-  };
-
-  public static getAction(actionName: string): IAction {
-    const action = this._classDictionary[actionName];
-
-    if (action === undefined) throw "Action " + actionName + " was not found.";
-
-    return new action();
+    toggleStatistics: ToggleStatisticsAction
   }
 
-  public static get actionNames() {
-    return Object.keys(this._classDictionary);
+  public static getAction (actionName: string): IAction {
+    const Action = this._classDictionary[actionName]
+
+    if (Action === undefined) {
+      throw new Error('Action ' + actionName + ' was not found.')
+    }
+
+    return new Action()
+  }
+
+  public static get actionNames (): string[] {
+    return Object.keys(this._classDictionary)
   }
 }
 
-export { ActionFactory, IAction };
+export { ActionFactory, IAction }
