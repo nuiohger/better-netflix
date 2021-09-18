@@ -1,33 +1,11 @@
-#options {
-  height: 500px;
+body {
+  background-color: #000;
+  color: #fff;
+  margin: 10px;
 }
 
 .msg {
   font-weight: bold;
-}
-
-.container {
-  border: 3px solid black;
-  background-color: #222;
-  padding: 15px;
-  color: #fff;
-}
-
-.container div {
-  width: 600px;
-}
-
-.container input,
-.container button {
-  float: right;
-}
-
-.container input {
-  margin-top: 3px;
-}
-
-.container button {
-  margin-left: 10px;
 }
 
 button {
@@ -39,16 +17,10 @@ button {
 }
 
 button:hover {
-  color: #000;
-  border-color: #000;
-}
-
-.hidden {
-  display: none;
-}
-
-.buttons {
-  height: 25px;
+  color: #fff;
+  border-color: #fff;
+  transform: scale(1.1);
+  background-color: #000;
 }
 
 hr {
@@ -56,60 +28,43 @@ hr {
   clear: both;
 }
 
-.popup-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-}
-
-.popup {
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 20px 5px black;
-  border-width: 2px;
-  width: 250px;
-}
-
-.popup h3 {
-  margin-top: -3px;
-}
-
-div.popup div {
-  width: initial;
-}
-
-div.popup button {
-  margin-left: auto;
-}
-
-.close {
-  top: 3px;
-  right: 3px;
-  position: fixed;
-}
-
-.close:hover {
-  color: #eee;
-  border-color: #eee;
-  background-color: #222;
-}
-
-.blurred {
-  filter: blur(2px);
-}
-
-div.uiContainer.left {
+.uiContainer {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #000;
   float: left;
   width: 100px;
+  padding: 5px;
+  margin: 5px;
 }
 
-div.uiContainer.right {
-  float: right;
-  width: 100px;
-  border-left: 1px solid #aaa;
-  margin-bottom: 10px;
+.uiButtons {
+  color: #fff;
+  border-radius: 1.6em;
+  width: 1.8em;
+  height: 1.8em;
+  justify-content: center;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0 auto;
+  display: flex;
+  user-select: none;
+  outline: 0;
+  border: 3px solid #fff;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.largeUiButtons {
+  font-size: 1em;
+  width: 2.8em;
+  height: 2.8em;
+  line-height: 35px;
+}
+
+.buttons-container {
+  text-align: center;
+}
+
+.separator {
+  border: 1px solid #aaa;
 }

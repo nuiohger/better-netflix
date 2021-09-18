@@ -35,9 +35,6 @@
     document
       .getElementById('reset')
       .addEventListener('click', resetOptions, false)
-    document
-      .getElementById('modify-ui')
-      .addEventListener('click', showUiModificationPopup, false)
   }
 
   function initAutoSave () {
@@ -76,43 +73,6 @@
 
   function save (obj) {
     chrome.storage.sync.set(obj)
-  }
-
-  let uiModificationPopupAdded = false
-  function showUiModificationPopup () {
-    const popup = document.querySelector('#ui-modification')
-    showPopup(popup, uiModificationPopupAdded)
-    uiModificationPopupAdded = true
-  }
-
-  function showPopup (popup, eventListenerAdded = false) {
-    document.querySelector('#options').classList.add('blurred')
-    popup.parentElement.classList.remove('hidden')
-
-    if (!eventListenerAdded) {
-      popup.querySelector('.close').addEventListener(
-        'click',
-        () => {
-          closePopup(popup.parentElement)
-        },
-        false
-      )
-
-      addEventListener(
-        'click',
-        (event) => {
-          if (event.target.classList.contains('popup-container')) {
-            closePopup(event.target)
-          }
-        },
-        false
-      )
-    }
-  }
-
-  function closePopup (popup) {
-    document.querySelector('#options').classList.remove('blurred')
-    popup.classList.add('hidden')
   }
 
   window.addEventListener(

@@ -4,7 +4,6 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="options.css" />
-    <link rel="stylesheet" type="text/css" href="buttons.css" />
   </head>
 
   <body>
@@ -19,49 +18,35 @@
       <input type="checkbox" id="volumeMouseWheel" checked />
       <hr />
 
-      <div class="buttons">
-        <button id="modify-ui" onclick="return false;">
-          Modify the visibility of the buttons
-        </button>
+      <div>Select a button to hide it on Netflix</div>
+
+      <div class="uiContainer">
+        <button class="uiButtons" disabled>+</button>
+        <input type="checkbox" id="hide-zoom-in" />
+      </div>
+
+      <div class="uiContainer">
+        <span class="separator"></span>
+        <button class="uiButtons" disabled>-</button>
+        <input type="checkbox" id="hide-zoom-out" />
+      </div>
+
+      <div class="uiContainer">
+        <span class="separator"></span>
+        <button class="uiButtons largeUiButtons" disabled>16:9</button>
+        <input type="checkbox" id="hide-reset-zoom" />
+      </div>
+
+      <div class="uiContainer">
+        <span class="separator"></span>
+        <button class="uiButtons largeUiButtons" disabled>21:9</button>
+        <input type="checkbox" id="hide-full-zoom" />
       </div>
       <hr />
 
       <br />
-      <div class="buttons">
+      <div class="buttons-container">
         <button id="reset">Reset</button>
-      </div>
-    </div>
-
-    <div class="popup-container hidden">
-      <div id="ui-modification" class="popup container">
-        <h4>
-          Select all buttons that should be hidden on Netflix. Uncheck a button
-          to show it.
-        </h4>
-        <hr />
-
-        <button class="close">X</button>
-
-        <div class="uiContainer left">
-          <button class="uiButtons" disabled>+</button>
-          <input type="checkbox" id="hide-zoom-in" />
-        </div>
-
-        <div class="uiContainer right">
-          <button class="uiButtons" disabled>-</button>
-          <input type="checkbox" id="hide-zoom-out" />
-        </div>
-        <hr />
-
-        <div class="uiContainer left">
-          <button class="uiButtons largeUiButtons" disabled>16:9</button>
-          <input type="checkbox" id="hide-reset-zoom" />
-        </div>
-
-        <div class="uiContainer right">
-          <button class="uiButtons largeUiButtons" disabled>21:9</button>
-          <input type="checkbox" id="hide-full-zoom" />
-        </div>
       </div>
     </div>
 
