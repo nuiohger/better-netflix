@@ -8,7 +8,7 @@ enum ButtonType {
   ZoomOut = 2,
   ResetZoom = 3,
   FullZoom = 4,
-  VideoBitrates = 5
+  CustomZoom = 5
 }
 
 class Button {
@@ -44,6 +44,8 @@ class Button {
         return options.hideResetZoomButton
       case ButtonType.FullZoom:
         return options.hideFullZoomButton
+      case ButtonType.CustomZoom:
+        return !options.showCustomZoomButton
     }
 
     throw new Error("ButtonType '" + this.buttonType + "' out of range")
@@ -101,6 +103,16 @@ class UiButtonController {
         'Zoom to 21:9 (Key: .)',
         'fullZoom',
         true
+      )
+    )
+
+    buttons.push(
+      this.createButton(
+        videoController,
+        ButtonType.CustomZoom,
+        'C',
+        'Custom zoom (Key: c)',
+        'customZoom'
       )
     )
 

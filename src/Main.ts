@@ -36,7 +36,7 @@ function main (): void {
 function observe (videoController: VideoController): void {
   const uiController = new UiController()
   const timeUiController = new TimeUiController()
-  const imdbController = new ImdbController();
+  const imdbController = new ImdbController()
 
   let oldHref = location.href
 

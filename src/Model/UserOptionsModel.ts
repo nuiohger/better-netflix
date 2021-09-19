@@ -2,31 +2,38 @@ import ChromeController from '../Controller/ChromeController'
 import { defaultKeys } from '../Constants/Options'
 
 class UserOptionsModel {
+  // Keys:
   private _zoomIn: string
   private _zoomOut: string
   private _resetZoom: string
   private _fullZoom: string
   private _disableMouse: string
   private _enableMouse: string
-  private _timeElapsed: boolean
   private _toggleStatistics: string
+  private _customZoomKey: string
+
+  // Enabled / disabled options:
+  private _timeElapsed: boolean
   private _volumeMouseWheel: boolean
   private _hideZoomInButton: boolean
   private _hideZoomOutButton: boolean
   private _hideResetZoomButton: boolean
   private _hideFullZoomButton: boolean
+  private _showCustomZoomButton: boolean
+  private _customZoomAmount: number
 
   private _chromeController: ChromeController
 
   private constructor (
-    zoomIn = '',
-    zoomOut = '',
-    resetZoom = '',
-    fullZoom = '',
-    disableMouse = '',
-    enableMouse = '',
-    timeElapsed = true,
-    toggleStatistics = ''
+    zoomIn: string,
+    zoomOut: string,
+    resetZoom: string,
+    fullZoom: string,
+    disableMouse: string,
+    enableMouse: string,
+    timeElapsed: boolean,
+    toggleStatistics: string,
+    customZoomKey: string
   ) {
     if (!this._chromeController) this._chromeController = new ChromeController()
 
@@ -37,6 +44,9 @@ class UserOptionsModel {
       this._hideZoomOutButton = items.hideZoomOutButton
       this._hideResetZoomButton = items.hideResetZoomButton
       this._hideFullZoomButton = items.hideFullZoomButton
+
+      this._showCustomZoomButton = items.showCustomZoomButton
+      this._customZoomAmount = items.customZoomAmount || 0
     })
 
     this._zoomIn = zoomIn
@@ -47,6 +57,7 @@ class UserOptionsModel {
     this._enableMouse = enableMouse
     this._timeElapsed = timeElapsed
     this._toggleStatistics = toggleStatistics
+    this._customZoomKey = customZoomKey
   }
 
   public get zoomIn (): string {
@@ -81,6 +92,10 @@ class UserOptionsModel {
     return this._toggleStatistics
   }
 
+  public get customZoom (): string {
+    return this._customZoomKey
+  }
+
   public get volumeMouseWheel (): boolean {
     return this._volumeMouseWheel
   }
@@ -101,8 +116,16 @@ class UserOptionsModel {
     return this._hideFullZoomButton
   }
 
+  public get showCustomZoomButton (): boolean {
+    return this._showCustomZoomButton
+  }
+
+  public get customZoomAmount (): number {
+    return this._customZoomAmount
+  }
+
   public static get optionKeys (): UserOptionsModel {
-    return new UserOptionsModel('+', '-', ',', '.', 'd', 'e', true, 'q')
+    return new UserOptionsModel('+', '-', ',', '.', 'd', 'e', true, 'q', 'c')
   }
 }
 

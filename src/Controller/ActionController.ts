@@ -53,8 +53,7 @@ class EnableMouseAction implements IAction {
   key: string = options.enableMouse
 
   public execute (): void {
-    const doc = document
-    doc.exitPointerLock()
+    document.exitPointerLock()
   }
 }
 
@@ -66,6 +65,14 @@ class ToggleStatisticsAction implements IAction {
   }
 }
 
+class CustomZoomAction implements IAction {
+  key: string = options.customZoom
+
+  public execute (videoController: VideoController): void {
+    videoController.setZoom(100 + options.customZoomAmount * 5)
+  }
+}
+
 class ActionFactory {
   private static _classDictionary = {
     zoomIn: ZoomInAction,
@@ -74,7 +81,8 @@ class ActionFactory {
     fullZoom: FullZoomAction,
     disableMouse: DisableMouseAction,
     enableMouse: EnableMouseAction,
-    toggleStatistics: ToggleStatisticsAction
+    toggleStatistics: ToggleStatisticsAction,
+    customZoom: CustomZoomAction
   }
 
   public static getAction (actionName: string): IAction {
