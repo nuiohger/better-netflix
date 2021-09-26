@@ -6,6 +6,7 @@ class VideoController {
   private _updateVideoInterval: NodeJS.Timer
 
   private _currentZoom = 100
+  private _minZoom = 100
 
   public start (): void {
     if (!this._updatingVideo) {
@@ -24,6 +25,16 @@ class VideoController {
       // Restore zoom of previous video
       if (this._currentZoom !== 100) {
         this.setZoom(this._currentZoom)
+      }
+
+      // Set min-height percentage to height of video set by Netflix
+      const percentage =
+        (this._htmlVideo.offsetHeight /
+          this._htmlVideo.parentElement.offsetHeight) *
+        100
+      if (percentage > this._currentZoom) {
+        this._minZoom = percentage
+        this.setZoom(percentage)
       }
     }
   }
@@ -46,15 +57,15 @@ class VideoController {
     let height = parseInt(this._htmlVideo.style.minHeight)
 
     if (isNaN(height)) {
-      height = 100
+      height = this._minZoom
     }
 
     this.setZoom(percentage + height)
   }
 
   public setZoom (percentage: number): void {
-    if (percentage < 100) {
-      percentage = 100
+    if (percentage < this._minZoom) {
+      percentage = this._minZoom
     }
 
     this._htmlVideo.style.minHeight = this._htmlVideo.style.minWidth =

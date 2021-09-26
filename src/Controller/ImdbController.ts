@@ -21,7 +21,7 @@ export default class ImdbController {
 
   static addImdbButton (): boolean {
     if (
-      !(location.href.includes('?jbv=') || location.href.includes('/title/')) ||
+      !(location.href.includes('jbv=') || location.href.includes('/title/')) ||
       document.querySelector(`.${btnClass}`)
     ) {
       return false

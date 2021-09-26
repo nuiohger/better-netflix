@@ -43,7 +43,9 @@ function observe (videoController: VideoController): void {
   const observer = new MutationObserver(() => {
     uiController.createUi(videoController)
 
-    timeUiController.initTime(videoController.getHtmlVideo)
+    setTimeout(() => {
+      timeUiController.initTime(videoController.getHtmlVideo)
+    }, 500)
 
     if (oldHref !== location.href) {
       oldHref = location.href

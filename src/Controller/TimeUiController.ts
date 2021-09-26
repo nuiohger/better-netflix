@@ -33,7 +33,7 @@ class TimeUiController {
   private initElapsedTime (parent: Element): void {
     this._htmlTime = document.createElement('time')
     this._htmlTime.classList.add('elapsedTime', 'ltr-pw0kjc')
-    this._htmlTime.textContent = '0:00'
+    this.updateTime()
 
     const timeParent: HTMLDivElement = document.createElement('div')
     timeParent.classList.add('ltr-6alejv')
