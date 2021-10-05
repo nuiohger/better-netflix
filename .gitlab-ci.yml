@@ -1,26 +1,8 @@
 image: node:latest
 
-cache:
-    paths:
-        - node_modules
-
-stages:
-    - install
-    - code analysis
-    - build
-
-install:
-    stage: install
-    script:
-        - npm install
-
-code-analysis:
-    stage: code analysis
-    script:
-        - ./build.py --check
-
 build:
-    stage: build
     script:
+        - npm install -g typescript webpack webpack-cli
+        - npm install @types/chrome 
         - tsc --build tsconfig.json
         - npx webpack --entry ./build/Main.js --mode none
