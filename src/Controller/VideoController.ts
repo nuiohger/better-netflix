@@ -1,41 +1,16 @@
 import addVolumeScrollListener from './ScrollController'
 
 class VideoController {
-  private _htmlVideo: HTMLVideoElement
-  private _updatingVideo = false
-  private _updateVideoInterval: NodeJS.Timer
+  private _htmlVideo: HTMLVideoElement;
+  private _updatingVideo = false;
 
-  private _currentZoom = 100
-  private _minZoom = 100
+  private _currentZoom = 100;
+  private _minZoom = 100;
 
   public start (): void {
-    if (!this._updatingVideo) {
+    if (!this._updatingVideo && this.findVideo()) {
       this._updatingVideo = true
-      this._updateVideoInterval = setInterval(this.updateVideo.bind(this), 500)
-    }
-  }
-
-  private updateVideo (): void {
-    if (this.findVideo()) {
-      clearInterval(this._updateVideoInterval)
-      this._updatingVideo = false
-
-      addVolumeScrollListener(this._htmlVideo)
-
-      // Restore zoom of previous video
-      if (this._currentZoom !== 100) {
-        this.setZoom(this._currentZoom)
-      }
-
-      // Set min-height percentage to height of video set by Netflix
-      const percentage =
-        (this._htmlVideo.offsetHeight /
-          this._htmlVideo.parentElement.offsetHeight) *
-        100
-      if (percentage > this._currentZoom) {
-        this._minZoom = percentage
-        this.setZoom(percentage)
-      }
+      this.updateVideo()
     }
   }
 
@@ -51,6 +26,27 @@ class VideoController {
       }
     }
     return false
+  }
+
+  private updateVideo (): void {
+    this._updatingVideo = false
+
+    addVolumeScrollListener(this._htmlVideo)
+
+    // Restore zoom of previous video
+    if (this._currentZoom !== 100) {
+      this.setZoom(this._currentZoom)
+    }
+
+    // Set min-height percentage to height of video set by Netflix
+    const percentage =
+      (this._htmlVideo.offsetHeight /
+        this._htmlVideo.parentElement.offsetHeight) *
+      100
+    if (percentage > this._currentZoom) {
+      this._minZoom = percentage
+      this.setZoom(percentage)
+    }
   }
 
   public addZoom (percentage: number): void {

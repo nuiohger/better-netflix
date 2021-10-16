@@ -1,7 +1,9 @@
 import { options } from '../Constants/Options'
 
 function createScrollEvent (func: EventListener) {
-  document.body.addEventListener('wheel', func, false)
+  document
+    .querySelector('#appMountPoint > div > div > div.watch-video > div > div')
+    .addEventListener('wheel', func, false)
 }
 
 function scrollUpDownEvent (upFunc: () => void, downFunc: () => void) {

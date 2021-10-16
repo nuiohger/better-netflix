@@ -45,12 +45,13 @@ function observe (videoController: VideoController): void {
 
     setTimeout(() => {
       timeUiController.initTime(videoController.getHtmlVideo)
-    }, 500)
+    }, 1000)
+
+    videoController.start()
 
     if (oldHref !== location.href) {
       oldHref = location.href
 
-      videoController.start()
       MyListController.randomVideo()
 
       imdbController.init()
