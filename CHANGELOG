@@ -1,3 +1,6 @@
+1.6.0 (30.10.2021):
+- add keyboard shortcut (v) to toggle english subtitles
+
 1.5.5 (16.10.2021):
 - reload extension after video has been paused for a longer time
 - fix: change volume with mouse wheel only on video, not in episode list
