@@ -5,3 +5,6 @@ build
 
 _old
 TODO
+
+__pycache__
+python-gitlab.cfg

@@ -1,64 +1,64 @@
-'use strict'
+"use strict"
 
-import VideoController from './Controller/VideoController'
-import { ActionFactory, IAction } from './Controller/ActionController'
-import UiController from './Controller/UiController'
-import TimeUiController from './Controller/TimeUiController'
-import * as MyListController from './Controller/MyListController'
-import { options } from './Constants/Options'
-import ImdbController from './Controller/ImdbController'
+import VideoController from "./Controller/VideoController"
+import { ActionFactory } from "./Controller/ActionController"
+import UiController from "./Controller/UiController"
+import TimeUiController from "./Controller/TimeUiController"
+import * as MyListController from "./Controller/MyListController"
+import { options } from "./Constants/Options"
+import ImdbController from "./Controller/ImdbController"
 
-function main (): void {
-  const videoController = new VideoController()
-  videoController.start()
-  MyListController.randomVideo()
+function main(): void {
+    const videoController = new VideoController()
+    videoController.start()
+    MyListController.randomVideo()
 
-  observe(videoController)
+    observe(videoController)
 
-  document.addEventListener(
-    'keydown',
-    (event) => {
-      const actionName = ActionFactory.actionNames.filter(
-        (actionName) => options[actionName] === event.key
-      )[0]
+    document.addEventListener(
+        "keydown",
+        (event) => {
+            const actionName = ActionFactory.actionNames.filter(
+                (actionName) => options[actionName] === event.key
+            )[0]
 
-      try {
-        const action: IAction = ActionFactory.getAction(actionName)
-        action.execute(videoController)
-      } catch (e) {}
-    },
-    false
-  )
+            const action = ActionFactory.getAction(actionName)
+            if (action) {
+                action.execute(videoController)
+            }
+        },
+        false
+    )
 
-  ImdbController.addImdbButton()
+    ImdbController.addImdbButton()
 }
 
-function observe (videoController: VideoController): void {
-  const uiController = new UiController()
-  const timeUiController = new TimeUiController()
-  const imdbController = new ImdbController()
+function observe(videoController: VideoController): void {
+    const uiController = new UiController()
+    const timeUiController = new TimeUiController()
+    const imdbController = new ImdbController()
 
-  let oldHref = location.href
+    let oldHref = location.href
 
-  const observer = new MutationObserver(() => {
-    uiController.createUi(videoController)
+    const observer = new MutationObserver(() => {
+        uiController.createUi(videoController)
 
-    setTimeout(() => {
-      timeUiController.initTime(videoController.getHtmlVideo)
-    }, 1000)
+        setTimeout(() => {
+            timeUiController.initTime(videoController.getHtmlVideo)
+        }, 1000)
 
-    videoController.start()
+        videoController.start()
 
-    if (oldHref !== location.href) {
-      oldHref = location.href
+        if (oldHref !== location.href) {
+            oldHref = location.href
 
-      MyListController.randomVideo()
+            MyListController.randomVideo()
 
-      imdbController.init()
-    }
-  })
+            imdbController.init()
+        }
+    })
 
-  observer.observe(document.body, { childList: true, subtree: true })
+    observer.observe(document.body, { childList: true, subtree: true })
 }
 
 main()

@@ -1,68 +1,75 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" type="text/css" href="options.css" />
-  </head>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="options.css" />
+    </head>
 
-  <body>
-    <div id="options">
-      <br />
-      <div class="msg">All preferences are automatically saved.</div>
-      <hr />
+    <body>
+        <div id="options">
+            <br />
+            <div class="msg">All preferences are automatically saved.</div>
+            <hr />
 
-      <label for="volumeMouseWheel"
-        >Change volume when scrolling with the mouse wheel</label
-      >
-      <input type="checkbox" id="volumeMouseWheel" checked />
-      <hr />
+            <label for="volumeMouseWheel"
+                >Change volume when scrolling with the mouse wheel</label
+            >
+            <input type="checkbox" id="volumeMouseWheel" checked />
+            <hr />
 
-      <div>Select a button to hide it on Netflix</div>
-      <br />
+            <div>Select a button to hide it on Netflix</div>
+            <br />
 
-      <div class="uiContainer">
-        <button class="uiButtons" disabled>+</button>
-        <input type="checkbox" id="hide-zoom-in" />
-      </div>
+            <div class="uiContainer">
+                <button class="uiButtons" disabled>+</button>
+                <input type="checkbox" id="hide-zoom-in" />
+            </div>
 
-      <div class="uiContainer">
-        <button class="uiButtons" disabled>-</button>
-        <input type="checkbox" id="hide-zoom-out" />
-      </div>
+            <div class="uiContainer">
+                <button class="uiButtons" disabled>-</button>
+                <input type="checkbox" id="hide-zoom-out" />
+            </div>
 
-      <div class="uiContainer">
-        <button class="uiButtons largeUiButtons" disabled>16:9</button>
-        <input type="checkbox" id="hide-reset-zoom" />
-      </div>
+            <div class="uiContainer">
+                <button class="uiButtons largeUiButtons" disabled>16:9</button>
+                <input type="checkbox" id="hide-reset-zoom" />
+            </div>
 
-      <div class="uiContainer">
-        <button class="uiButtons largeUiButtons" disabled>21:9</button>
-        <input type="checkbox" id="hide-full-zoom" />
-      </div>
-      <hr />
+            <div class="uiContainer">
+                <button class="uiButtons largeUiButtons" disabled>21:9</button>
+                <input type="checkbox" id="hide-full-zoom" />
+            </div>
+            <hr />
 
-      <label for="customZoom">Add a custom zoom button</label>
-      <input type="checkbox" id="customZoom" />
-      <div class="uiContainer">
-        <button class="uiButtons" disabled style="margin-left: 30px">C</button>
-      </div>
-      <br />
-      <br />
-      <label for="customZoomAmount"
-        >How many times should the button zoom (times pressed on the +
-        button)?</label
-      >
-      <br />
-      <input type="number" id="customZoomAmount" min="0" style="width: 70px" />
-      <hr />
+            <label for="customZoom">Add a custom zoom button</label>
+            <input type="checkbox" id="customZoom" />
+            <div class="uiContainer">
+                <button class="uiButtons" disabled style="margin-left: 30px">
+                    C
+                </button>
+            </div>
+            <br />
+            <br />
+            <label for="customZoomAmount"
+                >How many times should the button zoom (times pressed on the +
+                button)?</label
+            >
+            <br />
+            <input
+                type="number"
+                id="customZoomAmount"
+                min="0"
+                style="width: 70px"
+            />
+            <hr />
 
-      <br />
-      <div class="buttons-container">
-        <button id="reset">Reset</button>
-      </div>
-    </div>
+            <br />
+            <div class="buttons-container">
+                <button id="reset">Reset</button>
+            </div>
+        </div>
 
-    <script src="options.js"></script>
-  </body>
+        <script src="options.js"></script>
+    </body>
 </html>

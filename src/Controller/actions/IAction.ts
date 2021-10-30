@@ -1,7 +1,7 @@
-import VideoController from '../VideoController'
+import VideoController from "../VideoController"
 
 export default interface IAction {
-  key: string;
+    key: string
 
-  execute(videoController: VideoController): void;
+    execute(videoController: VideoController): void
 }

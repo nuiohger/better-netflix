@@ -1,67 +1,67 @@
 body {
-  background-color: #000;
-  color: #fff;
-  margin: 10px;
+    background-color: #000;
+    color: #fff;
+    margin: 10px;
 }
 
 .msg {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 button {
-  border: 1px solid #888;
-  height: 25px;
-  color: #333;
-  transition-duration: 0.5s;
-  font-weight: bold;
+    border: 1px solid #888;
+    height: 25px;
+    color: #333;
+    transition-duration: 0.5s;
+    font-weight: bold;
 }
 
 button:hover {
-  color: #fff;
-  border-color: #fff;
-  transform: scale(1.1);
-  background-color: #000;
+    color: #fff;
+    border-color: #fff;
+    transform: scale(1.1);
+    background-color: #000;
 }
 
 hr {
-  margin: 25px 0;
-  clear: both;
+    margin: 25px 0;
+    clear: both;
 }
 
 .uiContainer {
-  background-color: #000;
-  display: inline-block;
-  padding: 5px;
-  margin: 5px;
+    background-color: #000;
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
 }
 
 .uiContainer > input {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
 .uiButtons {
-  color: #fff;
-  border-radius: 1.6em;
-  width: 1.8em;
-  height: 1.8em;
-  font-size: 1.5em;
-  font-weight: 700;
-  margin: 0 auto;
-  user-select: none;
-  outline: 0;
-  border: 3px solid #fff;
-  background-color: rgba(0, 0, 0, 0);
-  line-height: 125%;
-  text-align: center;
+    color: #fff;
+    border-radius: 1.6em;
+    width: 1.8em;
+    height: 1.8em;
+    font-size: 1.5em;
+    font-weight: 700;
+    margin: 0 auto;
+    user-select: none;
+    outline: 0;
+    border: 3px solid #fff;
+    background-color: rgba(0, 0, 0, 0);
+    line-height: 125%;
+    text-align: center;
 }
 
 .largeUiButtons {
-  font-size: 1em;
-  width: 3.1em;
-  height: 3.1em;
-  line-height: 200%;
+    font-size: 1em;
+    width: 3.1em;
+    height: 3.1em;
+    line-height: 200%;
 }
 
 .buttons-container {
-  text-align: center;
+    text-align: center;
 }

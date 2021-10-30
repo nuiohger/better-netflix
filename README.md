@@ -40,3 +40,23 @@ Run `python build.py`
 To create the zip files use the -z or --zip parameter:
 
 `python build.py -z`
+
+## Publish
+
+A `python-gitlab.cfg` file needs to be created in the root of the repository with a private gitlab token:
+
+```
+[global]
+default = gitlab
+ssl_verify = true
+timeout = 5
+
+[gitlab]
+url = https://gitlab.com
+private_token = GITLAB_TOKEN
+api_version = 4
+```
+
+The following command updates the version numbers in the manifests and creates a new release on gitlab:
+
+`python build.py -p`

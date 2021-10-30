@@ -1,35 +1,50 @@
-#!./venv/bin/python3
+#!/usr/bin/env python3
 
-from argparse import ArgumentParser
-import subprocess
 import os
 import shutil
 import zipfile
+from argparse import ArgumentParser, Namespace
 from distutils import dir_util
 
-addon_name = "Better Netflix"
-base_dir = os.path.dirname(os.path.realpath(__file__))
-build_dir = f"{base_dir}/build"
-firefox_dir = f"{build_dir}/dist-firefox"
-chrome_dir = f"{build_dir}/dist-chrome"
+from publish.checks import all_checks
+from publish.publish import update_version
+from publish.utils import run_subprocess
+
+ADDON_NAME = "Better Netflix"
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+BUILD_DIR = f"{BASE_DIR}/build"
+FIREFOX_DIR = f"{BUILD_DIR}/dist-firefox"
+CHROME_DIR = f"{BUILD_DIR}/dist-chrome"
 
 
-def main():
+def main() -> None:
     args = parse_args()
     if args.review_build:
         review_build()
         return
 
-    if args.typescript:
+    if args.checks:
+        all_checks()
+        return
+
+    if args.publish:
+        all_checks()
+
+    if args.typescript or args.publish:
         build_typescript()
-    run_webpack(firefox_dir)
+
+    run_webpack(FIREFOX_DIR)
     build_firefox()
     build_chrome()
-    if args.zip:
+
+    if args.zip or args.publish:
         zip_addon()
 
+    if args.publish:
+        update_version()
 
-def parse_args():
+
+def parse_args() -> Namespace:
     parser = ArgumentParser()
     parser.add_argument(
         "-z",
@@ -46,24 +61,36 @@ def parse_args():
         action="store_true",
         help="build the Add-on for reviewers",
     )
+    parser.add_argument(
+        "-c",
+        "--checks",
+        action="store_true",
+        help="check formatting and run code analysis",
+    )
+    parser.add_argument(
+        "-p",
+        "--publish",
+        action="store_true",
+        help="publish a new version: updates the version number, creates a git tag and a gitlab release, updates changelogs and builds and zips the addon",
+    )
     return parser.parse_args()
 
 
-def build_typescript():
+def build_typescript() -> None:
     run_subprocess(
         "tsc",
         "--build",
-        f"{base_dir}/tsconfig.json",
+        f"{BASE_DIR}/tsconfig.json",
         success_msg="Successfully built typescript\n",
     )
 
 
-def run_webpack(destination_dir: str):
+def run_webpack(destination_dir: str) -> None:
     run_subprocess(
         "npx",
         "webpack",
         "--entry",
-        f"{base_dir}/build/Main.js",
+        f"{BASE_DIR}/build/Main.js",
         "--output-path",
         f"{destination_dir}",
         "--mode",
@@ -72,41 +99,34 @@ def run_webpack(destination_dir: str):
     )
 
 
-def run_subprocess(*args, success_msg=""):
-    process = subprocess.run(list(args))
-    process.check_returncode()
-    if success_msg != "":
-        print(success_msg)
+def build_firefox() -> None:
+    replace_dir(f"{BASE_DIR}/src/options", f"{FIREFOX_DIR}/options")
+    shutil.copy(f"{BASE_DIR}/src/style.css", FIREFOX_DIR)
+    os.makedirs(f"{FIREFOX_DIR}/resources", exist_ok=True)
+    dir_util.copy_tree(f"{BASE_DIR}/dist/firefox", FIREFOX_DIR)
+    print(f"\nSuccessfully built {ADDON_NAME} for Firefox")
 
 
-def build_firefox():
-    replace_dir(f"{base_dir}/src/options", f"{firefox_dir}/options")
-    shutil.copy(f"{base_dir}/src/style.css", firefox_dir)
-    os.makedirs(f"{firefox_dir}/resources", exist_ok=True)
-    dir_util.copy_tree(f"{base_dir}/dist/firefox", firefox_dir)
-    print(f"\nSuccessfully built {addon_name} for Firefox")
+def build_chrome() -> None:
+    os.makedirs(f"{CHROME_DIR}/options", exist_ok=True)
+    shutil.copy(f"{FIREFOX_DIR}/main.js", CHROME_DIR)
+    replace_dir(f"{BASE_DIR}/src/options", f"{CHROME_DIR}/options")
+    shutil.copy(f"{BASE_DIR}/src/style.css", CHROME_DIR)
+    os.makedirs(f"{CHROME_DIR}/resources", exist_ok=True)
+    dir_util.copy_tree(f"{BASE_DIR}/dist/chrome", CHROME_DIR)
+    print(f"\nSuccessfully built {ADDON_NAME} for Chrome")
 
 
-def build_chrome():
-    os.makedirs(f"{chrome_dir}/options", exist_ok=True)
-    shutil.copy(f"{firefox_dir}/main.js", chrome_dir)
-    replace_dir(f"{base_dir}/src/options", f"{chrome_dir}/options")
-    shutil.copy(f"{base_dir}/src/style.css", chrome_dir)
-    os.makedirs(f"{chrome_dir}/resources", exist_ok=True)
-    dir_util.copy_tree(f"{base_dir}/dist/chrome", chrome_dir)
-    print(f"\nSuccessfully built {addon_name} for Chrome")
-
-
-def zip_addon():
-    shutil.make_archive("build/better-netflix-firefox", "zip", firefox_dir)
-    shutil.make_archive("build/better-netflix-chrome", "zip", chrome_dir)
+def zip_addon() -> None:
+    shutil.make_archive("build/better-netflix-firefox", "zip", FIREFOX_DIR)
+    shutil.make_archive("build/better-netflix-chrome", "zip", CHROME_DIR)
     create_source_code_zip()
     print(
         "\nSuccessfully created zip files for Firefox and Chrome and created the source code package for Firefox needed for the source code submission policy"
     )
 
 
-def create_source_code_zip():
+def create_source_code_zip() -> None:
     dirs = ["./build", "./dist-firefox", "./src"]
     ignored_file_extensions = ["zip"]
     ignored_dirs = ["dist-firefox", "dist-chrome"]
@@ -116,10 +136,10 @@ def create_source_code_zip():
         "build/source-code.zip", "w", zipfile.ZIP_DEFLATED
     ) as zip_file:
         for filename in file_names:
-            zip_file.write(os.path.join(base_dir, filename), arcname=filename)
+            zip_file.write(os.path.join(BASE_DIR, filename), arcname=filename)
 
         for folder in dirs:
-            for root, folders, files in os.walk(folder):
+            for root, _, files in os.walk(folder):
                 if any(ignored in root for ignored in ignored_dirs):
                     continue
 
@@ -133,13 +153,13 @@ def create_source_code_zip():
                     zip_file.write(os.path.abspath(cur_file), arcname=cur_file)
 
 
-def replace_dir(new: str, old: str):
+def replace_dir(new: str, old: str) -> None:
     if os.path.exists(old):
         shutil.rmtree(old)
     shutil.copytree(new, old)
 
 
-def review_build():
+def review_build() -> None:
     print(
         "Building TypeScript. tsc is generating a JavaScript file for each TypeScript file..."
     )
