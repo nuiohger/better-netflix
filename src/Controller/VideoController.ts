@@ -33,10 +33,7 @@ class VideoController {
 
     addVolumeScrollListener(this._htmlVideo)
 
-    // Restore zoom of previous video
-    if (this._currentZoom !== 100) {
-      this.setZoom(this._currentZoom)
-    }
+    this.restoreZoomOfPreviousVideo()
 
     // Set min-height percentage to height of video set by Netflix
     const percentage =
@@ -46,6 +43,12 @@ class VideoController {
     if (percentage > this._currentZoom) {
       this._minZoom = percentage
       this.setZoom(percentage)
+    }
+  }
+
+  private restoreZoomOfPreviousVideo () {
+    if (this._currentZoom !== 100) {
+      this.setZoom(this._currentZoom)
     }
   }
 
