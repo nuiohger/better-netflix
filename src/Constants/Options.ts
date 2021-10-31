@@ -10,6 +10,7 @@ const defaultKeys = {
     timeElapsed: true,
     toggleStatistics: "q",
     customZoom: "c",
+    toggleSubtitles: "v",
     volumeMouseWheel: true,
     hideZoomInButton: false,
     hideZoomOutButton: false,
