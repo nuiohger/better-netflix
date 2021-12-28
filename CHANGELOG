@@ -1,3 +1,8 @@
+1.7.0 (28.12.2021):
+- fix incorrect zoom for some aspect ratios
+- fix broken netflix seek bar by moving elapsed time below bar
+- add button for picture in picture mode (only chromium based browsers)
+
 1.6.0 (30.10.2021):
 - add keyboard shortcut (v) to toggle english subtitles
 
