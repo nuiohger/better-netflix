@@ -22,6 +22,7 @@ class UserOptionsModel {
     private _hideFullZoomButton: boolean
     private _showCustomZoomButton: boolean
     private _customZoomAmount: number
+    private _pictureInPictureButton: boolean
 
     private _chromeController: ChromeController
 
@@ -50,6 +51,8 @@ class UserOptionsModel {
 
             this._showCustomZoomButton = items.showCustomZoomButton
             this._customZoomAmount = items.customZoomAmount || 0
+
+            this._pictureInPictureButton = items.hidePictureInPictureButton
         })
 
         this._zoomIn = zoomIn
@@ -130,6 +133,10 @@ class UserOptionsModel {
 
     public get customZoomAmount(): number {
         return this._customZoomAmount
+    }
+
+    public get hidePictureInPictureButton(): boolean {
+        return this._pictureInPictureButton
     }
 
     public static get optionKeys(): UserOptionsModel {

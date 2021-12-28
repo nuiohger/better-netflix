@@ -8,6 +8,7 @@
         zoomOut: document.querySelector("#hide-zoom-out"),
         resetZoom: document.querySelector("#hide-reset-zoom"),
         fullZoom: document.querySelector("#hide-full-zoom"),
+        pictureInPicture: document.querySelector("#hide-picture-in-picture"),
     }
     const customZoom = {
         checkbox: document.getElementById("customZoom"),
@@ -22,6 +23,7 @@
         hideFullZoomButton: false,
         showCustomZoomButton: false,
         customZoomAmount: 0,
+        hidePictureInPictureButton: false,
     }
 
     function restoreSavedOptions() {
@@ -35,6 +37,7 @@
         hideButtons.zoomOut.checked = items.hideZoomOutButton
         hideButtons.resetZoom.checked = items.hideResetZoomButton
         hideButtons.fullZoom.checked = items.hideFullZoomButton
+        hideButtons.pictureInPicture.checked = items.hidePictureInPictureButton
 
         customZoom.checkbox.checked = items.showCustomZoomButton
         customZoom.amountInput.value = items.customZoomAmount || 0
@@ -73,6 +76,12 @@
         hideButtons.fullZoom.addEventListener(
             "change",
             (event) => save({ hideFullZoomButton: event.target.checked }),
+            false
+        )
+        hideButtons.pictureInPicture.addEventListener(
+            "change",
+            (event) =>
+                save({ hidePictureInPictureButton: event.target.checked }),
             false
         )
 

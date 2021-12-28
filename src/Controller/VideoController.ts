@@ -5,7 +5,8 @@ class VideoController {
     private _updatingVideo = false
 
     private _currentZoom = 100
-    private _minZoom = 100
+    private _minHeight = 100
+    private _width = 100
 
     public start(): void {
         if (!this._updatingVideo && this.findVideo()) {
@@ -33,22 +34,21 @@ class VideoController {
 
         addVolumeScrollListener(this._htmlVideo)
 
-        this.restoreZoomOfPreviousVideo()
-
         // Set min-height percentage to height of video set by Netflix
-        const percentage =
+        this._minHeight =
             (this._htmlVideo.offsetHeight /
                 this._htmlVideo.parentElement.offsetHeight) *
             100
-        if (percentage > this._currentZoom) {
-            this._minZoom = percentage
-            this.setZoom(percentage)
+        if (this._minHeight > this._currentZoom) {
+            this.setZoom(this._minHeight)
+        } else {
+            this.restoreZoomOfPreviousVideo()
         }
     }
 
     private restoreZoomOfPreviousVideo() {
         if (this._currentZoom !== 100) {
-            this.setZoom(this._currentZoom)
+            this.setZoom(this._currentZoom, this._width)
         }
     }
 
@@ -56,20 +56,26 @@ class VideoController {
         let height = parseInt(this._htmlVideo.style.minHeight)
 
         if (isNaN(height)) {
-            height = this._minZoom
+            height = this._minHeight
         }
 
-        this.setZoom(percentage + height)
+        this._width += percentage
+        if (this._width < 100) {
+            this._width = 100
+        }
+
+        this.setZoom(percentage + height, this._width)
     }
 
-    public setZoom(percentage: number): void {
-        if (percentage < this._minZoom) {
-            percentage = this._minZoom
+    public setZoom(percentage: number, width = 100): void {
+        if (percentage < this._minHeight) {
+            percentage = this._minHeight
         }
 
-        this._htmlVideo.style.minHeight = this._htmlVideo.style.minWidth =
-            percentage + "%"
+        this._htmlVideo.style.minWidth = width + "%"
+        this._htmlVideo.style.minHeight = percentage + "%"
 
+        this._width = width
         this._currentZoom = percentage
     }
 

@@ -21,7 +21,7 @@ class TimeUiController {
         }
 
         const parent = document.querySelector(
-            "div > div.watch-video--bottom-controls-container.ltr-hpbgml > div > div > div:nth-child(1)"
+            "div.watch-video--bottom-controls-container.ltr-hpbgml > div > div > div:nth-child(2)"
         )
 
         if (parent) {
@@ -32,15 +32,15 @@ class TimeUiController {
 
     private initElapsedTime(parent: Element): void {
         this._htmlTime = document.createElement("time")
-        this._htmlTime.classList.add("elapsedTime", "ltr-pw0kjc")
+        this._htmlTime.classList.add("elapsedTime")
         this.updateTime()
 
         const timeParent: HTMLDivElement = document.createElement("div")
-        timeParent.classList.add("ltr-6alejv")
+        timeParent.classList.add("ltr-qnht66", "medium")
         timeParent.style.textAlign = "left"
         timeParent.appendChild(this._htmlTime)
 
-        parent.insertBefore(timeParent, parent.firstChild)
+        parent.appendChild(timeParent)
 
         this._video.addEventListener(
             "timeupdate",

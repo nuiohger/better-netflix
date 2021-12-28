@@ -26,7 +26,9 @@ def _read_version(manifest_path: str) -> str:
 
 
 def _write_version(manifest_path: str, new_version: str) -> None:
-    with open(manifest_path, "w", encoding="utf-8") as manifest:
+    with open(manifest_path, "r+", encoding="utf-8") as manifest:
         content = json.load(manifest)
         content["version"] = new_version
-        json.dump(content, manifest)
+
+        manifest.seek(0)
+        json.dump(content, manifest, indent=4, ensure_ascii=False)

@@ -18,6 +18,7 @@ const defaultKeys = {
     hideFullZoomButton: false,
     showCustomZoomButton: false,
     customZoomAmount: 0,
+    hidePictureInPictureButton: false,
 }
 
 const options: UserOptionsModel = UserOptionsModel.optionKeys

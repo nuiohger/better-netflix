@@ -18,11 +18,14 @@ function main(): void {
     document.addEventListener(
         "keydown",
         (event) => {
-            const actionName = ActionFactory.actionNames.filter(
+            const actionNames = ActionFactory.actionNames.filter(
                 (actionName) => options[actionName] === event.key
-            )[0]
+            )
+            if (actionNames.length === 0) {
+                return
+            }
 
-            const action = ActionFactory.getAction(actionName)
+            const action = ActionFactory.getAction(actionNames[0])
             if (action) {
                 action.execute(videoController)
             }

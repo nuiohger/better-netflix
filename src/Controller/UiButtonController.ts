@@ -9,6 +9,7 @@ enum ButtonType {
     ResetZoom = 3,
     FullZoom = 4,
     CustomZoom = 5,
+    PictureInPicture = 6,
 }
 
 class Button {
@@ -46,6 +47,13 @@ class Button {
                 return options.hideFullZoomButton
             case ButtonType.CustomZoom:
                 return !options.showCustomZoomButton
+            case ButtonType.PictureInPicture:
+                // Firefox does not support the picture in picture API
+                return (
+                    document.pictureInPictureEnabled === undefined ||
+                    !document.pictureInPictureEnabled ||
+                    options.hidePictureInPictureButton
+                )
         }
 
         throw new Error("ButtonType '" + this.buttonType + "' out of range")
@@ -119,6 +127,16 @@ class UiButtonController {
                 "C",
                 "Custom zoom (Key: c)",
                 "customZoom"
+            )
+        )
+
+        buttons.push(
+            this.createButton(
+                videoController,
+                ButtonType.PictureInPicture,
+                "◲",
+                "Picture in Picture",
+                "pictureInPicture"
             )
         )
 

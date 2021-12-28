@@ -32,7 +32,7 @@ class FullZoomAction implements IAction {
     key: string = options.fullZoom
 
     public execute(videoController: VideoController): void {
-        videoController.setZoom(135)
+        videoController.setZoom(135, 135)
     }
 }
 
@@ -65,7 +65,20 @@ class CustomZoomAction implements IAction {
     key: string = options.customZoom
 
     public execute(videoController: VideoController): void {
-        videoController.setZoom(100 + options.customZoomAmount * 5)
+        const zoom = 100 + options.customZoomAmount * 5
+        videoController.setZoom(zoom, zoom)
+    }
+}
+
+class PictureInPictureAction implements IAction {
+    key: string
+
+    execute(videoController: VideoController): void {
+        if (document.pictureInPictureElement) {
+            document.exitPictureInPicture()
+        } else if (document.pictureInPictureEnabled) {
+            videoController.getHtmlVideo.requestPictureInPicture()
+        }
     }
 }
 
@@ -80,6 +93,7 @@ class ActionFactory {
         toggleStatistics: ToggleStatisticsAction,
         customZoom: CustomZoomAction,
         toggleSubtitles: ToggleSubtitleAction,
+        pictureInPicture: PictureInPictureAction,
     }
 
     public static getAction(actionName: string): IAction | undefined {
