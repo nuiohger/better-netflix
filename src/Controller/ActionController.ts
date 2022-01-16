@@ -3,6 +3,7 @@ import StatisticsController from "./StatisticController"
 import { options } from "../Constants/Options"
 import ToggleSubtitleAction from "./actions/ToggleSubtitleAction"
 import IAction from "./actions/IAction"
+import ToggleHelpAction from "./actions/ToggleHelpAction"
 
 class ZoomInAction implements IAction {
     key: string = options.zoomIn
@@ -84,21 +85,21 @@ class PictureInPictureAction implements IAction {
 
 class ActionFactory {
     private static _classDictionary = {
-        zoomIn: ZoomInAction,
-        zoomOut: ZoomOutAction,
-        resetZoom: ResetZoomAction,
-        fullZoom: FullZoomAction,
-        disableMouse: DisableMouseAction,
-        enableMouse: EnableMouseAction,
-        toggleStatistics: ToggleStatisticsAction,
-        customZoom: CustomZoomAction,
-        toggleSubtitles: ToggleSubtitleAction,
-        pictureInPicture: PictureInPictureAction,
+        zoomIn: new ZoomInAction(),
+        zoomOut: new ZoomOutAction(),
+        resetZoom: new ResetZoomAction(),
+        fullZoom: new FullZoomAction(),
+        disableMouse: new DisableMouseAction(),
+        enableMouse: new EnableMouseAction(),
+        toggleStatistics: new ToggleStatisticsAction(),
+        customZoom: new CustomZoomAction(),
+        toggleSubtitles: new ToggleSubtitleAction(),
+        pictureInPicture: new PictureInPictureAction(),
+        toggleHelp: new ToggleHelpAction(),
     }
 
     public static getAction(actionName: string): IAction | undefined {
-        const Action = this._classDictionary[actionName]
-        return Action === undefined ? undefined : new Action()
+        return this._classDictionary[actionName]
     }
 
     public static get actionNames(): string[] {

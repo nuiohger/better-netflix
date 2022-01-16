@@ -12,6 +12,7 @@ class UserOptionsModel {
     private _toggleStatistics: string
     private _customZoomKey: string
     private _toggleSubtitles: string
+    private _toggleHelp: string
 
     // Enabled / disabled options:
     private _timeElapsed: boolean
@@ -36,7 +37,8 @@ class UserOptionsModel {
         timeElapsed: boolean,
         toggleStatistics: string,
         customZoomKey: string,
-        toggleSubtitles: string
+        toggleSubtitles: string,
+        toggleHelp: string
     ) {
         if (!this._chromeController)
             this._chromeController = new ChromeController()
@@ -65,6 +67,7 @@ class UserOptionsModel {
         this._toggleStatistics = toggleStatistics
         this._customZoomKey = customZoomKey
         this._toggleSubtitles = toggleSubtitles
+        this._toggleHelp = toggleHelp
     }
 
     public get zoomIn(): string {
@@ -105,6 +108,10 @@ class UserOptionsModel {
 
     public get toggleSubtitles(): string {
         return this._toggleSubtitles
+    }
+
+    public get toggleHelp(): string {
+        return this._toggleHelp
     }
 
     public get volumeMouseWheel(): boolean {
@@ -150,7 +157,8 @@ class UserOptionsModel {
             true,
             "q",
             "c",
-            "v"
+            "v",
+            "h"
         )
     }
 }

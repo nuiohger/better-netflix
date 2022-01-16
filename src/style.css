@@ -110,3 +110,28 @@
     min-height: 5px !important;
     max-height: 100px !important;
 }
+
+.bn_help_container {
+    color: #fff;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    bottom: 20%;
+    font-size: large;
+    padding: 10px;
+}
+
+.bn_shortcut_container {
+    padding: 5px 0;
+}
+
+.bn_shortcut {
+    margin-right: 15px;
+    border: grey 1px solid;
+    padding: 1px 4px;
+    background: rgba(40, 40, 40, 0.5);
+    box-shadow: -2px 2px 5px 2px rgba(0, 0, 0, 0.5),
+        2px -2px 5px 2px rgba(0, 0, 0, 0.5);
+    width: 10px;
+    display: inline-block;
+    text-align: center;
+}
