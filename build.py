@@ -4,10 +4,9 @@ import os
 import shutil
 import zipfile
 from argparse import ArgumentParser, Namespace
-from distutils import dir_util
 
 from publish.checks import all_checks
-from publish.publish import update_version
+from publish.publish import create_release, update_version
 from publish.utils import run_subprocess
 
 ADDON_NAME = "Better Netflix"
@@ -40,8 +39,11 @@ def main() -> None:
     if args.zip or args.publish:
         zip_addon()
 
-    if args.publish:
+    if args.update_version:
         update_version()
+
+    if args.publish:
+        create_release()
 
 
 def parse_args() -> Namespace:
@@ -68,10 +70,16 @@ def parse_args() -> Namespace:
         help="check formatting and run code analysis",
     )
     parser.add_argument(
+        "-u",
+        "--update-version",
+        action="store_true",
+        help="updates the version number of the addon",
+    )
+    parser.add_argument(
         "-p",
         "--publish",
         action="store_true",
-        help="publish a new version: updates the version number, creates a git tag and a gitlab release, updates changelogs and builds and zips the addon",
+        help="publish a new version: creates a git tag and a gitlab release, updates changelogs and builds and zips the addon",
     )
     return parser.parse_args()
 
@@ -103,7 +111,7 @@ def build_firefox() -> None:
     replace_dir(f"{BASE_DIR}/src/options", f"{FIREFOX_DIR}/options")
     shutil.copy(f"{BASE_DIR}/src/style.css", FIREFOX_DIR)
     os.makedirs(f"{FIREFOX_DIR}/resources", exist_ok=True)
-    dir_util.copy_tree(f"{BASE_DIR}/dist/firefox", FIREFOX_DIR)
+    shutil.copytree(f"{BASE_DIR}/dist/firefox", FIREFOX_DIR, dirs_exist_ok=True)
     print(f"\nSuccessfully built {ADDON_NAME} for Firefox")
 
 
@@ -113,7 +121,7 @@ def build_chrome() -> None:
     replace_dir(f"{BASE_DIR}/src/options", f"{CHROME_DIR}/options")
     shutil.copy(f"{BASE_DIR}/src/style.css", CHROME_DIR)
     os.makedirs(f"{CHROME_DIR}/resources", exist_ok=True)
-    dir_util.copy_tree(f"{BASE_DIR}/dist/chrome", CHROME_DIR)
+    shutil.copytree(f"{BASE_DIR}/dist/chrome", CHROME_DIR, dirs_exist_ok=True)
     print(f"\nSuccessfully built {ADDON_NAME} for Chrome")
 
 

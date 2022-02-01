@@ -57,6 +57,12 @@ private_token = GITLAB_TOKEN
 api_version = 4
 ```
 
-The following command updates the version numbers in the manifests and creates a new release on gitlab:
+The following command updates the version numbers in the manifests:
+
+`python build.py -u`
+
+Then commit and push the changes.
+
+The following command creates a new release on gitlab:
 
 `python build.py -p`

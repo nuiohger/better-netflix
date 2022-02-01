@@ -17,7 +17,9 @@ def update_version() -> None:
     _write_version(CONFIG.paths.manifest_firefox, version)
     _write_version(CONFIG.paths.manifest_chrome, version)
 
-    git.create_release(version)
+
+def create_release() -> None:
+    git.create_release(_read_version(CONFIG.paths.manifest_firefox))
 
 
 def _read_version(manifest_path: str) -> str:
