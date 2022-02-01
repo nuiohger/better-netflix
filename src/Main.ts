@@ -8,6 +8,8 @@ import * as MyListController from "./Controller/MyListController"
 import { options } from "./Constants/Options"
 import ImdbController from "./Controller/ImdbController"
 
+const skipButtonClass = ".watch-video--skip-content-button"
+
 function main(): void {
     const videoController = new VideoController()
     videoController.start()
@@ -58,6 +60,14 @@ function observe(videoController: VideoController): void {
             MyListController.randomVideo()
 
             imdbController.init()
+        }
+
+        if (options.autoSkip) {
+            const skipButton: HTMLElement =
+                document.querySelector(skipButtonClass)
+            if (skipButton) {
+                skipButton.click()
+            }
         }
     })
 

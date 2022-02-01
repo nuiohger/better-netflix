@@ -14,6 +14,7 @@
         checkbox: document.getElementById("customZoom"),
         amountInput: document.getElementById("customZoomAmount"),
     }
+    const autoSkip = document.getElementById("autoSkip")
 
     const defaults = {
         volumeMouseWheel: true,
@@ -24,6 +25,7 @@
         showCustomZoomButton: false,
         customZoomAmount: 0,
         hidePictureInPictureButton: false,
+        autoSkip: false
     }
 
     function restoreSavedOptions() {
@@ -41,6 +43,8 @@
 
         customZoom.checkbox.checked = items.showCustomZoomButton
         customZoom.amountInput.value = items.customZoomAmount || 0
+
+        autoSkip.checked = items.autoSkip
     }
 
     function init() {
@@ -98,6 +102,12 @@
                     save({ customZoomAmount: value })
                 }
             },
+            false
+        )
+
+        autoSkip.addEventListener(
+            "change",
+            (event) => save({ autoSkip: event.target.checked }),
             false
         )
     }
