@@ -25,7 +25,7 @@
         showCustomZoomButton: false,
         customZoomAmount: 0,
         hidePictureInPictureButton: false,
-        autoSkip: false
+        autoSkip: false,
     }
 
     function restoreSavedOptions() {
