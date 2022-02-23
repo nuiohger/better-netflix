@@ -26,7 +26,7 @@ def main() -> None:
         all_checks()
         return
 
-    if args.publish:
+    if args.update_version or args.publish:
         all_checks()
 
     if args.typescript or args.publish:

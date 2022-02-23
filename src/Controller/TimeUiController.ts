@@ -21,7 +21,7 @@ class TimeUiController {
         }
 
         const parent = document.querySelector(
-            "div.watch-video--bottom-controls-container.ltr-hpbgml > div > div > div:nth-child(2)"
+            "div.watch-video--bottom-controls-container.ltr-310mo1-layoutSlotCss > div > div > div:nth-child(2)"
         )
 
         if (parent) {
@@ -36,7 +36,7 @@ class TimeUiController {
         this.updateTime()
 
         const timeParent: HTMLDivElement = document.createElement("div")
-        timeParent.classList.add("ltr-qnht66", "medium")
+        timeParent.classList.add("ltr-1mziw00-text-playerLabel")
         timeParent.style.textAlign = "left"
         timeParent.appendChild(this._htmlTime)
 
