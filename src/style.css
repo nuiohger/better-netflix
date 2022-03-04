@@ -2,6 +2,12 @@
     margin-right: 20px;
     top: -4px;
     position: relative;
+    font-family: "Netflix Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    color: rgb(255, 255, 255);
+    font-size: 1.6rem;
+    line-height: 2rem;
 }
 
 .uiContainer {

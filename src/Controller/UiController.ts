@@ -18,7 +18,7 @@ class UiController {
 
     private getNetflixButtonParent(): HTMLDivElement {
         return document.querySelector(
-            "div.watch-video--bottom-controls-container.ltr-310mo1-layoutSlotCss > div > div > div.ltr-wge5p3-ControlsStandard > div > div:last-child"
+            "div.watch-video--bottom-controls-container > div > div > div > div > div:nth-child(3)"
         )
     }
 }
