@@ -1,3 +1,6 @@
+# New Function (added: 2022/04/04)
+「視聴を続ける」を自動でスキップ
+Skip continue watching 
 # Better Netflix
 
 Better Netflix is an Add-on for Firefox and Chrome that adds various features to Netflix:
