@@ -8,7 +8,8 @@ import * as MyListController from "./Controller/MyListController"
 import { options } from "./Constants/Options"
 import ImdbController from "./Controller/ImdbController"
 
-const skipButtonClass = ".watch-video--skip-content-button"
+const skipButtonClass = "[data-uia=player-skip-intro]"
+const continueWatchingButtonClass = "[data-uia=interrupt-autoplay-continue]"
 
 function main(): void {
     const videoController = new VideoController()
@@ -67,6 +68,14 @@ function observe(videoController: VideoController): void {
                 document.querySelector(skipButtonClass)
             if (skipButton) {
                 skipButton.click()
+            }
+        }
+
+        if(options.continueWatching) {
+            const continueWatchingButton: HTMLElement =
+                document.querySelector(continueWatchingButtonClass)
+            if (continueWatchingButton) {
+                continueWatchingButton.click()
             }
         }
     })

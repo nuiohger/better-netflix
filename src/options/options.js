@@ -16,6 +16,8 @@
     }
     const autoSkip = document.getElementById("autoSkip")
 
+    const continueWatching = document.getElementById("continueWatching")
+
     const defaults = {
         volumeMouseWheel: true,
         hideZoomInButton: false,
@@ -26,6 +28,7 @@
         customZoomAmount: 0,
         hidePictureInPictureButton: false,
         autoSkip: false,
+        continueWatching: false,
     }
 
     function restoreSavedOptions() {
@@ -45,6 +48,7 @@
         customZoom.amountInput.value = items.customZoomAmount || 0
 
         autoSkip.checked = items.autoSkip
+        continueWatching.checked = items.continueWatching
     }
 
     function init() {
@@ -108,6 +112,12 @@
         autoSkip.addEventListener(
             "change",
             (event) => save({ autoSkip: event.target.checked }),
+            false
+        )
+
+        continueWatching.addEventListener(
+            "change",
+            (event) => save({ continueWatching: event.target.checked }),
             false
         )
     }

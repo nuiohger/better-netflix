@@ -25,6 +25,7 @@ class UserOptionsModel {
     private _customZoomAmount: number
     private _pictureInPictureButton: boolean
     private _autoSkip: boolean
+    private _continueWatching: boolean
 
     private _chromeController: ChromeController
 
@@ -58,6 +59,7 @@ class UserOptionsModel {
             this._pictureInPictureButton = items.hidePictureInPictureButton
 
             this._autoSkip = items.autoSkip
+            this._continueWatching = items.continueWatching
         })
 
         this._zoomIn = zoomIn
@@ -151,6 +153,10 @@ class UserOptionsModel {
 
     public get autoSkip(): boolean {
         return this._autoSkip
+    }
+
+    public get continueWatching(): boolean {
+        return this._continueWatching
     }
 
     public static get optionKeys(): UserOptionsModel {

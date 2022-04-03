@@ -20,6 +20,7 @@ const defaultKeys = {
     customZoomAmount: 0,
     hidePictureInPictureButton: false,
     autoSkip: false,
+    continueWatching: false,
 }
 
 const options: UserOptionsModel = UserOptionsModel.optionKeys
